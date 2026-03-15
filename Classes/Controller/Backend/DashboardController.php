@@ -9,6 +9,7 @@ use Moselwal\FathomAnalytics\Service\AnalyticsService;
 use Moselwal\FathomAnalytics\Service\ConfigurationService;
 use Moselwal\FathomAnalytics\Service\FathomApiClient;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -75,7 +76,7 @@ class DashboardController extends ActionController
         return $this->htmlResponse();
     }
 
-    public function testConnectionAction(): void
+    public function testConnectionAction(): ResponseInterface
     {
         $site = $this->resolveCurrentSite();
         $apiKey = '';
@@ -92,10 +93,9 @@ class DashboardController extends ActionController
             $this->addFlashMessage(
                 'No API key configured.',
                 'Connection Test',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                $this->resolveFlashMessageSeverity('error')
             );
-            $this->redirect('index');
-            return;
+            return $this->redirect('index');
         }
 
         $result = $this->apiClient->testConnection($apiKey);
@@ -104,46 +104,66 @@ class DashboardController extends ActionController
             $this->addFlashMessage(
                 $result->getMessage(),
                 'Connection Test',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::OK
+                $this->resolveFlashMessageSeverity('ok')
             );
         } else {
             $this->addFlashMessage(
                 $result->getMessage(),
                 'Connection Test',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                $this->resolveFlashMessageSeverity('error')
             );
         }
 
-        $this->redirect('index');
+        return $this->redirect('index');
     }
 
-    public function pageDataAction(): ResponseInterface
+    /**
+     * AJAX endpoint for page-specific analytics data.
+     * Called directly via AjaxRoutes, NOT through Extbase bootstrapping.
+     */
+    public static function pageDataAjaxAction(ServerRequestInterface $request): ResponseInterface
     {
-        $pageUid = (int)($this->request->getQueryParams()['pageUid'] ?? 0);
+        $pageUid = (int)($request->getQueryParams()['pageUid'] ?? 0);
 
         if ($pageUid === 0) {
             return new JsonResponse(['success' => false, 'error' => 'No page UID provided']);
         }
 
-        $site = $this->resolveCurrentSite();
-        if ($site === null || !$this->configurationService->isConfigured($site)) {
+        /** @var ConfigurationService $configService */
+        $configService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConfigurationService::class);
+        /** @var AnalyticsService $analyticsService */
+        $analyticsService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(AnalyticsService::class);
+
+        $site = $request->getAttribute('site');
+        if ($site === null) {
+            /** @var SiteFinder $siteFinder */
+            $siteFinder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(SiteFinder::class);
+            try {
+                $site = $siteFinder->getSiteByPageId($pageUid);
+            } catch (\Exception $e) {
+                return new JsonResponse(['success' => false, 'error' => 'Could not resolve site']);
+            }
+        }
+
+        if (!$configService->isConfigured($site)) {
             return new JsonResponse(['success' => false, 'error' => 'Extension not configured']);
         }
 
-        $siteId = $this->configurationService->getSiteId($site);
-        $apiKey = $this->configurationService->getApiKeyForSite($site);
+        $siteId = $configService->getSiteId($site);
+        $apiKey = $configService->getApiKeyForSite($site);
 
         // Resolve page URL path
+        $pathname = '/';
         try {
             $router = $site->getRouter();
             $uri = $router->generateUri((string)$pageUid);
             $pathname = $uri->getPath();
         } catch (\Exception $e) {
-            $pathname = '/';
+            // fallback to root
         }
 
         $range = DateRange::fromPreset('30d');
-        $result = $this->analyticsService->getPageAnalytics($siteId, $pathname, $range, $apiKey);
+        $result = $analyticsService->getPageAnalytics($siteId, $pathname, $range, $apiKey);
 
         return new JsonResponse([
             'success' => !$result->hasError(),
@@ -154,7 +174,7 @@ class DashboardController extends ActionController
                 'bounceRate' => round($result->getBounceRate() * 100, 1),
             ],
             'cached' => true,
-            'error' => $result->hasError() ? $result->getErrorMessage() : null,
+            'error' => $result->hasError() ? 'Analytics data temporarily unavailable' : null,
         ]);
     }
 
@@ -163,13 +183,11 @@ class DashboardController extends ActionController
      */
     private function resolveCurrentSite()
     {
-        // Try to get site from request attribute
         $site = $this->request->getAttribute('site');
         if ($site !== null) {
             return $site;
         }
 
-        // Fallback: get first available site
         $sites = $this->siteFinder->getAllSites();
         if (!empty($sites)) {
             return reset($sites);
@@ -180,26 +198,71 @@ class DashboardController extends ActionController
 
     private function resolveDateRange(): DateRange
     {
-        $preset = $this->request->getQueryParams()['dateRange'] ?? null;
+        $params = $this->request->getQueryParams();
+        $preset = $params['dateRange'] ?? null;
 
         if ($preset !== null && in_array($preset, ['today', '7d', '30d', 'month', '90d', 'year'], true)) {
             return DateRange::fromPreset($preset);
         }
 
-        $dateFrom = $this->request->getQueryParams()['dateFrom'] ?? null;
-        $dateTo = $this->request->getQueryParams()['dateTo'] ?? null;
+        $dateFrom = $params['dateFrom'] ?? null;
+        $dateTo = $params['dateTo'] ?? null;
 
         if ($dateFrom !== null && $dateTo !== null) {
-            try {
-                return DateRange::fromCustom(
-                    new \DateTimeImmutable($dateFrom),
-                    new \DateTimeImmutable($dateTo)
-                );
-            } catch (\Exception $e) {
-                // Fall through to default
+            // Validate date format (Y-m-d only)
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateFrom) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateTo)) {
+                try {
+                    $from = new \DateTimeImmutable($dateFrom);
+                    $to = new \DateTimeImmutable($dateTo);
+                    // Enforce max 1 year range
+                    $diffDays = (int)$from->diff($to)->days;
+                    if ($diffDays > 0 && $diffDays <= 366) {
+                        return DateRange::fromCustom($from, $to);
+                    }
+                } catch (\Exception $e) {
+                    // Fall through to default
+                }
             }
         }
 
         return DateRange::fromPreset($this->configurationService->getDefaultDateRange());
+    }
+
+    /**
+     * Resolve FlashMessage severity compatible with v11-14.
+     * v11: FlashMessage::OK/ERROR constants
+     * v12+: ContextualFeedbackSeverity enum (FlashMessage constants deprecated)
+     * v13+: FlashMessage constants removed
+     *
+     * @param string $level 'ok', 'error', 'warning', 'info'
+     * @return int|object Severity constant or enum value
+     */
+    private function resolveFlashMessageSeverity(string $level)
+    {
+        // v12+ enum
+        if (class_exists(\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::class)) {
+            switch ($level) {
+                case 'ok':
+                    return \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK;
+                case 'error':
+                    return \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR;
+                case 'warning':
+                    return \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING;
+                default:
+                    return \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO;
+            }
+        }
+
+        // v11 constants
+        switch ($level) {
+            case 'ok':
+                return \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
+            case 'error':
+                return \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
+            case 'warning':
+                return \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING;
+            default:
+                return \TYPO3\CMS\Core\Messaging\FlashMessage::INFO;
+        }
     }
 }

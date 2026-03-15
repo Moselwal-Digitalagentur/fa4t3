@@ -11,7 +11,7 @@ if (!class_exists(\TYPO3\CMS\Backend\Module\ModuleProvider::class)) {
         'fathomanalytics',
         'after:info',
         [
-            \Moselwal\FathomAnalytics\Controller\Backend\DashboardController::class => 'index, testConnection, pageData',
+            \Moselwal\FathomAnalytics\Controller\Backend\DashboardController::class => 'index, testConnection',
         ],
         [
             'access' => 'user,group',

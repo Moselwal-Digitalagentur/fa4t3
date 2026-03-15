@@ -6,7 +6,6 @@
     'use strict';
 
     function getPageUid() {
-        // Try to get page UID from TYPO3 page module context
         var urlParams = new URLSearchParams(window.location.search);
         var id = urlParams.get('id');
         if (id) {
@@ -15,32 +14,61 @@
         return 0;
     }
 
+    function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function createBadge(className, value, label) {
+        var span = document.createElement('span');
+        span.className = 'badge ' + className + ' me-2';
+        span.textContent = value + ' ' + label;
+        return span;
+    }
+
     function createPanel() {
         var panel = document.createElement('div');
         panel.id = 'fathom-page-analytics';
         panel.className = 'callout callout-info mt-2 mb-2';
         panel.style.cssText = 'padding: 10px 15px; font-size: 0.9em;';
-        panel.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Loading analytics...';
+
+        var spinner = document.createElement('span');
+        spinner.className = 'spinner-border spinner-border-sm';
+        spinner.setAttribute('role', 'status');
+        panel.appendChild(spinner);
+        panel.appendChild(document.createTextNode(' Loading analytics...'));
+
         return panel;
     }
 
     function renderData(panel, data) {
+        panel.textContent = '';
+
         if (!data.success) {
-            panel.innerHTML = '<span class="text-muted">' + (data.error || 'Analytics unavailable') + '</span>';
+            var muted = document.createElement('span');
+            muted.className = 'text-muted';
+            muted.textContent = 'Analytics data temporarily unavailable.';
+            panel.appendChild(muted);
             return;
         }
 
         var d = data.data;
-        panel.innerHTML =
-            '<strong>Fathom Analytics (30d):</strong> ' +
-            '<span class="badge bg-primary me-2">' + d.pageviews + ' Pageviews</span>' +
-            '<span class="badge bg-secondary me-2">' + d.uniques + ' Visitors</span>' +
-            '<span class="badge bg-info me-2">' + d.avgDuration + 's Avg. Duration</span>' +
-            '<span class="badge bg-warning">' + d.bounceRate + '% Bounce Rate</span>';
+        var label = document.createElement('strong');
+        label.textContent = 'Fathom Analytics (30d): ';
+        panel.appendChild(label);
+        panel.appendChild(createBadge('bg-primary', d.pageviews, 'Pageviews'));
+        panel.appendChild(createBadge('bg-secondary', d.uniques, 'Visitors'));
+        panel.appendChild(createBadge('bg-info', d.avgDuration + 's', 'Avg. Duration'));
+        panel.appendChild(createBadge('bg-warning', d.bounceRate + '%', 'Bounce Rate'));
     }
 
     function renderError(panel) {
-        panel.innerHTML = '<span class="text-muted">Analytics data temporarily unavailable.</span>';
+        panel.textContent = '';
+        var muted = document.createElement('span');
+        muted.className = 'text-muted';
+        muted.textContent = 'Analytics data temporarily unavailable.';
+        panel.appendChild(muted);
     }
 
     function init() {
@@ -49,7 +77,6 @@
             return;
         }
 
-        // Find insertion point in page module
         var moduleBody = document.querySelector('.module-body') || document.querySelector('#PageLayoutController');
         if (!moduleBody) {
             return;
@@ -58,7 +85,6 @@
         var panel = createPanel();
         moduleBody.insertBefore(panel, moduleBody.firstChild);
 
-        // Determine AJAX URL based on TYPO3 version
         var ajaxUrl = TYPO3.settings.ajaxUrls && TYPO3.settings.ajaxUrls.fathom_analytics_page_data
             ? TYPO3.settings.ajaxUrls.fathom_analytics_page_data
             : '/typo3/ajax/fathom-analytics/page-data';

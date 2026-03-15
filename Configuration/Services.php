@@ -12,16 +12,19 @@ use Symfony\Component\DependencyInjection\Reference;
 
 return static function (ContainerConfigurator $containerConfigurator, ContainerBuilder $containerBuilder): void {
     // Only register dashboard widgets if typo3/cms-dashboard is installed
-    if (!$containerBuilder->hasDefinition(\TYPO3\CMS\Dashboard\Widgets\WidgetInterface::class)
-        && !interface_exists(\TYPO3\CMS\Dashboard\Widgets\WidgetInterface::class)) {
+    if (!interface_exists(\TYPO3\CMS\Dashboard\Widgets\WidgetInterface::class)) {
         return;
     }
 
     $services = $containerConfigurator->services();
 
-    $services->set('dashboard.widget.fathom_current_visitors')
+    // Determine view service reference based on TYPO3 version
+    $viewServiceId = $containerBuilder->has('dashboard.views.widget')
+        ? 'dashboard.views.widget'
+        : null;
+
+    $currentVisitors = $services->set('dashboard.widget.fathom_current_visitors')
         ->class(CurrentVisitorsWidget::class)
-        ->arg('$view', new Reference('dashboard.views.widget'))
         ->tag('dashboard.widget', [
             'identifier' => 'fathom-current-visitors',
             'groupNames' => 'fathom',
@@ -31,6 +34,10 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             'height' => 'small',
             'width' => 'small',
         ]);
+
+    if ($viewServiceId !== null) {
+        $currentVisitors->arg('$view', new Reference($viewServiceId));
+    }
 
     $services->set('dashboard.widget.fathom_visitor_trend')
         ->class(VisitorTrendWidget::class)
@@ -44,9 +51,8 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             'width' => 'medium',
         ]);
 
-    $services->set('dashboard.widget.fathom_top_pages')
+    $topPages = $services->set('dashboard.widget.fathom_top_pages')
         ->class(TopPagesWidget::class)
-        ->arg('$view', new Reference('dashboard.views.widget'))
         ->tag('dashboard.widget', [
             'identifier' => 'fathom-top-pages',
             'groupNames' => 'fathom',
@@ -57,9 +63,12 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             'width' => 'medium',
         ]);
 
-    $services->set('dashboard.widget.fathom_top_referrers')
+    if ($viewServiceId !== null) {
+        $topPages->arg('$view', new Reference($viewServiceId));
+    }
+
+    $topReferrers = $services->set('dashboard.widget.fathom_top_referrers')
         ->class(TopReferrersWidget::class)
-        ->arg('$view', new Reference('dashboard.views.widget'))
         ->tag('dashboard.widget', [
             'identifier' => 'fathom-top-referrers',
             'groupNames' => 'fathom',
@@ -69,4 +78,8 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             'height' => 'medium',
             'width' => 'medium',
         ]);
+
+    if ($viewServiceId !== null) {
+        $topReferrers->arg('$view', new Reference($viewServiceId));
+    }
 };

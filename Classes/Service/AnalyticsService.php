@@ -73,6 +73,7 @@ class AnalyticsService
                 ['fathom_site_' . $siteId],
                 $this->configurationService->getCacheDuration()
             );
+            $this->setStaleCache($cacheKey, $dashboardData, $siteId);
 
             return $dashboardData;
         } catch (FathomApiException $e) {
@@ -118,6 +119,7 @@ class AnalyticsService
                 ['fathom_site_' . $siteId],
                 $this->configurationService->getCacheDuration()
             );
+            $this->setStaleCache($cacheKey, $results, $siteId);
 
             return $results;
         } catch (FathomApiException $e) {
@@ -147,6 +149,7 @@ class AnalyticsService
                 ['fathom_site_' . $siteId],
                 $this->configurationService->getCacheDuration()
             );
+            $this->setStaleCache($cacheKey, $result, $siteId);
 
             return $result;
         } catch (FathomApiException $e) {
@@ -203,12 +206,25 @@ class AnalyticsService
     }
 
     /**
+     * Store a stale copy with a longer TTL for graceful degradation.
+     *
+     * @param string $cacheKey
+     * @param mixed $data
+     * @param string $siteId
+     */
+    private function setStaleCache(string $cacheKey, $data, string $siteId): void
+    {
+        $staleKey = $cacheKey . '_stale';
+        // Stale cache lives 10x longer than normal cache
+        $staleTtl = $this->configurationService->getCacheDuration() * 10;
+        $this->cache->set($staleKey, $data, ['fathom_site_' . $siteId], $staleTtl);
+    }
+
+    /**
      * @return mixed|null
      */
     private function getStaleCache(string $cacheKey)
     {
-        // TYPO3 cache does not support stale reads natively.
-        // We use a separate longer-lived stale key.
         $staleKey = $cacheKey . '_stale';
         $stale = $this->cache->get($staleKey);
         return $stale !== false ? $stale : null;

@@ -141,15 +141,33 @@ class TrackingScriptMiddleware implements MiddlewareInterface
         return false;
     }
 
+    /**
+     * Build a JavaScript snippet that dynamically creates the Fathom script tag
+     * when consent for the given category is granted.
+     * This avoids the double-wrapping issue with addInlineJavaScript.
+     */
     private function buildConsentScript(string $scriptSrc, array $attributes, string $consentCategory): string
     {
-        $attrString = '';
-        foreach ($attributes as $key => $value) {
-            $attrString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-        }
+        $jsonAttrs = json_encode($attributes, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT);
+        $escapedSrc = htmlspecialchars($scriptSrc, ENT_QUOTES, 'UTF-8');
+        $escapedCategory = htmlspecialchars($consentCategory, ENT_QUOTES, 'UTF-8');
 
-        // Output script tag with type="text/plain" and data-category for consent tools
-        return '<script type="text/plain" data-category="' . htmlspecialchars($consentCategory) . '" '
-            . 'src="' . htmlspecialchars($scriptSrc) . '"' . $attrString . '></script>';
+        // Create script element dynamically; consent tools can call
+        // window.__fathomLoadTracking() when consent is granted.
+        // Also check for a global consent API (cookieman, klaro patterns).
+        return '(function(){' .
+            'function loadFathom(){' .
+                'if(document.getElementById("fathom-tracking-script"))return;' .
+                'var s=document.createElement("script");' .
+                's.id="fathom-tracking-script";' .
+                's.src=' . json_encode($escapedSrc) . ';' .
+                'var attrs=' . $jsonAttrs . ';' .
+                'for(var k in attrs){if(attrs.hasOwnProperty(k))s.setAttribute(k,attrs[k]);}' .
+                'document.head.appendChild(s);' .
+            '}' .
+            'window.__fathomConsentCategory=' . json_encode($escapedCategory) . ';' .
+            'window.__fathomLoadTracking=loadFathom;' .
+            'if(typeof window.CookieConsent!=="undefined"&&window.CookieConsent.hasConsent&&window.CookieConsent.hasConsent(' . json_encode($escapedCategory) . ')){loadFathom();}' .
+        '})();';
     }
 }

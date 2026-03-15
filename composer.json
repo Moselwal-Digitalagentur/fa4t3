@@ -10,6 +10,12 @@
         "privacy",
         "dashboard"
     ],
+    "repositories": {
+        "175": {
+            "type": "composer",
+            "url": "https://gitlab.moselwal.io/api/v4/group/175/-/packages/composer/packages.json"
+        }
+    },
     "require": {
         "php": ">=7.4",
         "typo3/cms-core": "^11.5 || ^12.4 || ^13.4 || ^14.0",
@@ -18,10 +24,16 @@
         "typo3/cms-extbase": "^11.5 || ^12.4 || ^13.4 || ^14.0"
     },
     "require-dev": {
-        "typo3/testing-framework": "^7.0 || ^8.0"
+        "moselwal/dev": "^2.0",
+        "typo3/testing-framework": "^7.0 || ^8.0 || ^9.0"
     },
     "suggest": {
         "typo3/cms-dashboard": "Required for TYPO3 Dashboard widgets (current visitors, visitor trend, top pages, top referrers)"
+    },
+    "config": {
+        "gitlab-domains": [
+            "gitlab.moselwal.io"
+        ]
     },
     "autoload": {
         "psr-4": {

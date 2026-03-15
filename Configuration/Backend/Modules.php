@@ -12,7 +12,7 @@ return [
         'iconIdentifier' => 'fathom-analytics-module',
         'extensionName' => 'FathomAnalytics',
         'controllerActions' => [
-            DashboardController::class => ['index', 'testConnection', 'pageData'],
+            DashboardController::class => ['index', 'testConnection'],
         ],
     ],
 ];

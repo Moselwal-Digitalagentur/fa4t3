@@ -184,7 +184,7 @@ class FathomApiClient
                 'timeout' => self::TIMEOUT,
             ]);
         } catch (\Exception $e) {
-            throw new FathomApiException('Request failed: ' . $e->getMessage(), 0, $e);
+            throw new FathomApiException('Fathom API request failed', 0, $e);
         }
 
         $statusCode = $response->getStatusCode();
@@ -199,9 +199,7 @@ class FathomApiClient
         }
 
         if ($statusCode >= 400) {
-            $error = json_decode($body, true);
-            $message = isset($error['error']) ? (string)$error['error'] : 'API error (HTTP ' . $statusCode . ')';
-            throw new FathomApiException($message, $statusCode);
+            throw new FathomApiException('Fathom API error (HTTP ' . $statusCode . ')', $statusCode);
         }
 
         $decoded = json_decode($body, true);

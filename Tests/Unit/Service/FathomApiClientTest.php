@@ -220,7 +220,7 @@ class FathomApiClientTest extends TestCase
         );
 
         $this->expectException(FathomApiException::class);
-        $this->expectExceptionMessage('Request failed: Connection timed out');
+        $this->expectExceptionMessage('Fathom API request failed');
         $client->getAggregation('SITE123', $request, 'api-key');
     }
 }
