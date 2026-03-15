@@ -1,0 +1,33 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<div class="callout callout-info">
+    <div class="callout-title">
+        <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:extension.title" />
+    </div>
+    <div class="callout-body">
+        <f:if condition="{hasApiKey}">
+            <f:then>
+                <f:if condition="{noSiteId}">
+                    <f:then>
+                        <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noSiteId" /></p>
+                    </f:then>
+                    <f:else>
+                        <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.invalidApiKey" /></p>
+                    </f:else>
+                </f:if>
+            </f:then>
+            <f:else>
+                <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noApiKey" /></p>
+            </f:else>
+        </f:if>
+
+        <div class="mt-3">
+            <f:link.action action="testConnection" class="btn btn-default btn-sm">
+                <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:action.testConnection" />
+            </f:link.action>
+        </div>
+    </div>
+</div>
+
+</html>

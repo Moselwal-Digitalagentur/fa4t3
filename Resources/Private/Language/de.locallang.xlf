@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-03-15T00:00:00Z" product-name="fathom_analytics">
+        <header/>
+        <body>
+            <trans-unit id="extension.title" resname="extension.title">
+                <source>Fathom Analytics</source>
+                <target>Fathom Analytics</target>
+            </trans-unit>
+            <trans-unit id="extension.description" resname="extension.description">
+                <source>Privacy-focused analytics integration for TYPO3</source>
+                <target>Datenschutzfreundliche Analytics-Integration für TYPO3</target>
+            </trans-unit>
+            <trans-unit id="widget.currentVisitors.title" resname="widget.currentVisitors.title">
+                <source>Current Visitors</source>
+                <target>Aktuelle Besucher</target>
+            </trans-unit>
+            <trans-unit id="widget.visitorTrend.title" resname="widget.visitorTrend.title">
+                <source>Visitor Trend</source>
+                <target>Besuchertrend</target>
+            </trans-unit>
+            <trans-unit id="widget.topPages.title" resname="widget.topPages.title">
+                <source>Top Pages</source>
+                <target>Top-Seiten</target>
+            </trans-unit>
+            <trans-unit id="widget.topReferrers.title" resname="widget.topReferrers.title">
+                <source>Top Referrers</source>
+                <target>Top-Referrer</target>
+            </trans-unit>
+            <trans-unit id="dateRange.today" resname="dateRange.today">
+                <source>Today</source>
+                <target>Heute</target>
+            </trans-unit>
+            <trans-unit id="dateRange.7d" resname="dateRange.7d">
+                <source>Last 7 days</source>
+                <target>Letzte 7 Tage</target>
+            </trans-unit>
+            <trans-unit id="dateRange.30d" resname="dateRange.30d">
+                <source>Last 30 days</source>
+                <target>Letzte 30 Tage</target>
+            </trans-unit>
+            <trans-unit id="dateRange.month" resname="dateRange.month">
+                <source>Last month</source>
+                <target>Letzter Monat</target>
+            </trans-unit>
+            <trans-unit id="dateRange.90d" resname="dateRange.90d">
+                <source>Last 90 days</source>
+                <target>Letzte 90 Tage</target>
+            </trans-unit>
+            <trans-unit id="dateRange.year" resname="dateRange.year">
+                <source>Last year</source>
+                <target>Letztes Jahr</target>
+            </trans-unit>
+            <trans-unit id="kpi.visitors" resname="kpi.visitors">
+                <source>Visitors</source>
+                <target>Besucher</target>
+            </trans-unit>
+            <trans-unit id="kpi.pageviews" resname="kpi.pageviews">
+                <source>Pageviews</source>
+                <target>Seitenaufrufe</target>
+            </trans-unit>
+            <trans-unit id="kpi.avgDuration" resname="kpi.avgDuration">
+                <source>Avg. Duration</source>
+                <target>Ø Verweildauer</target>
+            </trans-unit>
+            <trans-unit id="kpi.bounceRate" resname="kpi.bounceRate">
+                <source>Bounce Rate</source>
+                <target>Absprungrate</target>
+            </trans-unit>
+            <trans-unit id="kpi.currentVisitors" resname="kpi.currentVisitors">
+                <source>Current Visitors</source>
+                <target>Aktuelle Besucher</target>
+            </trans-unit>
+            <trans-unit id="error.noApiKey" resname="error.noApiKey">
+                <source>No Fathom API key configured.</source>
+                <target>Kein Fathom API-Key konfiguriert. Bitte konfigurieren Sie die Extension in den Extension-Einstellungen.</target>
+            </trans-unit>
+            <trans-unit id="error.noSiteId" resname="error.noSiteId">
+                <source>No Fathom Site ID configured for this site.</source>
+                <target>Keine Fathom Site-ID für diese Seite konfiguriert. Bitte in der Site-Konfiguration eintragen.</target>
+            </trans-unit>
+            <trans-unit id="error.apiUnavailable" resname="error.apiUnavailable">
+                <source>Fathom Analytics API is currently unavailable. Showing cached data.</source>
+                <target>Fathom Analytics API ist derzeit nicht erreichbar. Es werden zwischengespeicherte Daten angezeigt.</target>
+            </trans-unit>
+            <trans-unit id="error.noData" resname="error.noData">
+                <source>No analytics data available yet.</source>
+                <target>Noch keine Analytics-Daten verfügbar.</target>
+            </trans-unit>
+            <trans-unit id="connection.success" resname="connection.success">
+                <source>Connection to Fathom Analytics successful!</source>
+                <target>Verbindung zu Fathom Analytics erfolgreich!</target>
+            </trans-unit>
+            <trans-unit id="connection.failed" resname="connection.failed">
+                <source>Connection to Fathom Analytics failed: %s</source>
+                <target>Verbindung zu Fathom Analytics fehlgeschlagen: %s</target>
+            </trans-unit>
+            <trans-unit id="action.testConnection" resname="action.testConnection">
+                <source>Test Connection</source>
+                <target>Verbindung testen</target>
+            </trans-unit>
+            <trans-unit id="action.configure" resname="action.configure">
+                <source>Configure Extension</source>
+                <target>Extension konfigurieren</target>
+            </trans-unit>
+            <trans-unit id="page.analytics.unavailable" resname="page.analytics.unavailable">
+                <source>Analytics data temporarily unavailable.</source>
+                <target>Analytics-Daten vorübergehend nicht verfügbar.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="messages" date="2026-03-15T00:00:00Z" product-name="fathom_analytics">
+        <header/>
+        <body>
+            <trans-unit id="extension.title" resname="extension.title">
+                <source>Fathom Analytics</source>
+            </trans-unit>
+            <trans-unit id="extension.description" resname="extension.description">
+                <source>Privacy-focused analytics integration for TYPO3</source>
+            </trans-unit>
+            <trans-unit id="widget.currentVisitors.title" resname="widget.currentVisitors.title">
+                <source>Current Visitors</source>
+            </trans-unit>
+            <trans-unit id="widget.currentVisitors.description" resname="widget.currentVisitors.description">
+                <source>Shows the current number of visitors on your website</source>
+            </trans-unit>
+            <trans-unit id="widget.visitorTrend.title" resname="widget.visitorTrend.title">
+                <source>Visitor Trend</source>
+            </trans-unit>
+            <trans-unit id="widget.visitorTrend.description" resname="widget.visitorTrend.description">
+                <source>Shows visitor trends over the last 30 days</source>
+            </trans-unit>
+            <trans-unit id="widget.topPages.title" resname="widget.topPages.title">
+                <source>Top Pages</source>
+            </trans-unit>
+            <trans-unit id="widget.topPages.description" resname="widget.topPages.description">
+                <source>Shows the most visited pages</source>
+            </trans-unit>
+            <trans-unit id="widget.topReferrers.title" resname="widget.topReferrers.title">
+                <source>Top Referrers</source>
+            </trans-unit>
+            <trans-unit id="widget.topReferrers.description" resname="widget.topReferrers.description">
+                <source>Shows the top traffic sources</source>
+            </trans-unit>
+            <trans-unit id="dateRange.today" resname="dateRange.today">
+                <source>Today</source>
+            </trans-unit>
+            <trans-unit id="dateRange.7d" resname="dateRange.7d">
+                <source>Last 7 days</source>
+            </trans-unit>
+            <trans-unit id="dateRange.30d" resname="dateRange.30d">
+                <source>Last 30 days</source>
+            </trans-unit>
+            <trans-unit id="dateRange.month" resname="dateRange.month">
+                <source>Last month</source>
+            </trans-unit>
+            <trans-unit id="dateRange.90d" resname="dateRange.90d">
+                <source>Last 90 days</source>
+            </trans-unit>
+            <trans-unit id="dateRange.year" resname="dateRange.year">
+                <source>Last year</source>
+            </trans-unit>
+            <trans-unit id="dateRange.custom" resname="dateRange.custom">
+                <source>Custom range</source>
+            </trans-unit>
+            <trans-unit id="kpi.visitors" resname="kpi.visitors">
+                <source>Visitors</source>
+            </trans-unit>
+            <trans-unit id="kpi.pageviews" resname="kpi.pageviews">
+                <source>Pageviews</source>
+            </trans-unit>
+            <trans-unit id="kpi.avgDuration" resname="kpi.avgDuration">
+                <source>Avg. Duration</source>
+            </trans-unit>
+            <trans-unit id="kpi.bounceRate" resname="kpi.bounceRate">
+                <source>Bounce Rate</source>
+            </trans-unit>
+            <trans-unit id="kpi.currentVisitors" resname="kpi.currentVisitors">
+                <source>Current Visitors</source>
+            </trans-unit>
+            <trans-unit id="table.page" resname="table.page">
+                <source>Page</source>
+            </trans-unit>
+            <trans-unit id="table.pageviews" resname="table.pageviews">
+                <source>Pageviews</source>
+            </trans-unit>
+            <trans-unit id="table.uniques" resname="table.uniques">
+                <source>Unique Visitors</source>
+            </trans-unit>
+            <trans-unit id="table.referrer" resname="table.referrer">
+                <source>Referrer</source>
+            </trans-unit>
+            <trans-unit id="table.visits" resname="table.visits">
+                <source>Visits</source>
+            </trans-unit>
+            <trans-unit id="table.eventName" resname="table.eventName">
+                <source>Event</source>
+            </trans-unit>
+            <trans-unit id="table.conversions" resname="table.conversions">
+                <source>Conversions</source>
+            </trans-unit>
+            <trans-unit id="table.uniqueConversions" resname="table.uniqueConversions">
+                <source>Unique Conversions</source>
+            </trans-unit>
+            <trans-unit id="table.value" resname="table.value">
+                <source>Value</source>
+            </trans-unit>
+            <trans-unit id="error.noApiKey" resname="error.noApiKey">
+                <source>No Fathom API key configured. Please configure the extension in the Extension Configuration.</source>
+            </trans-unit>
+            <trans-unit id="error.noSiteId" resname="error.noSiteId">
+                <source>No Fathom Site ID configured for this site. Please configure it in the Site Configuration.</source>
+            </trans-unit>
+            <trans-unit id="error.invalidApiKey" resname="error.invalidApiKey">
+                <source>The configured Fathom API key is invalid. Please check the Extension Configuration.</source>
+            </trans-unit>
+            <trans-unit id="error.apiUnavailable" resname="error.apiUnavailable">
+                <source>Fathom Analytics API is currently unavailable. Showing cached data.</source>
+            </trans-unit>
+            <trans-unit id="error.rateLimited" resname="error.rateLimited">
+                <source>Fathom API rate limit reached. Showing cached data.</source>
+            </trans-unit>
+            <trans-unit id="error.noData" resname="error.noData">
+                <source>No analytics data available yet.</source>
+            </trans-unit>
+            <trans-unit id="connection.success" resname="connection.success">
+                <source>Connection to Fathom Analytics successful!</source>
+            </trans-unit>
+            <trans-unit id="connection.failed" resname="connection.failed">
+                <source>Connection to Fathom Analytics failed: %s</source>
+            </trans-unit>
+            <trans-unit id="action.testConnection" resname="action.testConnection">
+                <source>Test Connection</source>
+            </trans-unit>
+            <trans-unit id="action.configure" resname="action.configure">
+                <source>Configure Extension</source>
+            </trans-unit>
+            <trans-unit id="page.analytics.unavailable" resname="page.analytics.unavailable">
+                <source>Analytics data temporarily unavailable.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

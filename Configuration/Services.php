@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+use Moselwal\FathomAnalytics\Widgets\CurrentVisitorsWidget;
+use Moselwal\FathomAnalytics\Widgets\TopPagesWidget;
+use Moselwal\FathomAnalytics\Widgets\TopReferrersWidget;
+use Moselwal\FathomAnalytics\Widgets\VisitorTrendWidget;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\Reference;
+
+return static function (ContainerConfigurator $containerConfigurator, ContainerBuilder $containerBuilder): void {
+    // Only register dashboard widgets if typo3/cms-dashboard is installed
+    if (!$containerBuilder->hasDefinition(\TYPO3\CMS\Dashboard\Widgets\WidgetInterface::class)
+        && !interface_exists(\TYPO3\CMS\Dashboard\Widgets\WidgetInterface::class)) {
+        return;
+    }
+
+    $services = $containerConfigurator->services();
+
+    $services->set('dashboard.widget.fathom_current_visitors')
+        ->class(CurrentVisitorsWidget::class)
+        ->arg('$view', new Reference('dashboard.views.widget'))
+        ->tag('dashboard.widget', [
+            'identifier' => 'fathom-current-visitors',
+            'groupNames' => 'fathom',
+            'title' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.currentVisitors.title',
+            'description' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.currentVisitors.description',
+            'iconIdentifier' => 'fathom-analytics-module',
+            'height' => 'small',
+            'width' => 'small',
+        ]);
+
+    $services->set('dashboard.widget.fathom_visitor_trend')
+        ->class(VisitorTrendWidget::class)
+        ->tag('dashboard.widget', [
+            'identifier' => 'fathom-visitor-trend',
+            'groupNames' => 'fathom',
+            'title' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.visitorTrend.title',
+            'description' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.visitorTrend.description',
+            'iconIdentifier' => 'fathom-analytics-module',
+            'height' => 'medium',
+            'width' => 'medium',
+        ]);
+
+    $services->set('dashboard.widget.fathom_top_pages')
+        ->class(TopPagesWidget::class)
+        ->arg('$view', new Reference('dashboard.views.widget'))
+        ->tag('dashboard.widget', [
+            'identifier' => 'fathom-top-pages',
+            'groupNames' => 'fathom',
+            'title' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.topPages.title',
+            'description' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.topPages.description',
+            'iconIdentifier' => 'fathom-analytics-module',
+            'height' => 'medium',
+            'width' => 'medium',
+        ]);
+
+    $services->set('dashboard.widget.fathom_top_referrers')
+        ->class(TopReferrersWidget::class)
+        ->arg('$view', new Reference('dashboard.views.widget'))
+        ->tag('dashboard.widget', [
+            'identifier' => 'fathom-top-referrers',
+            'groupNames' => 'fathom',
+            'title' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.topReferrers.title',
+            'description' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.topReferrers.description',
+            'iconIdentifier' => 'fathom-analytics-module',
+            'height' => 'medium',
+            'width' => 'medium',
+        ]);
+};

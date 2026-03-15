@@ -1,0 +1,24 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Moselwal\FathomAnalytics\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
+
+  Moselwal\FathomAnalytics\Controller\Backend\DashboardController:
+    public: true
+
+  cache.fathomanalytics_api:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory:
+      - '@TYPO3\CMS\Core\Cache\CacheManager'
+      - 'getCache'
+    arguments:
+      - 'fathomanalytics_api'
+
+  Moselwal\FathomAnalytics\Service\AnalyticsService:
+    arguments:
+      $cache: '@cache.fathomanalytics_api'

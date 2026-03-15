@@ -1,0 +1,8 @@
+# cat=basic/enable/10; type=string; label=API Key:The global Fathom Analytics API key (Bearer token). Get yours at https://app.usefathom.com/api
+apiKey =
+
+# cat=basic/enable/20; type=int+; label=Cache Duration:Cache duration for API responses in seconds (default: 300)
+cacheDuration = 300
+
+# cat=basic/enable/30; type=options[Today=today,Last 7 days=7d,Last 30 days=30d,Last month=month,Last 90 days=90d,Last year=year]; label=Default Date Range:Default date range for dashboard views
+defaultDateRange = 30d

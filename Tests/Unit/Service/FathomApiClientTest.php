@@ -1,0 +1,226 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Moselwal\FathomAnalytics\Tests\Unit\Service;
+
+use GuzzleHttp\Psr7\Response;
+use Moselwal\FathomAnalytics\Domain\Model\AggregationRequest;
+use Moselwal\FathomAnalytics\Exception\FathomApiException;
+use Moselwal\FathomAnalytics\Exception\FathomAuthenticationException;
+use Moselwal\FathomAnalytics\Exception\FathomRateLimitException;
+use Moselwal\FathomAnalytics\Service\FathomApiClient;
+use PHPUnit\Framework\TestCase;
+use TYPO3\CMS\Core\Http\RequestFactory;
+
+class FathomApiClientTest extends TestCase
+{
+    /**
+     * @test
+     */
+    public function testConnectionReturnsSuccessOnValidKey(): void
+    {
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn(
+            new Response(200, [], '{"status":"authenticated"}')
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $result = $client->testConnection('valid-key');
+
+        self::assertTrue($result->isSuccess());
+    }
+
+    /**
+     * @test
+     */
+    public function testConnectionReturnsFailureOnInvalidKey(): void
+    {
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn(
+            new Response(401, [], '{"error":"Invalid token"}')
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $result = $client->testConnection('invalid-key');
+
+        self::assertFalse($result->isSuccess());
+        self::assertSame('Invalid API key', $result->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function getAggregationParsesResponseCorrectly(): void
+    {
+        $responseBody = json_encode([
+            ['visits' => 100, 'uniques' => 75, 'pageviews' => 200, 'avg_duration' => 45.5, 'bounce_rate' => 0.35]
+        ]);
+
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn(
+            new Response(200, [], $responseBody)
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $request = new AggregationRequest(
+            new \DateTimeImmutable('2026-03-01'),
+            new \DateTimeImmutable('2026-03-15')
+        );
+
+        $result = $client->getAggregation('SITE123', $request, 'api-key');
+
+        self::assertSame(100, $result->getVisits());
+        self::assertSame(75, $result->getUniques());
+        self::assertSame(200, $result->getPageviews());
+        self::assertEqualsWithDelta(45.5, $result->getAvgDuration(), 0.01);
+        self::assertEqualsWithDelta(0.35, $result->getBounceRate(), 0.01);
+    }
+
+    /**
+     * @test
+     */
+    public function getAggregationThrowsOnRateLimit(): void
+    {
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn(
+            new Response(429, [], '{"error":"Rate limit exceeded"}')
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $request = new AggregationRequest(
+            new \DateTimeImmutable('2026-03-01'),
+            new \DateTimeImmutable('2026-03-15')
+        );
+
+        $this->expectException(FathomRateLimitException::class);
+        $client->getAggregation('SITE123', $request, 'api-key');
+    }
+
+    /**
+     * @test
+     */
+    public function getAggregationThrowsOnAuthenticationError(): void
+    {
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn(
+            new Response(401, [], '{"error":"Invalid token"}')
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $request = new AggregationRequest(
+            new \DateTimeImmutable('2026-03-01'),
+            new \DateTimeImmutable('2026-03-15')
+        );
+
+        $this->expectException(FathomAuthenticationException::class);
+        $client->getAggregation('SITE123', $request, 'api-key');
+    }
+
+    /**
+     * @test
+     */
+    public function getAggregationThrowsOnServerError(): void
+    {
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn(
+            new Response(500, [], '{"error":"Internal server error"}')
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $request = new AggregationRequest(
+            new \DateTimeImmutable('2026-03-01'),
+            new \DateTimeImmutable('2026-03-15')
+        );
+
+        $this->expectException(FathomApiException::class);
+        $client->getAggregation('SITE123', $request, 'api-key');
+    }
+
+    /**
+     * @test
+     */
+    public function getCurrentVisitorsParsesSimpleResponse(): void
+    {
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn(
+            new Response(200, [], '{"total":42}')
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $result = $client->getCurrentVisitors('SITE123', 'api-key');
+
+        self::assertSame(42, $result->getTotal());
+    }
+
+    /**
+     * @test
+     */
+    public function getCurrentVisitorsParsesDetailedResponse(): void
+    {
+        $responseBody = json_encode([
+            'total' => 42,
+            'content' => [['pathname' => '/blog', 'total' => 10]],
+            'referrers' => [['referrer_hostname' => 'google.com', 'total' => 5]],
+        ]);
+
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn(
+            new Response(200, [], $responseBody)
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $result = $client->getCurrentVisitors('SITE123', 'api-key', true);
+
+        self::assertSame(42, $result->getTotal());
+        self::assertCount(1, $result->getTopPages());
+        self::assertCount(1, $result->getTopReferrers());
+    }
+
+    /**
+     * @test
+     */
+    public function getEventsReturnsEventList(): void
+    {
+        $responseBody = json_encode([
+            'data' => [
+                ['id' => 'evt1', 'name' => 'Newsletter Signup', 'created_at' => '2026-01-01T00:00:00Z'],
+                ['id' => 'evt2', 'name' => 'Purchase', 'created_at' => '2026-02-01T00:00:00Z'],
+            ],
+            'has_more' => false,
+        ]);
+
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn(
+            new Response(200, [], $responseBody)
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $events = $client->getEvents('SITE123', 'api-key');
+
+        self::assertCount(2, $events);
+        self::assertSame('Newsletter Signup', $events[0]->getName());
+        self::assertSame('Purchase', $events[1]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function getAggregationThrowsOnTimeout(): void
+    {
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willThrowException(
+            new \RuntimeException('Connection timed out')
+        );
+
+        $client = new FathomApiClient($requestFactory);
+        $request = new AggregationRequest(
+            new \DateTimeImmutable('2026-03-01'),
+            new \DateTimeImmutable('2026-03-15')
+        );
+
+        $this->expectException(FathomApiException::class);
+        $this->expectExceptionMessage('Request failed: Connection timed out');
+        $client->getAggregation('SITE123', $request, 'api-key');
+    }
+}

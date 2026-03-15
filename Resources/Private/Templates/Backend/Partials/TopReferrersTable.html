@@ -1,0 +1,30 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:if condition="{topReferrers}">
+    <div class="card mb-4">
+        <div class="card-header">
+            <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.topReferrers.title" />
+        </div>
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:table.referrer" /></th>
+                        <th class="text-end"><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:table.visits" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{topReferrers}" as="referrer">
+                        <tr>
+                            <td>{referrer.referrer_source}</td>
+                            <td class="text-end">{referrer.visits}</td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</f:if>
+
+</html>

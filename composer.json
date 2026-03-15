@@ -1,0 +1,41 @@
+{
+    "name": "moselwal/fathom-analytics",
+    "type": "typo3-cms-extension",
+    "description": "Fathom Analytics Integration for TYPO3 CMS - Backend Dashboard, Page Analytics, Frontend Tracking",
+    "license": "GPL-2.0-or-later",
+    "keywords": [
+        "TYPO3",
+        "analytics",
+        "fathom",
+        "privacy",
+        "dashboard"
+    ],
+    "require": {
+        "php": ">=7.4",
+        "typo3/cms-core": "^11.5 || ^12.4 || ^13.4 || ^14.0",
+        "typo3/cms-backend": "^11.5 || ^12.4 || ^13.4 || ^14.0",
+        "typo3/cms-fluid": "^11.5 || ^12.4 || ^13.4 || ^14.0",
+        "typo3/cms-extbase": "^11.5 || ^12.4 || ^13.4 || ^14.0"
+    },
+    "require-dev": {
+        "typo3/testing-framework": "^7.0 || ^8.0"
+    },
+    "suggest": {
+        "typo3/cms-dashboard": "Required for TYPO3 Dashboard widgets (current visitors, visitor trend, top pages, top referrers)"
+    },
+    "autoload": {
+        "psr-4": {
+            "Moselwal\\FathomAnalytics\\": "Classes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Moselwal\\FathomAnalytics\\Tests\\": "Tests/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "fathom_analytics"
+        }
+    }
+}
