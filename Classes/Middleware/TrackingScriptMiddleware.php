@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 
 class TrackingScriptMiddleware implements MiddlewareInterface
 {
@@ -28,7 +29,7 @@ class TrackingScriptMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $site = $request->getAttribute('site');
-        if ($site === null) {
+        if ($site === null || $site instanceof NullSite) {
             return $handler->handle($request);
         }
 

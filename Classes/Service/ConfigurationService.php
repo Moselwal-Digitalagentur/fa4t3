@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Moselwal\FathomAnalytics\Service;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 
 class ConfigurationService
@@ -36,12 +37,18 @@ class ConfigurationService
 
     public function getSiteId(SiteInterface $site): string
     {
+        if ($site instanceof NullSite) {
+            return '';
+        }
         $config = $site->getConfiguration();
         return isset($config['fathomSiteId']) ? (string)$config['fathomSiteId'] : '';
     }
 
     public function getApiKeyForSite(SiteInterface $site): string
     {
+        if ($site instanceof NullSite) {
+            return $this->getGlobalApiKey();
+        }
         $config = $site->getConfiguration();
         $siteKey = isset($config['fathomApiKeyOverride']) ? (string)$config['fathomApiKeyOverride'] : '';
 
@@ -64,6 +71,16 @@ class ConfigurationService
      */
     public function getTrackingConfig(SiteInterface $site): array
     {
+        if ($site instanceof NullSite) {
+            return [
+                'enabled' => false,
+                'customDomain' => '',
+                'excludedPages' => '',
+                'consentCategory' => '',
+                'spaMode' => '',
+                'honorDnt' => false,
+            ];
+        }
         $config = $site->getConfiguration();
 
         return [
