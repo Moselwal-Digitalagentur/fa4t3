@@ -33,7 +33,7 @@ class CurrentVisitorsWidget implements WidgetInterface
         AnalyticsService $analyticsService,
         ConfigurationService $configurationService,
         SiteFinder $siteFinder,
-        StandaloneView $view = null
+        ?StandaloneView $view = null
     ) {
         $this->configuration = $configuration;
         $this->analyticsService = $analyticsService;
