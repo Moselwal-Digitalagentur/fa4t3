@@ -44,9 +44,12 @@ class DashboardController extends ActionController
     {
         $site = $this->resolveCurrentSite();
 
-        if ($site === null || !$this->configurationService->hasGlobalApiKey()) {
+        $hasApiKey = $this->configurationService->hasGlobalApiKey()
+            || ($site !== null && $this->configurationService->getApiKeyForSite($site) !== '');
+
+        if ($site === null || !$hasApiKey) {
             $this->view->assign('showSetup', true);
-            $this->view->assign('hasApiKey', $this->configurationService->hasGlobalApiKey());
+            $this->view->assign('hasApiKey', $hasApiKey);
             return $this->htmlResponse();
         }
 
