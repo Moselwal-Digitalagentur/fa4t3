@@ -39,9 +39,9 @@
                 <f:render partial="Backend/KpiCard"
                           arguments="{label: 'kpi.pageviews', value: dashboardData.aggregation.pageviews}" />
                 <f:render partial="Backend/KpiCard"
-                          arguments="{label: 'kpi.avgDuration', value: '{f:format.number(number: dashboardData.aggregation.avgDuration, decimals: 1)}s'}" />
+                          arguments="{label: 'kpi.avgDuration', value: '{dashboardData.aggregation.avgDuration -> f:format.number(decimals: 1)}s'}" />
                 <f:render partial="Backend/KpiCard"
-                          arguments="{label: 'kpi.bounceRate', value: '{f:format.number(number: dashboardData.aggregation.bounceRate, decimals: 1, decimalSeparator: \".\", thousandsSeparator: \",\")}%'}" />
+                          arguments="{label: 'kpi.bounceRate', value: '{dashboardData.aggregation.bounceRate -> f:format.number(decimals: 1, decimalSeparator: \".\", thousandsSeparator: \",\")}%'}" />
                 <f:render partial="Backend/KpiCard"
                           arguments="{label: 'kpi.currentVisitors', value: dashboardData.currentVisitors.total}" />
             </div>
