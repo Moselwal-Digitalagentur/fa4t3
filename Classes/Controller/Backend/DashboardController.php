@@ -9,6 +9,7 @@ use Moselwal\FathomAnalytics\Service\AnalyticsService;
 use Moselwal\FathomAnalytics\Service\ConfigurationService;
 use Moselwal\FathomAnalytics\Service\FathomApiClient;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -21,27 +22,35 @@ final class DashboardController extends ActionController
         private readonly ConfigurationService $configurationService,
         private readonly FathomApiClient $apiClient,
         private readonly SiteFinder $siteFinder,
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {}
 
     public function indexAction(): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+
         $site = $this->resolveCurrentSite();
 
         $hasApiKey = $this->configurationService->hasGlobalApiKey()
             || ($site !== null && $this->configurationService->getApiKeyForSite($site) !== '');
 
         if ($site === null || !$hasApiKey) {
-            $this->view->assign('showSetup', true);
-            $this->view->assign('hasApiKey', $hasApiKey);
-            return $this->htmlResponse();
+            $moduleTemplate->assignMultiple([
+                'showSetup' => true,
+                'hasApiKey' => $hasApiKey,
+            ]);
+            return $moduleTemplate->renderResponse('Backend/Dashboard/Index');
         }
 
         $siteId = $this->configurationService->getSiteId($site);
         if ($siteId === '') {
-            $this->view->assign('showSetup', true);
-            $this->view->assign('hasApiKey', true);
-            $this->view->assign('noSiteId', true);
-            return $this->htmlResponse();
+            $moduleTemplate->assignMultiple([
+                'showSetup' => true,
+                'hasApiKey' => true,
+                'noSiteId' => true,
+            ]);
+            return $moduleTemplate->renderResponse('Backend/Dashboard/Index');
         }
 
         $apiKey = $this->configurationService->getApiKeyForSite($site);
@@ -50,7 +59,7 @@ final class DashboardController extends ActionController
         $dashboardData = $this->analyticsService->getDashboardData($siteId, $dateRange, $apiKey);
         $eventData = $this->analyticsService->getEventOverview($siteId, $dateRange, $apiKey);
 
-        $this->view->assignMultiple([
+        $moduleTemplate->assignMultiple([
             'showSetup' => false,
             'dashboardData' => $dashboardData,
             'eventData' => $eventData,
@@ -59,7 +68,7 @@ final class DashboardController extends ActionController
             'errorMessage' => $dashboardData->getErrorMessage(),
         ]);
 
-        return $this->htmlResponse();
+        return $moduleTemplate->renderResponse('Backend/Dashboard/Index');
     }
 
     public function testConnectionAction(): ResponseInterface
@@ -86,19 +95,11 @@ final class DashboardController extends ActionController
 
         $result = $this->apiClient->testConnection($apiKey);
 
-        if ($result->isSuccess()) {
-            $this->addFlashMessage(
-                $result->getMessage(),
-                'Connection Test',
-                ContextualFeedbackSeverity::OK
-            );
-        } else {
-            $this->addFlashMessage(
-                $result->getMessage(),
-                'Connection Test',
-                ContextualFeedbackSeverity::ERROR
-            );
-        }
+        $this->addFlashMessage(
+            $result->getMessage(),
+            'Connection Test',
+            $result->isSuccess() ? ContextualFeedbackSeverity::OK : ContextualFeedbackSeverity::ERROR
+        );
 
         return $this->redirect('index');
     }
@@ -131,12 +132,10 @@ final class DashboardController extends ActionController
         $dateTo = $params['dateTo'] ?? null;
 
         if ($dateFrom !== null && $dateTo !== null) {
-            // Validate date format (Y-m-d only)
             if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateFrom) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateTo)) {
                 try {
                     $from = new \DateTimeImmutable($dateFrom);
                     $to = new \DateTimeImmutable($dateTo);
-                    // Enforce max 1 year range
                     $diffDays = (int)$from->diff($to)->days;
                     if ($diffDays > 0 && $diffDays <= 366) {
                         return DateRange::fromCustom($from, $to);

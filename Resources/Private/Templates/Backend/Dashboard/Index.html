@@ -1,73 +1,65 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-<f:layout name="Module" />
+<f:asset.css identifier="fathom-backend" href="EXT:fathom_analytics/Resources/Public/Css/backend.css" />
 
-<f:section name="Content">
-
-    <f:asset.css identifier="fathom-backend" href="EXT:fathom_analytics/Resources/Public/Css/backend.css" />
-
-    <f:flashMessages />
-
-    <f:if condition="{showSetup}">
-        <f:then>
-            <f:render partial="Backend/ErrorState" arguments="{hasApiKey: hasApiKey, noSiteId: noSiteId}" />
-        </f:then>
-        <f:else>
-            <f:if condition="{hasError}">
-                <div class="callout callout-warning">
-                    <div class="callout-body">
-                        <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.apiUnavailable" />
-                    </div>
-                </div>
-            </f:if>
-
-            <!-- Date Range Selector -->
-            <div class="fathom-date-range mb-3">
-                <div class="btn-group" role="group">
-                    <f:for each="{0: 'today', 1: '7d', 2: '30d', 3: 'month', 4: '90d', 5: 'year'}" as="range">
-                        <f:link.action action="index" arguments="{dateRange: range}"
-                                       class="btn btn-default btn-sm {f:if(condition: '{currentDateRange} == \'{range}\'', then: 'active')}">
-                            <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:dateRange.{range}" />
-                        </f:link.action>
-                    </f:for>
+<f:if condition="{showSetup}">
+    <f:then>
+        <f:render partial="Backend/ErrorState" arguments="{hasApiKey: hasApiKey, noSiteId: noSiteId}" />
+    </f:then>
+    <f:else>
+        <f:if condition="{hasError}">
+            <div class="callout callout-warning">
+                <div class="callout-body">
+                    <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.apiUnavailable" />
                 </div>
             </div>
+        </f:if>
 
-            <!-- KPI Cards -->
-            <div class="row mb-4">
-                <f:render partial="Backend/KpiCard"
-                          arguments="{label: 'kpi.visitors', value: dashboardData.aggregation.uniques}" />
-                <f:render partial="Backend/KpiCard"
-                          arguments="{label: 'kpi.pageviews', value: dashboardData.aggregation.pageviews}" />
-                <f:render partial="Backend/KpiCard"
-                          arguments="{label: 'kpi.avgDuration', value: '{dashboardData.aggregation.avgDuration -> f:format.number(decimals: 1)}s'}" />
-                <f:render partial="Backend/KpiCard"
-                          arguments="{label: 'kpi.bounceRate', value: '{dashboardData.aggregation.bounceRate -> f:format.number(decimals: 1, decimalSeparator: \".\", thousandsSeparator: \",\")}%'}" />
-                <f:render partial="Backend/KpiCard"
-                          arguments="{label: 'kpi.currentVisitors', value: dashboardData.currentVisitors.total}" />
+        <!-- Date Range Selector -->
+        <div class="fathom-date-range mb-3">
+            <div class="btn-group" role="group">
+                <f:for each="{0: 'today', 1: '7d', 2: '30d', 3: 'month', 4: '90d', 5: 'year'}" as="range">
+                    <f:link.action action="index" arguments="{dateRange: range}"
+                                   class="btn btn-default btn-sm {f:if(condition: '{currentDateRange} == \'{range}\'', then: 'active')}">
+                        <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:dateRange.{range}" />
+                    </f:link.action>
+                </f:for>
             </div>
+        </div>
 
-            <!-- Trend Chart -->
-            <f:render partial="Backend/TrendChart"
-                      arguments="{groupedData: dashboardData.aggregation.groupedData}" />
+        <!-- KPI Cards -->
+        <div class="row mb-4">
+            <f:render partial="Backend/KpiCard"
+                      arguments="{label: 'kpi.visitors', value: dashboardData.aggregation.uniques}" />
+            <f:render partial="Backend/KpiCard"
+                      arguments="{label: 'kpi.pageviews', value: dashboardData.aggregation.pageviews}" />
+            <f:render partial="Backend/KpiCard"
+                      arguments="{label: 'kpi.avgDuration', value: '{dashboardData.aggregation.avgDuration -> f:format.number(decimals: 1)}s'}" />
+            <f:render partial="Backend/KpiCard"
+                      arguments="{label: 'kpi.bounceRate', value: '{dashboardData.aggregation.bounceRate -> f:format.number(decimals: 1, decimalSeparator: \".\", thousandsSeparator: \",\")}%'}" />
+            <f:render partial="Backend/KpiCard"
+                      arguments="{label: 'kpi.currentVisitors', value: dashboardData.currentVisitors.total}" />
+        </div>
 
-            <!-- Top Pages -->
-            <f:render partial="Backend/TopPagesTable"
-                      arguments="{topPages: dashboardData.topPages}" />
+        <!-- Trend Chart -->
+        <f:render partial="Backend/TrendChart"
+                  arguments="{groupedData: dashboardData.aggregation.groupedData}" />
 
-            <!-- Top Referrers -->
-            <f:render partial="Backend/TopReferrersTable"
-                      arguments="{topReferrers: dashboardData.topReferrers}" />
+        <!-- Top Pages -->
+        <f:render partial="Backend/TopPagesTable"
+                  arguments="{topPages: dashboardData.topPages}" />
 
-            <!-- Events Overview -->
-            <f:if condition="{eventData}">
-                <f:render partial="Backend/EventsOverview"
-                          arguments="{events: eventData}" />
-            </f:if>
-        </f:else>
-    </f:if>
+        <!-- Top Referrers -->
+        <f:render partial="Backend/TopReferrersTable"
+                  arguments="{topReferrers: dashboardData.topReferrers}" />
 
-</f:section>
+        <!-- Events Overview -->
+        <f:if condition="{eventData}">
+            <f:render partial="Backend/EventsOverview"
+                      arguments="{events: eventData}" />
+        </f:if>
+    </f:else>
+</f:if>
 
 </html>
