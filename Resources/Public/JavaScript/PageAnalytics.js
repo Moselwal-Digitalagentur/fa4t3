@@ -1,109 +1,84 @@
 /**
  * Fathom Analytics - Page Module Analytics Panel
- * Loads page-specific analytics data via AJAX and displays in the page module.
+ * ES module for TYPO3 14 backend.
  */
-(function () {
-    'use strict';
 
-    function getPageUid() {
-        var urlParams = new URLSearchParams(window.location.search);
-        var id = urlParams.get('id');
-        if (id) {
-            return parseInt(id, 10);
-        }
-        return 0;
+class PageAnalyticsPanel {
+    constructor(targetElement, pageUid) {
+        this.target = targetElement;
+        this.pageUid = pageUid;
+        this.panel = this.createPanel();
+        this.target.insertBefore(this.panel, this.target.firstChild);
+        this.loadData();
     }
 
-    function escapeHtml(str) {
-        var div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
-    function createBadge(className, value, label) {
-        var span = document.createElement('span');
-        span.className = 'badge ' + className + ' me-2';
-        span.textContent = value + ' ' + label;
-        return span;
-    }
-
-    function createPanel() {
-        var panel = document.createElement('div');
+    createPanel() {
+        const panel = document.createElement('div');
         panel.id = 'fathom-page-analytics';
-        panel.className = 'callout callout-info mt-2 mb-2';
+        panel.className = 'callout callout-info mt-2 mb-3';
         panel.style.cssText = 'padding: 10px 15px; font-size: 0.9em;';
-
-        var spinner = document.createElement('span');
-        spinner.className = 'spinner-border spinner-border-sm';
-        spinner.setAttribute('role', 'status');
-        panel.appendChild(spinner);
-        panel.appendChild(document.createTextNode(' Loading analytics...'));
-
+        panel.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Loading analytics...';
         return panel;
     }
 
-    function renderData(panel, data) {
-        panel.textContent = '';
+    async loadData() {
+        const ajaxUrl = TYPO3?.settings?.ajaxUrls?.fathom_analytics_page_data
+            ?? '/typo3/ajax/fathom-analytics/page-data';
+        const separator = ajaxUrl.includes('?') ? '&' : '?';
+        const url = `${ajaxUrl}${separator}pageUid=${this.pageUid}`;
+
+        try {
+            const response = await fetch(url, {
+                credentials: 'same-origin',
+                headers: { 'Accept': 'application/json' },
+            });
+            const data = await response.json();
+            this.render(data);
+        } catch {
+            this.renderError();
+        }
+    }
+
+    render(data) {
+        this.panel.textContent = '';
 
         if (!data.success) {
-            var muted = document.createElement('span');
-            muted.className = 'text-muted';
-            muted.textContent = 'Analytics data temporarily unavailable.';
-            panel.appendChild(muted);
+            this.renderError();
             return;
         }
 
-        var d = data.data;
-        var label = document.createElement('strong');
+        const d = data.data;
+        const label = document.createElement('strong');
         label.textContent = 'Fathom Analytics (30d): ';
-        panel.appendChild(label);
-        panel.appendChild(createBadge('bg-primary', d.pageviews, 'Pageviews'));
-        panel.appendChild(createBadge('bg-secondary', d.uniques, 'Visitors'));
-        panel.appendChild(createBadge('bg-info', d.avgDuration + 's', 'Avg. Duration'));
-        panel.appendChild(createBadge('bg-warning', d.bounceRate + '%', 'Bounce Rate'));
-    }
+        this.panel.appendChild(label);
 
-    function renderError(panel) {
-        panel.textContent = '';
-        var muted = document.createElement('span');
-        muted.className = 'text-muted';
-        muted.textContent = 'Analytics data temporarily unavailable.';
-        panel.appendChild(muted);
-    }
+        const badges = [
+            { cls: 'bg-primary', value: d.pageviews, label: 'Pageviews' },
+            { cls: 'bg-secondary', value: d.uniques, label: 'Visitors' },
+            { cls: 'bg-info', value: `${d.avgDuration}s`, label: 'Avg. Duration' },
+            { cls: 'bg-warning text-dark', value: `${d.bounceRate}%`, label: 'Bounce Rate' },
+        ];
 
-    function init() {
-        var pageUid = getPageUid();
-        if (pageUid === 0) {
-            return;
+        for (const badge of badges) {
+            const span = document.createElement('span');
+            span.className = `badge ${badge.cls} me-2`;
+            span.textContent = `${badge.value} ${badge.label}`;
+            this.panel.appendChild(span);
         }
-
-        var moduleBody = document.querySelector('.module-body') || document.querySelector('#PageLayoutController');
-        if (!moduleBody) {
-            return;
-        }
-
-        var panel = createPanel();
-        moduleBody.insertBefore(panel, moduleBody.firstChild);
-
-        var ajaxUrl = TYPO3.settings.ajaxUrls && TYPO3.settings.ajaxUrls.fathom_analytics_page_data
-            ? TYPO3.settings.ajaxUrls.fathom_analytics_page_data
-            : '/typo3/ajax/fathom-analytics/page-data';
-
-        var separator = ajaxUrl.indexOf('?') === -1 ? '?' : '&';
-        var url = ajaxUrl + separator + 'pageUid=' + pageUid;
-
-        fetch(url, {
-            credentials: 'same-origin',
-            headers: { 'Accept': 'application/json' }
-        })
-        .then(function (response) { return response.json(); })
-        .then(function (data) { renderData(panel, data); })
-        .catch(function () { renderError(panel); });
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
+    renderError() {
+        this.panel.innerHTML = '<span class="text-body-secondary">Analytics data temporarily unavailable.</span>';
     }
-})();
+}
+
+// Auto-initialize when imported
+const urlParams = new URLSearchParams(window.location.search);
+const pageUid = parseInt(urlParams.get('id') ?? '0', 10);
+
+if (pageUid > 0) {
+    const moduleBody = document.querySelector('.module-body') ?? document.querySelector('.t3js-module-body');
+    if (moduleBody) {
+        new PageAnalyticsPanel(moduleBody, pageUid);
+    }
+}
