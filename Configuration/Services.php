@@ -11,28 +11,27 @@ use Moselwal\FathomAnalytics\Widgets\VisitorTrendWidget;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 return static function (ContainerConfigurator $containerConfigurator, ContainerBuilder $containerBuilder): void {
-    // Only register dashboard widgets if typo3/cms-dashboard is installed
     if (!interface_exists(\TYPO3\CMS\Dashboard\Widgets\WidgetInterface::class)) {
         return;
     }
 
     $services = $containerConfigurator->services();
 
-    // Shared widget dependencies
     $analyticsRef = new Reference(AnalyticsService::class);
     $configRef = new Reference(ConfigurationService::class);
     $siteFinderRef = new Reference(SiteFinder::class);
-    $viewRef = new Reference('dashboard.views.widget');
+    $viewFactoryRef = new Reference(BackendViewFactory::class);
 
     $services->set('dashboard.widget.fathom_current_visitors')
         ->class(CurrentVisitorsWidget::class)
+        ->arg('$backendViewFactory', $viewFactoryRef)
         ->arg('$analyticsService', $analyticsRef)
         ->arg('$configurationService', $configRef)
         ->arg('$siteFinder', $siteFinderRef)
-        ->arg('$view', $viewRef)
         ->tag('dashboard.widget', [
             'identifier' => 'fathom-current-visitors',
             'groupNames' => 'fathom',
@@ -60,10 +59,10 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
 
     $services->set('dashboard.widget.fathom_top_pages')
         ->class(TopPagesWidget::class)
+        ->arg('$backendViewFactory', $viewFactoryRef)
         ->arg('$analyticsService', $analyticsRef)
         ->arg('$configurationService', $configRef)
         ->arg('$siteFinder', $siteFinderRef)
-        ->arg('$view', $viewRef)
         ->tag('dashboard.widget', [
             'identifier' => 'fathom-top-pages',
             'groupNames' => 'fathom',
@@ -76,10 +75,10 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
 
     $services->set('dashboard.widget.fathom_top_referrers')
         ->class(TopReferrersWidget::class)
+        ->arg('$backendViewFactory', $viewFactoryRef)
         ->arg('$analyticsService', $analyticsRef)
         ->arg('$configurationService', $configRef)
         ->arg('$siteFinder', $siteFinderRef)
-        ->arg('$view', $viewRef)
         ->tag('dashboard.widget', [
             'identifier' => 'fathom-top-referrers',
             'groupNames' => 'fathom',

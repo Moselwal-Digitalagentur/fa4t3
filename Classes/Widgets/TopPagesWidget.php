@@ -7,20 +7,29 @@ namespace Moselwal\FathomAnalytics\Widgets;
 use Moselwal\FathomAnalytics\Domain\Model\DateRange;
 use Moselwal\FathomAnalytics\Service\AnalyticsService;
 use Moselwal\FathomAnalytics\Service\ConfigurationService;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
-final class TopPagesWidget implements WidgetInterface
+final class TopPagesWidget implements WidgetInterface, RequestAwareWidgetInterface
 {
+    private ServerRequestInterface $request;
+
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
+        private readonly BackendViewFactory $backendViewFactory,
         private readonly AnalyticsService $analyticsService,
         private readonly ConfigurationService $configurationService,
         private readonly SiteFinder $siteFinder,
-        private readonly StandaloneView $view,
     ) {}
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
 
     public function renderWidgetContent(): string
     {
@@ -40,12 +49,12 @@ final class TopPagesWidget implements WidgetInterface
             break;
         }
 
-        $this->view->setTemplatePathAndFilename(
-            'EXT:fathom_analytics/Resources/Private/Templates/Widgets/TopPages.html'
-        );
-        $this->view->assign('topPages', $topPages);
-        $this->view->assign('configuration', $this->configuration);
-        return $this->view->render();
+        $view = $this->backendViewFactory->create($this->request);
+        $view->assignMultiple([
+            'topPages' => $topPages,
+            'configuration' => $this->configuration,
+        ]);
+        return $view->render('Widget/TopPages');
     }
 
     public function getOptions(): array
