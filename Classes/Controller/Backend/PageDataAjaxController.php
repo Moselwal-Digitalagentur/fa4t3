@@ -38,7 +38,15 @@ final readonly class PageDataAjaxController
         }
 
         if (!$this->configurationService->isConfigured($site)) {
-            return new JsonResponse(['success' => false, 'error' => 'Extension not configured']);
+            return new JsonResponse([
+                'success' => false,
+                'error' => 'Extension not configured',
+                'debug' => [
+                    'siteIdentifier' => $site->getIdentifier(),
+                    'hasApiKey' => $this->configurationService->getApiKeyForSite($site) !== '',
+                    'hasSiteId' => $this->configurationService->getSiteId($site) !== '',
+                ],
+            ]);
         }
 
         $siteId = $this->configurationService->getSiteId($site);
