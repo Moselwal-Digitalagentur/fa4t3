@@ -7,7 +7,6 @@ use Moselwal\FathomAnalytics\Service\ConfigurationService;
 use Moselwal\FathomAnalytics\Widgets\CurrentVisitorsWidget;
 use Moselwal\FathomAnalytics\Widgets\TopPagesWidget;
 use Moselwal\FathomAnalytics\Widgets\TopReferrersWidget;
-use Moselwal\FathomAnalytics\Widgets\VisitorTrendWidget;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
@@ -40,21 +39,6 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             'iconIdentifier' => 'fathom-analytics-module',
             'height' => 'small',
             'width' => 'small',
-        ]);
-
-    $services->set('dashboard.widget.fathom_visitor_trend')
-        ->class(VisitorTrendWidget::class)
-        ->arg('$analyticsService', $analyticsRef)
-        ->arg('$configurationService', $configRef)
-        ->arg('$siteFinder', $siteFinderRef)
-        ->tag('dashboard.widget', [
-            'identifier' => 'fathom-visitor-trend',
-            'groupNames' => 'fathom',
-            'title' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.visitorTrend.title',
-            'description' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:widget.visitorTrend.description',
-            'iconIdentifier' => 'fathom-analytics-module',
-            'height' => 'medium',
-            'width' => 'medium',
         ]);
 
     $services->set('dashboard.widget.fathom_top_pages')

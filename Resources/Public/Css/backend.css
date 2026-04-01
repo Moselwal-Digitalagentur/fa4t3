@@ -1,5 +1,28 @@
 /* Fathom Analytics Backend Module — ergaenzt TYPO3 Backend Bootstrap */
 
+/* Dashboard Container — 5px Aussenabstand */
+.fathom-dashboard {
+    padding: 5px;
+}
+
+.fathom-dashboard > * {
+    margin-bottom: 5px;
+}
+
+.fathom-dashboard .card {
+    margin-bottom: 5px;
+}
+
+.fathom-dashboard .row {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
+.fathom-dashboard .row > [class*="col"] {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 /* Date Range Selector */
 .fathom-date-range .btn-group {
     display: flex;
@@ -19,17 +42,11 @@
     font-weight: 700;
 }
 
-/* Chart Canvas */
-#fathom-trend-chart {
-    width: 100%;
-    max-height: 300px;
-}
-
 /* Callout (TYPO3 Backend Pattern) */
 .callout {
     border-left: 4px solid;
     padding: 1rem 1.25rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 5px;
     border-radius: 0.25rem;
     background: var(--bs-tertiary-bg, #f8f9fa);
 }

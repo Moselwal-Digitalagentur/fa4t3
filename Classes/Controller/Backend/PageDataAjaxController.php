@@ -63,8 +63,8 @@ final readonly class PageDataAjaxController
                 'avgDuration' => round($result->getAvgDuration(), 1),
                 'bounceRate' => round($result->getBounceRate() * 100, 1),
             ],
-            'cached' => true,
-            'error' => $result->hasError() ? 'Analytics data temporarily unavailable' : null,
+            'pathname' => $pathname,
+            'error' => $result->hasError() ? ($result->getErrorMessage() ?? 'API unavailable') : null,
         ]);
     }
 }

@@ -43,7 +43,7 @@ class PageAnalyticsPanel {
         this.panel.textContent = '';
 
         if (!data.success) {
-            this.renderError();
+            this.renderError(data.error);
             return;
         }
 
@@ -67,8 +67,9 @@ class PageAnalyticsPanel {
         }
     }
 
-    renderError() {
-        this.panel.innerHTML = '<span class="text-body-secondary">Analytics data temporarily unavailable.</span>';
+    renderError(detail = '') {
+        const msg = detail || 'Analytics data temporarily unavailable.';
+        this.panel.innerHTML = `<span class="text-body-secondary">${msg}</span>`;
     }
 }
 
