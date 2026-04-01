@@ -179,7 +179,7 @@ final readonly class FathomApiClient
                 'timeout' => self::TIMEOUT,
             ]);
         } catch (\Exception $e) {
-            throw new FathomApiException('Fathom API request failed', 0, $e);
+            throw new FathomApiException('Fathom API request failed: ' . $e->getMessage(), 0, $e);
         }
 
         $statusCode = $response->getStatusCode();

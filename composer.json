@@ -27,9 +27,6 @@
         "moselwal/dev": "*",
         "typo3/testing-framework": "^9.0"
     },
-    "suggest": {
-        "typo3/cms-dashboard": "Required for TYPO3 Dashboard widgets (current visitors, visitor trend, top pages, top referrers)"
-    },
     "config": {
         "gitlab-domains": [
             "gitlab.moselwal.io"
