@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Moselwal\FathomAnalytics\Controller\Backend\DashboardController;
 
 return [
@@ -11,8 +13,13 @@ return [
         'labels' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_mod.xlf',
         'iconIdentifier' => 'fathom-analytics-module',
         'extensionName' => 'FathomAnalytics',
-        'controllerActions' => [
-            DashboardController::class => ['index', 'testConnection'],
+        'routes' => [
+            '_default' => [
+                'target' => DashboardController::class . '::indexAction',
+            ],
+            'testConnection' => [
+                'target' => DashboardController::class . '::testConnectionAction',
+            ],
         ],
     ],
 ];

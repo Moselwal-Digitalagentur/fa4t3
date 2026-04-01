@@ -1,13 +1,10 @@
-/* Fathom Analytics Backend Module Styles */
+/* Fathom Analytics Backend Module — ergaenzt TYPO3 Backend Bootstrap */
 
+/* Date Range Selector */
 .fathom-date-range .btn-group {
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem;
-}
-
-.fathom-date-range .btn-group .btn {
-    border-radius: 0.375rem;
 }
 
 .fathom-date-range .btn-group .btn.active {
@@ -16,119 +13,36 @@
     border-color: var(--bs-primary, #0078e6);
 }
 
-/* KPI Cards */
-.card {
-    border: 1px solid var(--bs-border-color, #dee2e6);
-    border-radius: 0.5rem;
-    background: var(--bs-body-bg, #fff);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
-.card-header {
-    padding: 0.75rem 1rem;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
-    background: var(--bs-light, #f8f9fa);
-}
-
-.card-body {
-    padding: 1rem;
-}
-
-.card-body .card-title {
-    margin-bottom: 0.25rem;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--bs-secondary-color, #6c757d);
-}
-
+/* KPI Cards — groessere Zahl */
 .card-body .card-text.h3 {
     font-size: 1.75rem;
     font-weight: 700;
-    margin: 0;
-    color: var(--bs-body-color, #212529);
 }
 
-/* Tables */
-.table-fit {
-    overflow-x: auto;
-}
-
-.table {
+/* Chart Canvas */
+#fathom-trend-chart {
     width: 100%;
-    margin-bottom: 0;
+    max-height: 300px;
 }
 
-.table th {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.table td {
-    font-size: 0.875rem;
-}
-
-/* Row / Grid for KPI */
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -0.5rem;
-}
-
-.row > [class*="col-"] {
-    padding: 0.5rem;
-}
-
-.col-sm-6 { flex: 0 0 50%; max-width: 50%; }
-.col-md-4 { flex: 0 0 33.333%; max-width: 33.333%; }
-.col-lg-2 { flex: 0 0 20%; max-width: 20%; }
-
-@media (max-width: 992px) {
-    .col-lg-2 { flex: 0 0 33.333%; max-width: 33.333%; }
-}
-
-@media (max-width: 768px) {
-    .col-md-4 { flex: 0 0 50%; max-width: 50%; }
-    .col-lg-2 { flex: 0 0 50%; max-width: 50%; }
-}
-
-/* Spacing helpers */
-.mb-3 { margin-bottom: 1rem; }
-.mb-4 { margin-bottom: 1.5rem; }
-.mt-3 { margin-top: 1rem; }
-.text-end { text-align: right; }
-.text-center { text-align: center; }
-.text-muted { color: var(--bs-secondary-color, #6c757d); }
-.small { font-size: 0.8125rem; }
-
-/* Callout (TYPO3 Backend pattern) */
+/* Callout (TYPO3 Backend Pattern) */
 .callout {
     border-left: 4px solid;
     padding: 1rem 1.25rem;
     margin-bottom: 1.5rem;
     border-radius: 0.25rem;
-    background: var(--bs-light, #f8f9fa);
+    background: var(--bs-tertiary-bg, #f8f9fa);
 }
 
-.callout-info { border-left-color: var(--bs-info, #0dcaf0); }
-.callout-warning { border-left-color: var(--bs-warning, #ffc107); }
+.callout-info {
+    border-left-color: var(--bs-info, #0dcaf0);
+}
+
+.callout-warning {
+    border-left-color: var(--bs-warning, #ffc107);
+}
 
 .callout-title {
     font-weight: 600;
     margin-bottom: 0.5rem;
-    font-size: 1rem;
-}
-
-.callout-body {
-    font-size: 0.875rem;
-    color: var(--bs-body-color, #212529);
-}
-
-/* Chart */
-#fathom-trend-chart {
-    width: 100%;
-    max-height: 300px;
 }

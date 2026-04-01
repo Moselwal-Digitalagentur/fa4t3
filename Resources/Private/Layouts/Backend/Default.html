@@ -1,15 +1,12 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
 <f:be.pageRenderer
     includeCssFiles="{0: 'EXT:fathom_analytics/Resources/Public/Css/backend.css'}"
 />
 
-<div class="module" data-module-name="fathomanalytics">
-    <div class="module-body" style="padding: 1.5rem;">
-        <f:render section="Content" />
-    </div>
+<div class="module-body p-3">
+    <f:render section="Content" />
 </div>
 
 </html>
