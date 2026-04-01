@@ -129,6 +129,9 @@
             <trans-unit id="page.analytics.unavailable" resname="page.analytics.unavailable">
                 <source>Analytics data temporarily unavailable.</source>
             </trans-unit>
+            <trans-unit id="widget_group.fathom" resname="widget_group.fathom">
+                <source>Fathom Analytics</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

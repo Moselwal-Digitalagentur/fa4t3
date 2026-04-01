@@ -73,7 +73,7 @@ final readonly class AggregationRequest
             dateFrom: $this->dateFrom,
             dateTo: $this->dateTo,
             timezone: $this->timezone,
-            dateGrouping: $this->dateGrouping,
+            dateGrouping: null,
             fieldGrouping: $fieldGrouping,
             filters: $this->filters,
             sortBy: $this->sortBy,

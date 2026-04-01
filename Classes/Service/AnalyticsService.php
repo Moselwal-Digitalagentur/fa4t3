@@ -40,7 +40,7 @@ final readonly class AnalyticsService
                 ->withLimit(10);
             $topPagesData = $this->apiClient->getAggregation($siteId, $topPagesRequest, $apiKey);
 
-            $topReferrersRequest = $request->withFieldGrouping('referrer_source')
+            $topReferrersRequest = $request->withFieldGrouping('referrer_hostname')
                 ->withSortBy('visits:desc')
                 ->withLimit(10);
             $topReferrersData = $this->apiClient->getAggregation($siteId, $topReferrersRequest, $apiKey);

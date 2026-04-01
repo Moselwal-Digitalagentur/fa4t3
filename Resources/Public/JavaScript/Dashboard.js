@@ -32,7 +32,7 @@
 
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
-            labels.push(item.date || item.timestamp || '');
+            labels.push(item.timestamp || item.date || '');
             visitorsData.push(item.uniques || 0);
             pageviewsData.push(item.pageviews || 0);
         }
