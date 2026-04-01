@@ -43,7 +43,7 @@ class PageAnalyticsPanel {
         this.panel.textContent = '';
 
         if (!data.success) {
-            this.renderError(data.error, data.debug);
+            this.renderError(data.error);
             return;
         }
 
@@ -67,11 +67,8 @@ class PageAnalyticsPanel {
         }
     }
 
-    renderError(detail = '', debug = null) {
-        let msg = detail || 'Analytics data temporarily unavailable.';
-        if (debug) {
-            msg += ` [Site: ${debug.siteIdentifier ?? '?'}, API-Key: ${debug.hasApiKey ?? '?'}, Site-ID: ${debug.hasSiteId ?? '?'}]`;
-        }
+    renderError(detail = '') {
+        const msg = detail || 'Analytics data temporarily unavailable.';
         this.panel.innerHTML = `<span class="text-body-secondary">${msg}</span>`;
     }
 }
