@@ -12,36 +12,15 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class TopReferrersWidget implements WidgetInterface
+final class TopReferrersWidget implements WidgetInterface
 {
-    /** @var WidgetConfigurationInterface */
-    private $configuration;
-
-    /** @var AnalyticsService */
-    private $analyticsService;
-
-    /** @var ConfigurationService */
-    private $configurationService;
-
-    /** @var SiteFinder */
-    private $siteFinder;
-
-    /** @var StandaloneView|null */
-    private $view;
-
     public function __construct(
-        WidgetConfigurationInterface $configuration,
-        AnalyticsService $analyticsService,
-        ConfigurationService $configurationService,
-        SiteFinder $siteFinder,
-        ?StandaloneView $view = null
-    ) {
-        $this->configuration = $configuration;
-        $this->analyticsService = $analyticsService;
-        $this->configurationService = $configurationService;
-        $this->siteFinder = $siteFinder;
-        $this->view = $view;
-    }
+        private readonly WidgetConfigurationInterface $configuration,
+        private readonly AnalyticsService $analyticsService,
+        private readonly ConfigurationService $configurationService,
+        private readonly SiteFinder $siteFinder,
+        private readonly StandaloneView $view,
+    ) {}
 
     public function renderWidgetContent(): string
     {
@@ -61,16 +40,12 @@ class TopReferrersWidget implements WidgetInterface
             break;
         }
 
-        if ($this->view !== null) {
-            $this->view->setTemplatePathAndFilename(
-                'EXT:fathom_analytics/Resources/Private/Templates/Widgets/TopReferrers.html'
-            );
-            $this->view->assign('topReferrers', $topReferrers);
-            $this->view->assign('configuration', $this->configuration);
-            return $this->view->render();
-        }
-
-        return '';
+        $this->view->setTemplatePathAndFilename(
+            'EXT:fathom_analytics/Resources/Private/Templates/Widgets/TopReferrers.html'
+        );
+        $this->view->assign('topReferrers', $topReferrers);
+        $this->view->assign('configuration', $this->configuration);
+        return $this->view->render();
     }
 
     public function getOptions(): array

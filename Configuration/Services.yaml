@@ -11,6 +11,9 @@ services:
   Moselwal\FathomAnalytics\Controller\Backend\DashboardController:
     public: true
 
+  Moselwal\FathomAnalytics\Controller\Backend\PageDataAjaxController:
+    public: true
+
   cache.fathomanalytics_api:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory:

@@ -15,25 +15,21 @@ use Moselwal\FathomAnalytics\Exception\FathomAuthenticationException;
 use Moselwal\FathomAnalytics\Exception\FathomRateLimitException;
 use TYPO3\CMS\Core\Http\RequestFactory;
 
-class FathomApiClient
+final readonly class FathomApiClient
 {
     private const BASE_URL = 'https://api.usefathom.com';
     private const TIMEOUT = 10;
 
-    /** @var RequestFactory */
-    private $requestFactory;
-
-    public function __construct(RequestFactory $requestFactory)
-    {
-        $this->requestFactory = $requestFactory;
-    }
+    public function __construct(
+        private RequestFactory $requestFactory,
+    ) {}
 
     public function testConnection(string $apiKey): ConnectionResult
     {
         try {
-            $response = $this->request('GET', '/v1/account', $apiKey);
+            $this->request('GET', '/v1/account', $apiKey);
             return new ConnectionResult(true, 'Connection successful');
-        } catch (FathomAuthenticationException $e) {
+        } catch (FathomAuthenticationException) {
             return new ConnectionResult(false, 'Invalid API key');
         } catch (FathomApiException $e) {
             return new ConnectionResult(false, $e->getMessage());
@@ -163,15 +159,14 @@ class FathomApiClient
     }
 
     /**
-     * @return mixed
      * @throws FathomApiException
      * @throws FathomAuthenticationException
      * @throws FathomRateLimitException
      */
-    private function request(string $method, string $path, string $apiKey, array $queryParams = [])
+    private function request(string $method, string $path, string $apiKey, array $queryParams = []): mixed
     {
         $url = self::BASE_URL . $path;
-        if (!empty($queryParams)) {
+        if ($queryParams !== []) {
             $url .= '?' . http_build_query($queryParams);
         }
 
@@ -221,7 +216,7 @@ class FathomApiClient
 
     private function avgField(array $rows, string $field): float
     {
-        if (empty($rows)) {
+        if ($rows === []) {
             return 0.0;
         }
         $sum = 0.0;

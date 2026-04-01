@@ -15,17 +15,33 @@
                 <source>Current Visitors</source>
                 <target>Aktuelle Besucher</target>
             </trans-unit>
+            <trans-unit id="widget.currentVisitors.description" resname="widget.currentVisitors.description">
+                <source>Shows the current number of visitors on your website</source>
+                <target>Zeigt die Anzahl der aktuellen Besucher auf Ihrer Website</target>
+            </trans-unit>
             <trans-unit id="widget.visitorTrend.title" resname="widget.visitorTrend.title">
                 <source>Visitor Trend</source>
-                <target>Besuchertrend</target>
+                <target>Besucher-Trend</target>
+            </trans-unit>
+            <trans-unit id="widget.visitorTrend.description" resname="widget.visitorTrend.description">
+                <source>Shows visitor trends over the last 30 days</source>
+                <target>30-Tage Besucher- und Seitenaufruf-Trend</target>
             </trans-unit>
             <trans-unit id="widget.topPages.title" resname="widget.topPages.title">
                 <source>Top Pages</source>
-                <target>Top-Seiten</target>
+                <target>Top Seiten</target>
+            </trans-unit>
+            <trans-unit id="widget.topPages.description" resname="widget.topPages.description">
+                <source>Shows the most visited pages</source>
+                <target>Die meistbesuchten Seiten</target>
             </trans-unit>
             <trans-unit id="widget.topReferrers.title" resname="widget.topReferrers.title">
                 <source>Top Referrers</source>
-                <target>Top-Referrer</target>
+                <target>Top Referrer</target>
+            </trans-unit>
+            <trans-unit id="widget.topReferrers.description" resname="widget.topReferrers.description">
+                <source>Shows the top traffic sources</source>
+                <target>Die häufigsten Verweisquellen</target>
             </trans-unit>
             <trans-unit id="dateRange.today" resname="dateRange.today">
                 <source>Today</source>
@@ -33,23 +49,27 @@
             </trans-unit>
             <trans-unit id="dateRange.7d" resname="dateRange.7d">
                 <source>Last 7 days</source>
-                <target>Letzte 7 Tage</target>
+                <target>7 Tage</target>
             </trans-unit>
             <trans-unit id="dateRange.30d" resname="dateRange.30d">
                 <source>Last 30 days</source>
-                <target>Letzte 30 Tage</target>
+                <target>30 Tage</target>
             </trans-unit>
             <trans-unit id="dateRange.month" resname="dateRange.month">
                 <source>Last month</source>
-                <target>Letzter Monat</target>
+                <target>Monat</target>
             </trans-unit>
             <trans-unit id="dateRange.90d" resname="dateRange.90d">
                 <source>Last 90 days</source>
-                <target>Letzte 90 Tage</target>
+                <target>90 Tage</target>
             </trans-unit>
             <trans-unit id="dateRange.year" resname="dateRange.year">
                 <source>Last year</source>
-                <target>Letztes Jahr</target>
+                <target>Jahr</target>
+            </trans-unit>
+            <trans-unit id="dateRange.custom" resname="dateRange.custom">
+                <source>Custom range</source>
+                <target>Benutzerdefiniert</target>
             </trans-unit>
             <trans-unit id="kpi.visitors" resname="kpi.visitors">
                 <source>Visitors</source>
@@ -71,17 +91,61 @@
                 <source>Current Visitors</source>
                 <target>Aktuelle Besucher</target>
             </trans-unit>
+            <trans-unit id="table.page" resname="table.page">
+                <source>Page</source>
+                <target>Seite</target>
+            </trans-unit>
+            <trans-unit id="table.pageviews" resname="table.pageviews">
+                <source>Pageviews</source>
+                <target>Seitenaufrufe</target>
+            </trans-unit>
+            <trans-unit id="table.uniques" resname="table.uniques">
+                <source>Unique Visitors</source>
+                <target>Eindeutige Besucher</target>
+            </trans-unit>
+            <trans-unit id="table.referrer" resname="table.referrer">
+                <source>Referrer</source>
+                <target>Referrer</target>
+            </trans-unit>
+            <trans-unit id="table.visits" resname="table.visits">
+                <source>Visits</source>
+                <target>Besuche</target>
+            </trans-unit>
+            <trans-unit id="table.eventName" resname="table.eventName">
+                <source>Event</source>
+                <target>Event</target>
+            </trans-unit>
+            <trans-unit id="table.conversions" resname="table.conversions">
+                <source>Conversions</source>
+                <target>Konversionen</target>
+            </trans-unit>
+            <trans-unit id="table.uniqueConversions" resname="table.uniqueConversions">
+                <source>Unique Conversions</source>
+                <target>Einmalige Konversionen</target>
+            </trans-unit>
+            <trans-unit id="table.value" resname="table.value">
+                <source>Value</source>
+                <target>Wert</target>
+            </trans-unit>
             <trans-unit id="error.noApiKey" resname="error.noApiKey">
-                <source>No Fathom API key configured.</source>
-                <target>Kein Fathom API-Key konfiguriert. Bitte konfigurieren Sie die Extension in den Extension-Einstellungen.</target>
+                <source>No Fathom API key configured. Please configure the extension in the Extension Configuration.</source>
+                <target>Kein Fathom API-Schlüssel konfiguriert. Bitte konfigurieren Sie die Extension in den Extension-Einstellungen.</target>
             </trans-unit>
             <trans-unit id="error.noSiteId" resname="error.noSiteId">
-                <source>No Fathom Site ID configured for this site.</source>
+                <source>No Fathom Site ID configured for this site. Please configure it in the Site Configuration.</source>
                 <target>Keine Fathom Site-ID für diese Seite konfiguriert. Bitte in der Site-Konfiguration eintragen.</target>
+            </trans-unit>
+            <trans-unit id="error.invalidApiKey" resname="error.invalidApiKey">
+                <source>The configured Fathom API key is invalid. Please check the Extension Configuration.</source>
+                <target>Ungültiger API-Schlüssel. Bitte überprüfen Sie die Extension-Konfiguration.</target>
             </trans-unit>
             <trans-unit id="error.apiUnavailable" resname="error.apiUnavailable">
                 <source>Fathom Analytics API is currently unavailable. Showing cached data.</source>
                 <target>Fathom Analytics API ist derzeit nicht erreichbar. Es werden zwischengespeicherte Daten angezeigt.</target>
+            </trans-unit>
+            <trans-unit id="error.rateLimited" resname="error.rateLimited">
+                <source>Fathom API rate limit reached. Showing cached data.</source>
+                <target>API-Rate-Limit erreicht. Bitte später erneut versuchen.</target>
             </trans-unit>
             <trans-unit id="error.noData" resname="error.noData">
                 <source>No analytics data available yet.</source>

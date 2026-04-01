@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-03-15T00:00:00Z" product-name="fathom_analytics">
+        <header/>
+        <body>
+            <trans-unit id="siteconfig.fathom.tab" resname="siteconfig.fathom.tab">
+                <source>Fathom Analytics</source>
+                <target>Fathom Analytics</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomSiteId" resname="siteconfig.fathomSiteId">
+                <source>Fathom Site ID</source>
+                <target>Fathom Site-ID</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomApiKeyOverride" resname="siteconfig.fathomApiKeyOverride">
+                <source>API Key Override (optional)</source>
+                <target>API-Schlüssel (überschreibt global)</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomTrackingEnabled" resname="siteconfig.fathomTrackingEnabled">
+                <source>Enable Frontend Tracking</source>
+                <target>Frontend-Tracking aktivieren</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomCustomDomain" resname="siteconfig.fathomCustomDomain">
+                <source>Custom Tracking Domain</source>
+                <target>Eigene Tracking-Domain</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomExcludedPages" resname="siteconfig.fathomExcludedPages">
+                <source>Excluded Page UIDs (comma-separated)</source>
+                <target>Ausgeschlossene Seiten (UIDs, kommagetrennt)</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomConsentCategory" resname="siteconfig.fathomConsentCategory">
+                <source>Consent Category (empty = no consent required)</source>
+                <target>Consent-Kategorie (leer = kein Consent erforderlich)</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomSpaMode" resname="siteconfig.fathomSpaMode">
+                <source>SPA Tracking Mode</source>
+                <target>SPA-Modus</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomSpaMode.none" resname="siteconfig.fathomSpaMode.none">
+                <source>Disabled</source>
+                <target>Deaktiviert</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomSpaMode.auto" resname="siteconfig.fathomSpaMode.auto">
+                <source>Auto-detect</source>
+                <target>Automatisch</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomSpaMode.history" resname="siteconfig.fathomSpaMode.history">
+                <source>History API</source>
+                <target>History API</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomSpaMode.hash" resname="siteconfig.fathomSpaMode.hash">
+                <source>Hash-based</source>
+                <target>Hash-basiert</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomHonorDnt" resname="siteconfig.fathomHonorDnt">
+                <source>Honor Do Not Track</source>
+                <target>Do Not Track beachten</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

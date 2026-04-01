@@ -8,15 +8,11 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 
-class ConfigurationService
+final readonly class ConfigurationService
 {
-    /** @var ExtensionConfiguration */
-    private $extensionConfiguration;
-
-    public function __construct(ExtensionConfiguration $extensionConfiguration)
-    {
-        $this->extensionConfiguration = $extensionConfiguration;
-    }
+    public function __construct(
+        private ExtensionConfiguration $extensionConfiguration,
+    ) {}
 
     public function getGlobalApiKey(): string
     {
@@ -25,14 +21,12 @@ class ConfigurationService
 
     public function getCacheDuration(): int
     {
-        $duration = $this->getExtensionSetting('cacheDuration');
-        return $duration ? (int)$duration : 300;
+        return (int)($this->getExtensionSetting('cacheDuration') ?? 300);
     }
 
     public function getDefaultDateRange(): string
     {
-        $range = $this->getExtensionSetting('defaultDateRange');
-        return $range ? (string)$range : '30d';
+        return (string)($this->getExtensionSetting('defaultDateRange') ?? '30d');
     }
 
     public function getSiteId(SiteInterface $site): string
@@ -41,7 +35,7 @@ class ConfigurationService
             return '';
         }
         $config = $site->getConfiguration();
-        return isset($config['fathomSiteId']) ? (string)$config['fathomSiteId'] : '';
+        return (string)($config['fathomSiteId'] ?? '');
     }
 
     public function getApiKeyForSite(SiteInterface $site): string
@@ -50,7 +44,7 @@ class ConfigurationService
             return $this->getGlobalApiKey();
         }
         $config = $site->getConfiguration();
-        $siteKey = isset($config['fathomApiKeyOverride']) ? (string)$config['fathomApiKeyOverride'] : '';
+        $siteKey = (string)($config['fathomApiKeyOverride'] ?? '');
 
         if ($siteKey !== '') {
             return $siteKey;
@@ -84,12 +78,12 @@ class ConfigurationService
         $config = $site->getConfiguration();
 
         return [
-            'enabled' => !empty($config['fathomTrackingEnabled']),
-            'customDomain' => isset($config['fathomCustomDomain']) ? (string)$config['fathomCustomDomain'] : '',
-            'excludedPages' => isset($config['fathomExcludedPages']) ? (string)$config['fathomExcludedPages'] : '',
-            'consentCategory' => isset($config['fathomConsentCategory']) ? (string)$config['fathomConsentCategory'] : '',
-            'spaMode' => isset($config['fathomSpaMode']) ? (string)$config['fathomSpaMode'] : '',
-            'honorDnt' => !empty($config['fathomHonorDnt']),
+            'enabled' => (bool)($config['fathomTrackingEnabled'] ?? false),
+            'customDomain' => (string)($config['fathomCustomDomain'] ?? ''),
+            'excludedPages' => (string)($config['fathomExcludedPages'] ?? ''),
+            'consentCategory' => (string)($config['fathomConsentCategory'] ?? ''),
+            'spaMode' => (string)($config['fathomSpaMode'] ?? ''),
+            'honorDnt' => (bool)($config['fathomHonorDnt'] ?? false),
         ];
     }
 
@@ -103,14 +97,11 @@ class ConfigurationService
         return $this->getGlobalApiKey() !== '';
     }
 
-    /**
-     * @return mixed
-     */
-    private function getExtensionSetting(string $key)
+    private function getExtensionSetting(string $key): mixed
     {
         try {
             return $this->extensionConfiguration->get('fathom_analytics', $key);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return null;
         }
     }

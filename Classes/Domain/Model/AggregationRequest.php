@@ -4,59 +4,26 @@ declare(strict_types=1);
 
 namespace Moselwal\FathomAnalytics\Domain\Model;
 
-class AggregationRequest
+final readonly class AggregationRequest
 {
-    /** @var \DateTimeImmutable */
-    private $dateFrom;
-
-    /** @var \DateTimeImmutable */
-    private $dateTo;
-
-    /** @var string */
-    private $timezone;
-
-    /** @var string|null */
-    private $dateGrouping;
-
-    /** @var string|null */
-    private $fieldGrouping;
-
-    /** @var array|null */
-    private $filters;
-
-    /** @var string|null */
-    private $sortBy;
-
-    /** @var int|null */
-    private $limit;
-
     public function __construct(
-        \DateTimeImmutable $dateFrom,
-        \DateTimeImmutable $dateTo,
-        string $timezone = 'UTC',
-        string $dateGrouping = null,
-        string $fieldGrouping = null,
-        array $filters = null,
-        string $sortBy = null,
-        int $limit = null
-    ) {
-        $this->dateFrom = $dateFrom;
-        $this->dateTo = $dateTo;
-        $this->timezone = $timezone;
-        $this->dateGrouping = $dateGrouping;
-        $this->fieldGrouping = $fieldGrouping;
-        $this->filters = $filters;
-        $this->sortBy = $sortBy;
-        $this->limit = $limit;
-    }
+        private \DateTimeImmutable $dateFrom,
+        private \DateTimeImmutable $dateTo,
+        private string $timezone = 'UTC',
+        private ?string $dateGrouping = null,
+        private ?string $fieldGrouping = null,
+        private ?array $filters = null,
+        private ?string $sortBy = null,
+        private ?int $limit = null,
+    ) {}
 
     public static function fromDateRange(DateRange $range, string $timezone = 'UTC'): self
     {
         return new self(
-            $range->getFrom(),
-            $range->getTo(),
-            $timezone,
-            $range->getDateGrouping()
+            dateFrom: $range->getFrom(),
+            dateTo: $range->getTo(),
+            timezone: $timezone,
+            dateGrouping: $range->getDateGrouping(),
         );
     }
 
@@ -75,71 +42,84 @@ class AggregationRequest
         return $this->timezone;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getDateGrouping()
+    public function getDateGrouping(): ?string
     {
         return $this->dateGrouping;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getFieldGrouping()
+    public function getFieldGrouping(): ?string
     {
         return $this->fieldGrouping;
     }
 
-    /**
-     * @return array|null
-     */
-    public function getFilters()
+    public function getFilters(): ?array
     {
         return $this->filters;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSortBy()
+    public function getSortBy(): ?string
     {
         return $this->sortBy;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getLimit()
+    public function getLimit(): ?int
     {
         return $this->limit;
     }
 
     public function withFieldGrouping(string $fieldGrouping): self
     {
-        $clone = clone $this;
-        $clone->fieldGrouping = $fieldGrouping;
-        return $clone;
+        return new self(
+            dateFrom: $this->dateFrom,
+            dateTo: $this->dateTo,
+            timezone: $this->timezone,
+            dateGrouping: $this->dateGrouping,
+            fieldGrouping: $fieldGrouping,
+            filters: $this->filters,
+            sortBy: $this->sortBy,
+            limit: $this->limit,
+        );
     }
 
     public function withFilters(array $filters): self
     {
-        $clone = clone $this;
-        $clone->filters = $filters;
-        return $clone;
+        return new self(
+            dateFrom: $this->dateFrom,
+            dateTo: $this->dateTo,
+            timezone: $this->timezone,
+            dateGrouping: $this->dateGrouping,
+            fieldGrouping: $this->fieldGrouping,
+            filters: $filters,
+            sortBy: $this->sortBy,
+            limit: $this->limit,
+        );
     }
 
     public function withSortBy(string $sortBy): self
     {
-        $clone = clone $this;
-        $clone->sortBy = $sortBy;
-        return $clone;
+        return new self(
+            dateFrom: $this->dateFrom,
+            dateTo: $this->dateTo,
+            timezone: $this->timezone,
+            dateGrouping: $this->dateGrouping,
+            fieldGrouping: $this->fieldGrouping,
+            filters: $this->filters,
+            sortBy: $sortBy,
+            limit: $this->limit,
+        );
     }
 
     public function withLimit(int $limit): self
     {
-        $clone = clone $this;
-        $clone->limit = $limit;
-        return $clone;
+        return new self(
+            dateFrom: $this->dateFrom,
+            dateTo: $this->dateTo,
+            timezone: $this->timezone,
+            dateGrouping: $this->dateGrouping,
+            fieldGrouping: $this->fieldGrouping,
+            filters: $this->filters,
+            sortBy: $this->sortBy,
+            limit: $limit,
+        );
     }
 }

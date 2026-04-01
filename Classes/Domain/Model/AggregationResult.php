@@ -4,66 +4,37 @@ declare(strict_types=1);
 
 namespace Moselwal\FathomAnalytics\Domain\Model;
 
-class AggregationResult
+final readonly class AggregationResult
 {
-    /** @var int */
-    private $visits;
-
-    /** @var int */
-    private $uniques;
-
-    /** @var int */
-    private $pageviews;
-
-    /** @var float */
-    private $avgDuration;
-
-    /** @var float */
-    private $bounceRate;
-
-    /** @var \DateTimeImmutable */
-    private $dateFrom;
-
-    /** @var \DateTimeImmutable */
-    private $dateTo;
-
-    /** @var array|null */
-    private $groupedData;
-
-    /** @var bool */
-    private $hasError;
-
-    /** @var string|null */
-    private $errorMessage;
-
     public function __construct(
-        int $visits,
-        int $uniques,
-        int $pageviews,
-        float $avgDuration,
-        float $bounceRate,
-        \DateTimeImmutable $dateFrom,
-        \DateTimeImmutable $dateTo,
-        array $groupedData = null,
-        bool $hasError = false,
-        string $errorMessage = null
-    ) {
-        $this->visits = $visits;
-        $this->uniques = $uniques;
-        $this->pageviews = $pageviews;
-        $this->avgDuration = $avgDuration;
-        $this->bounceRate = $bounceRate;
-        $this->dateFrom = $dateFrom;
-        $this->dateTo = $dateTo;
-        $this->groupedData = $groupedData;
-        $this->hasError = $hasError;
-        $this->errorMessage = $errorMessage;
-    }
+        private int $visits,
+        private int $uniques,
+        private int $pageviews,
+        private float $avgDuration,
+        private float $bounceRate,
+        private \DateTimeImmutable $dateFrom,
+        private \DateTimeImmutable $dateTo,
+        private ?array $groupedData = null,
+        private bool $hasError = false,
+        private ?string $errorMessage = null,
+    ) {}
 
     public static function createError(string $message): self
     {
         $now = new \DateTimeImmutable();
-        return new self(0, 0, 0, 0.0, 0.0, $now, $now, null, true, $message);
+
+        return new self(
+            visits: 0,
+            uniques: 0,
+            pageviews: 0,
+            avgDuration: 0.0,
+            bounceRate: 0.0,
+            dateFrom: $now,
+            dateTo: $now,
+            groupedData: null,
+            hasError: true,
+            errorMessage: $message,
+        );
     }
 
     public function getVisits(): int
@@ -101,10 +72,7 @@ class AggregationResult
         return $this->dateTo;
     }
 
-    /**
-     * @return array|null
-     */
-    public function getGroupedData()
+    public function getGroupedData(): ?array
     {
         return $this->groupedData;
     }
@@ -114,10 +82,7 @@ class AggregationResult
         return $this->hasError;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getErrorMessage()
+    public function getErrorMessage(): ?string
     {
         return $this->errorMessage;
     }

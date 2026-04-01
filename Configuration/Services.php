@@ -25,17 +25,14 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
     $analyticsRef = new Reference(AnalyticsService::class);
     $configRef = new Reference(ConfigurationService::class);
     $siteFinderRef = new Reference(SiteFinder::class);
+    $viewRef = new Reference('dashboard.views.widget');
 
-    // Determine view service reference based on TYPO3 version
-    $viewServiceId = $containerBuilder->has('dashboard.views.widget')
-        ? 'dashboard.views.widget'
-        : null;
-
-    $currentVisitors = $services->set('dashboard.widget.fathom_current_visitors')
+    $services->set('dashboard.widget.fathom_current_visitors')
         ->class(CurrentVisitorsWidget::class)
         ->arg('$analyticsService', $analyticsRef)
         ->arg('$configurationService', $configRef)
         ->arg('$siteFinder', $siteFinderRef)
+        ->arg('$view', $viewRef)
         ->tag('dashboard.widget', [
             'identifier' => 'fathom-current-visitors',
             'groupNames' => 'fathom',
@@ -45,10 +42,6 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             'height' => 'small',
             'width' => 'small',
         ]);
-
-    if ($viewServiceId !== null) {
-        $currentVisitors->arg('$view', new Reference($viewServiceId));
-    }
 
     $services->set('dashboard.widget.fathom_visitor_trend')
         ->class(VisitorTrendWidget::class)
@@ -65,11 +58,12 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             'width' => 'medium',
         ]);
 
-    $topPages = $services->set('dashboard.widget.fathom_top_pages')
+    $services->set('dashboard.widget.fathom_top_pages')
         ->class(TopPagesWidget::class)
         ->arg('$analyticsService', $analyticsRef)
         ->arg('$configurationService', $configRef)
         ->arg('$siteFinder', $siteFinderRef)
+        ->arg('$view', $viewRef)
         ->tag('dashboard.widget', [
             'identifier' => 'fathom-top-pages',
             'groupNames' => 'fathom',
@@ -80,15 +74,12 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             'width' => 'medium',
         ]);
 
-    if ($viewServiceId !== null) {
-        $topPages->arg('$view', new Reference($viewServiceId));
-    }
-
-    $topReferrers = $services->set('dashboard.widget.fathom_top_referrers')
+    $services->set('dashboard.widget.fathom_top_referrers')
         ->class(TopReferrersWidget::class)
         ->arg('$analyticsService', $analyticsRef)
         ->arg('$configurationService', $configRef)
         ->arg('$siteFinder', $siteFinderRef)
+        ->arg('$view', $viewRef)
         ->tag('dashboard.widget', [
             'identifier' => 'fathom-top-referrers',
             'groupNames' => 'fathom',
@@ -98,8 +89,4 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             'height' => 'medium',
             'width' => 'medium',
         ]);
-
-    if ($viewServiceId !== null) {
-        $topReferrers->arg('$view', new Reference($viewServiceId));
-    }
 };

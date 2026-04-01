@@ -13,26 +13,13 @@ use Moselwal\FathomAnalytics\Domain\Model\EventAggregationResult;
 use Moselwal\FathomAnalytics\Exception\FathomApiException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
-class AnalyticsService
+final readonly class AnalyticsService
 {
-    /** @var FathomApiClient */
-    private $apiClient;
-
-    /** @var FrontendInterface */
-    private $cache;
-
-    /** @var ConfigurationService */
-    private $configurationService;
-
     public function __construct(
-        FathomApiClient $apiClient,
-        FrontendInterface $cache,
-        ConfigurationService $configurationService
-    ) {
-        $this->apiClient = $apiClient;
-        $this->cache = $cache;
-        $this->configurationService = $configurationService;
-    }
+        private FathomApiClient $apiClient,
+        private FrontendInterface $cache,
+        private ConfigurationService $configurationService,
+    ) {}
 
     public function getDashboardData(string $siteId, DateRange $range, string $apiKey): DashboardData
     {
@@ -124,7 +111,7 @@ class AnalyticsService
             return $results;
         } catch (FathomApiException $e) {
             $stale = $this->getStaleCache($cacheKey);
-            return $stale !== null ? $stale : [];
+            return $stale ?? [];
         }
     }
 
@@ -178,7 +165,7 @@ class AnalyticsService
             $this->cache->set($cacheKey, $count, ['fathom_site_' . $siteId], 60);
 
             return $count;
-        } catch (FathomApiException $e) {
+        } catch (FathomApiException) {
             return 0;
         }
     }
@@ -207,12 +194,8 @@ class AnalyticsService
 
     /**
      * Store a stale copy with a longer TTL for graceful degradation.
-     *
-     * @param string $cacheKey
-     * @param mixed $data
-     * @param string $siteId
      */
-    private function setStaleCache(string $cacheKey, $data, string $siteId): void
+    private function setStaleCache(string $cacheKey, mixed $data, string $siteId): void
     {
         $staleKey = $cacheKey . '_stale';
         // Stale cache lives 10x longer than normal cache
@@ -220,10 +203,7 @@ class AnalyticsService
         $this->cache->set($staleKey, $data, ['fathom_site_' . $siteId], $staleTtl);
     }
 
-    /**
-     * @return mixed|null
-     */
-    private function getStaleCache(string $cacheKey)
+    private function getStaleCache(string $cacheKey): mixed
     {
         $staleKey = $cacheKey . '_stale';
         $stale = $this->cache->get($staleKey);

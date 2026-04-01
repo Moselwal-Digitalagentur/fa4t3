@@ -4,70 +4,50 @@ declare(strict_types=1);
 
 namespace Moselwal\FathomAnalytics\Domain\Model;
 
-class DateRange
+final readonly class DateRange
 {
-    /** @var string */
-    private $preset;
-
-    /** @var \DateTimeImmutable */
-    private $from;
-
-    /** @var \DateTimeImmutable */
-    private $to;
-
-    /** @var string */
-    private $dateGrouping;
-
-    private function __construct(string $preset, \DateTimeImmutable $from, \DateTimeImmutable $to, string $dateGrouping)
-    {
-        $this->preset = $preset;
-        $this->from = $from;
-        $this->to = $to;
-        $this->dateGrouping = $dateGrouping;
-    }
+    private function __construct(
+        private string $preset,
+        private \DateTimeImmutable $from,
+        private \DateTimeImmutable $to,
+        private string $dateGrouping,
+    ) {}
 
     /**
      * @param string $preset One of: today, 7d, 30d, month, 90d, year, custom
-     * @return self
      */
     public static function fromPreset(string $preset): self
     {
         $now = new \DateTimeImmutable('now');
         $today = $now->setTime(0, 0, 0);
 
-        switch ($preset) {
-            case 'today':
-                return new self($preset, $today, $now, 'hour');
-            case '7d':
-                return new self($preset, $today->modify('-7 days'), $now, 'day');
-            case '30d':
-                return new self($preset, $today->modify('-30 days'), $now, 'day');
-            case 'month':
-                $firstOfMonth = $today->modify('first day of last month');
-                $lastOfMonth = $today->modify('last day of last month')->setTime(23, 59, 59);
-                return new self($preset, $firstOfMonth, $lastOfMonth, 'day');
-            case '90d':
-                return new self($preset, $today->modify('-90 days'), $now, 'month');
-            case 'year':
-                return new self($preset, $today->modify('-1 year'), $now, 'month');
-            default:
-                return new self('30d', $today->modify('-30 days'), $now, 'day');
-        }
+        return match ($preset) {
+            'today' => new self(preset: $preset, from: $today, to: $now, dateGrouping: 'hour'),
+            '7d' => new self(preset: $preset, from: $today->modify('-7 days'), to: $now, dateGrouping: 'day'),
+            '30d' => new self(preset: $preset, from: $today->modify('-30 days'), to: $now, dateGrouping: 'day'),
+            'month' => new self(
+                preset: $preset,
+                from: $today->modify('first day of last month'),
+                to: $today->modify('last day of last month')->setTime(23, 59, 59),
+                dateGrouping: 'day',
+            ),
+            '90d' => new self(preset: $preset, from: $today->modify('-90 days'), to: $now, dateGrouping: 'month'),
+            'year' => new self(preset: $preset, from: $today->modify('-1 year'), to: $now, dateGrouping: 'month'),
+            default => new self(preset: '30d', from: $today->modify('-30 days'), to: $now, dateGrouping: 'day'),
+        };
     }
 
     public static function fromCustom(\DateTimeImmutable $from, \DateTimeImmutable $to): self
     {
         $diffDays = (int)$from->diff($to)->days;
 
-        if ($diffDays <= 1) {
-            $grouping = 'hour';
-        } elseif ($diffDays <= 90) {
-            $grouping = 'day';
-        } else {
-            $grouping = 'month';
-        }
+        $grouping = match (true) {
+            $diffDays <= 1 => 'hour',
+            $diffDays <= 90 => 'day',
+            default => 'month',
+        };
 
-        return new self('custom', $from, $to, $grouping);
+        return new self(preset: 'custom', from: $from, to: $to, dateGrouping: $grouping);
     }
 
     public function getPreset(): string

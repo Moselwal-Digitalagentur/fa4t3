@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Moselwal\FathomAnalytics\Widgets;
 
-use Moselwal\FathomAnalytics\Domain\Model\AggregationRequest;
 use Moselwal\FathomAnalytics\Domain\Model\DateRange;
 use Moselwal\FathomAnalytics\Service\AnalyticsService;
 use Moselwal\FathomAnalytics\Service\ConfigurationService;
@@ -13,31 +12,14 @@ use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
-class VisitorTrendWidget implements WidgetInterface, ChartDataProviderInterface
+final class VisitorTrendWidget implements WidgetInterface, ChartDataProviderInterface
 {
-    /** @var WidgetConfigurationInterface */
-    private $configuration;
-
-    /** @var AnalyticsService */
-    private $analyticsService;
-
-    /** @var ConfigurationService */
-    private $configurationService;
-
-    /** @var SiteFinder */
-    private $siteFinder;
-
     public function __construct(
-        WidgetConfigurationInterface $configuration,
-        AnalyticsService $analyticsService,
-        ConfigurationService $configurationService,
-        SiteFinder $siteFinder
-    ) {
-        $this->configuration = $configuration;
-        $this->analyticsService = $analyticsService;
-        $this->configurationService = $configurationService;
-        $this->siteFinder = $siteFinder;
-    }
+        private readonly WidgetConfigurationInterface $configuration,
+        private readonly AnalyticsService $analyticsService,
+        private readonly ConfigurationService $configurationService,
+        private readonly SiteFinder $siteFinder,
+    ) {}
 
     public function renderWidgetContent(): string
     {

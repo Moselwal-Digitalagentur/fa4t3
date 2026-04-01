@@ -53,23 +53,12 @@ $GLOBALS['SiteConfiguration']['site']['columns']['fathomConsentCategory'] = [
     ],
 ];
 
-// Build select items in version-compatible format
-$typo3Version = (new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion();
-if ($typo3Version >= 12) {
-    $spaModeItems = [
-        ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.none', 'value' => ''],
-        ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.auto', 'value' => 'auto'],
-        ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.history', 'value' => 'history'],
-        ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.hash', 'value' => 'hash'],
-    ];
-} else {
-    $spaModeItems = [
-        ['LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.none', ''],
-        ['LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.auto', 'auto'],
-        ['LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.history', 'history'],
-        ['LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.hash', 'hash'],
-    ];
-}
+$spaModeItems = [
+    ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.none', 'value' => ''],
+    ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.auto', 'value' => 'auto'],
+    ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.history', 'value' => 'history'],
+    ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.hash', 'value' => 'hash'],
+];
 
 $GLOBALS['SiteConfiguration']['site']['columns']['fathomSpaMode'] = [
     'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode',

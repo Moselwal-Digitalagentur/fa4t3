@@ -4,66 +4,33 @@ declare(strict_types=1);
 
 namespace Moselwal\FathomAnalytics\Domain\Model;
 
-class DashboardData
+final readonly class DashboardData
 {
-    /** @var AggregationResult */
-    private $aggregation;
-
-    /** @var array */
-    private $topPages;
-
-    /** @var array */
-    private $topReferrers;
-
-    /** @var CurrentVisitors */
-    private $currentVisitors;
-
-    /** @var array */
-    private $events;
-
-    /** @var bool */
-    private $hasError;
-
-    /** @var string|null */
-    private $errorMessage;
-
     /**
-     * @param AggregationResult $aggregation
-     * @param array $topPages
-     * @param array $topReferrers
-     * @param CurrentVisitors $currentVisitors
+     * @param array<int, array<string, mixed>> $topPages
+     * @param array<int, array<string, mixed>> $topReferrers
      * @param EventAggregationResult[] $events
-     * @param bool $hasError
-     * @param string|null $errorMessage
      */
     public function __construct(
-        AggregationResult $aggregation,
-        array $topPages,
-        array $topReferrers,
-        CurrentVisitors $currentVisitors,
-        array $events = [],
-        bool $hasError = false,
-        string $errorMessage = null
-    ) {
-        $this->aggregation = $aggregation;
-        $this->topPages = $topPages;
-        $this->topReferrers = $topReferrers;
-        $this->currentVisitors = $currentVisitors;
-        $this->events = $events;
-        $this->hasError = $hasError;
-        $this->errorMessage = $errorMessage;
-    }
+        private AggregationResult $aggregation,
+        private array $topPages,
+        private array $topReferrers,
+        private CurrentVisitors $currentVisitors,
+        private array $events = [],
+        private bool $hasError = false,
+        private ?string $errorMessage = null,
+    ) {}
 
     public static function createError(string $message): self
     {
         return new self(
-            AggregationResult::createError($message),
-            [],
-            [],
-            new CurrentVisitors(0),
-            [],
-            true,
-            $message
+            aggregation: AggregationResult::createError($message),
+            topPages: [],
+            topReferrers: [],
+            currentVisitors: new CurrentVisitors(0),
+            events: [],
+            hasError: true,
+            errorMessage: $message,
         );
     }
 
@@ -100,10 +67,7 @@ class DashboardData
         return $this->hasError;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getErrorMessage()
+    public function getErrorMessage(): ?string
     {
         return $this->errorMessage;
     }

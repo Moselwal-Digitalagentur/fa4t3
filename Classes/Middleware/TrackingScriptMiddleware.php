@@ -12,19 +12,12 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 
-class TrackingScriptMiddleware implements MiddlewareInterface
+final readonly class TrackingScriptMiddleware implements MiddlewareInterface
 {
-    /** @var ConfigurationService */
-    private $configurationService;
-
-    /** @var AssetCollector */
-    private $assetCollector;
-
-    public function __construct(ConfigurationService $configurationService, AssetCollector $assetCollector)
-    {
-        $this->configurationService = $configurationService;
-        $this->assetCollector = $assetCollector;
-    }
+    public function __construct(
+        private ConfigurationService $configurationService,
+        private AssetCollector $assetCollector,
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -103,12 +96,7 @@ class TrackingScriptMiddleware implements MiddlewareInterface
             return false;
         }
 
-        $pageId = 0;
-        if (method_exists($routing, 'getPageId')) {
-            $pageId = $routing->getPageId();
-        } elseif (is_object($routing) && isset($routing->pageId)) {
-            $pageId = (int)$routing->pageId;
-        }
+        $pageId = $routing->getPageId();
 
         if ($pageId === 0) {
             return false;
@@ -135,7 +123,7 @@ class TrackingScriptMiddleware implements MiddlewareInterface
                     return true;
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // If rootline cannot be resolved, do not exclude
         }
 

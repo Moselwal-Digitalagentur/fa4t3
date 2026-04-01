@@ -4,27 +4,14 @@ declare(strict_types=1);
 
 namespace Moselwal\FathomAnalytics\Domain\Model;
 
-class EventAggregationResult
+final readonly class EventAggregationResult
 {
-    /** @var string */
-    private $eventName;
-
-    /** @var int */
-    private $conversions;
-
-    /** @var int */
-    private $uniqueConversions;
-
-    /** @var int */
-    private $value;
-
-    public function __construct(string $eventName, int $conversions, int $uniqueConversions, int $value)
-    {
-        $this->eventName = $eventName;
-        $this->conversions = $conversions;
-        $this->uniqueConversions = $uniqueConversions;
-        $this->value = $value;
-    }
+    public function __construct(
+        private string $eventName,
+        private int $conversions,
+        private int $uniqueConversions,
+        private int $value,
+    ) {}
 
     public function getEventName(): string
     {
