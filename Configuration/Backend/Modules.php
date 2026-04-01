@@ -13,13 +13,8 @@ return [
         'labels' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_mod.xlf',
         'iconIdentifier' => 'fathom-analytics-module',
         'extensionName' => 'FathomAnalytics',
-        'routes' => [
-            '_default' => [
-                'target' => DashboardController::class . '::indexAction',
-            ],
-            'testConnection' => [
-                'target' => DashboardController::class . '::testConnectionAction',
-            ],
+        'controllerActions' => [
+            DashboardController::class => ['index', 'testConnection'],
         ],
     ],
 ];
