@@ -70,9 +70,13 @@ final readonly class PageDataAjaxController
                 'pageviews' => $result->getPageviews(),
                 'uniques' => $result->getUniques(),
                 'avgDuration' => round($result->getAvgDuration(), 1),
-                'bounceRate' => round($result->getBounceRate() * 100, 1),
+                'bounceRate' => round($result->getBounceRate(), 1),
             ],
-            'pathname' => $pathname,
+            'debug' => [
+                'pathname' => $pathname,
+                'pageUid' => $pageUid,
+                'siteIdentifier' => $site->getIdentifier(),
+            ],
             'error' => $result->hasError() ? ($result->getErrorMessage() ?? 'API unavailable') : null,
         ]);
     }
