@@ -2,31 +2,44 @@
       data-namespace-typo3-fluid="true">
 
 <div class="callout callout-info">
-    <div class="callout-title">
-        <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:extension.title" />
-    </div>
+    <div class="callout-title">Fathom Analytics</div>
     <div class="callout-body">
-        <f:if condition="{hasApiKey}">
+        <f:if condition="{setupReason} == 'noSite'">
             <f:then>
-                <f:if condition="{noSiteId}">
-                    <f:then>
-                        <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noSiteId" /></p>
-                    </f:then>
-                    <f:else>
-                        <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.invalidApiKey" /></p>
-                    </f:else>
-                </f:if>
+                <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noSite" /></p>
             </f:then>
             <f:else>
-                <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noApiKey" /></p>
+                <f:if condition="{noShareUrl}">
+                    <f:then>
+                        <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noShareUrl" /></p>
+                        <f:if condition="!{hasApiKey}">
+                            <p class="text-body-secondary mt-2"><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noApiKey" /></p>
+                        </f:if>
+                        <f:if condition="{hasApiKey} && !{hasSiteId}">
+                            <p class="text-body-secondary mt-2"><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noSiteId" /></p>
+                        </f:if>
+                    </f:then>
+                    <f:else>
+                        <f:if condition="{hasApiKey}">
+                            <f:then>
+                                <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noSiteId" /></p>
+                            </f:then>
+                            <f:else>
+                                <p><f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:error.noApiKey" /></p>
+                            </f:else>
+                        </f:if>
+                    </f:else>
+                </f:if>
             </f:else>
         </f:if>
 
-        <div class="mt-3">
-            <f:link.action action="testConnection" class="btn btn-default btn-sm">
-                <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:action.testConnection" />
-            </f:link.action>
-        </div>
+        <f:if condition="{hasApiKey}">
+            <div class="mt-3">
+                <f:link.action action="testConnection" class="btn btn-default btn-sm">
+                    <f:translate key="LLL:EXT:fathom_analytics/Resources/Private/Language/locallang.xlf:action.testConnection" />
+                </f:link.action>
+            </div>
+        </f:if>
     </div>
 </div>
 

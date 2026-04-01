@@ -42,6 +42,12 @@
             <trans-unit id="siteconfig.fathomHonorDnt" resname="siteconfig.fathomHonorDnt">
                 <source>Honor Do Not Track</source>
             </trans-unit>
+            <trans-unit id="siteconfig.fathomShareUrl" resname="siteconfig.fathomShareUrl">
+                <source>Fathom Share Dashboard URL</source>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomShareUrl.description" resname="siteconfig.fathomShareUrl.description">
+                <source>Public or passworded share URL from Fathom (Settings → Dashboard Sharing). Displayed as iframe in the backend module.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

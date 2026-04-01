@@ -171,6 +171,14 @@
                 <source>Analytics data temporarily unavailable.</source>
                 <target>Analytics-Daten vorübergehend nicht verfügbar.</target>
             </trans-unit>
+            <trans-unit id="error.noShareUrl" resname="error.noShareUrl">
+                <source>Please configure the Fathom Share URL in Site Configuration.</source>
+                <target>Bitte konfiguriere die Fathom Share-URL in der Site-Konfiguration. Aktiviere Dashboard-Sharing in deinem Fathom-Konto (Einstellungen → Dashboard Sharing) und trage die Share-URL hier ein.</target>
+            </trans-unit>
+            <trans-unit id="error.noSite" resname="error.noSite">
+                <source>No TYPO3 site configured.</source>
+                <target>Keine TYPO3-Site konfiguriert. Bitte erstelle zuerst eine Site-Konfiguration.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

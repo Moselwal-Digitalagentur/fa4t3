@@ -55,6 +55,14 @@
                 <source>Honor Do Not Track</source>
                 <target>Do Not Track beachten</target>
             </trans-unit>
+            <trans-unit id="siteconfig.fathomShareUrl" resname="siteconfig.fathomShareUrl">
+                <source>Fathom Share Dashboard URL</source>
+                <target>Fathom Share-Dashboard URL</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomShareUrl.description" resname="siteconfig.fathomShareUrl.description">
+                <source>Public or passworded share URL from Fathom.</source>
+                <target>Öffentliche oder passwortgeschützte Share-URL aus Fathom (Einstellungen → Dashboard Sharing). Wird als IFrame im Backend-Modul angezeigt.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -132,6 +132,12 @@
             <trans-unit id="widget_group.fathom" resname="widget_group.fathom">
                 <source>Fathom Analytics</source>
             </trans-unit>
+            <trans-unit id="error.noShareUrl" resname="error.noShareUrl">
+                <source>Please configure the Fathom Share URL in Site Configuration. Enable Dashboard Sharing in your Fathom account (Settings → Site Settings → Dashboard Sharing) and paste the share URL here.</source>
+            </trans-unit>
+            <trans-unit id="error.noSite" resname="error.noSite">
+                <source>No TYPO3 site configured. Please create a site configuration first.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

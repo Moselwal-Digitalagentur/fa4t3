@@ -87,6 +87,15 @@ final readonly class ConfigurationService
         ];
     }
 
+    public function getShareUrl(SiteInterface $site): string
+    {
+        if ($site instanceof NullSite) {
+            return '';
+        }
+        $config = $site->getConfiguration();
+        return (string)($config['fathomShareUrl'] ?? '');
+    }
+
     public function isConfigured(SiteInterface $site): bool
     {
         return $this->getApiKeyForSite($site) !== '' && $this->getSiteId($site) !== '';
