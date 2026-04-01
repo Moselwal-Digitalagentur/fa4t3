@@ -67,6 +67,20 @@ final readonly class AggregationRequest
         return $this->limit;
     }
 
+    public function withoutDateGrouping(): self
+    {
+        return new self(
+            dateFrom: $this->dateFrom,
+            dateTo: $this->dateTo,
+            timezone: $this->timezone,
+            dateGrouping: null,
+            fieldGrouping: $this->fieldGrouping,
+            filters: $this->filters,
+            sortBy: $this->sortBy,
+            limit: $this->limit,
+        );
+    }
+
     public function withFieldGrouping(string $fieldGrouping): self
     {
         return new self(

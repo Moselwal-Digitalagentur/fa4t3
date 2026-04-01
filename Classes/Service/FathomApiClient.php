@@ -65,16 +65,16 @@ final readonly class FathomApiClient
 
         $data = $this->request('GET', '/v1/aggregations', $apiKey, $params);
 
-        if ($request->getDateGrouping() !== null) {
+        if ($request->getDateGrouping() !== null || $request->getFieldGrouping() !== null) {
             return new AggregationResult(
-                $this->sumField($data, 'visits'),
-                $this->sumField($data, 'uniques'),
-                $this->sumField($data, 'pageviews'),
-                $this->avgField($data, 'avg_duration'),
-                $this->avgField($data, 'bounce_rate'),
-                $request->getDateFrom(),
-                $request->getDateTo(),
-                $data
+                visits: $this->sumField($data, 'visits'),
+                uniques: $this->sumField($data, 'uniques'),
+                pageviews: $this->sumField($data, 'pageviews'),
+                avgDuration: $this->avgField($data, 'avg_duration'),
+                bounceRate: $this->avgField($data, 'bounce_rate'),
+                dateFrom: $request->getDateFrom(),
+                dateTo: $request->getDateTo(),
+                groupedData: $data,
             );
         }
 

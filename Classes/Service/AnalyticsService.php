@@ -126,6 +126,7 @@ final readonly class AnalyticsService
 
         try {
             $request = AggregationRequest::fromDateRange($range)
+                ->withoutDateGrouping()
                 ->withFilters([['property' => 'pathname', 'operator' => 'is', 'value' => $pathname]]);
 
             $result = $this->apiClient->getAggregation($siteId, $request, $apiKey);
