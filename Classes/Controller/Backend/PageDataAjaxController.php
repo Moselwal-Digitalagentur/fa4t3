@@ -10,6 +10,7 @@ use Moselwal\FathomAnalytics\Service\ConfigurationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 final readonly class PageDataAjaxController
@@ -29,7 +30,7 @@ final readonly class PageDataAjaxController
         }
 
         $site = $request->getAttribute('site');
-        if ($site === null) {
+        if ($site === null || $site instanceof NullSite) {
             try {
                 $site = $this->siteFinder->getSiteByPageId($pageUid);
             } catch (\Exception) {
