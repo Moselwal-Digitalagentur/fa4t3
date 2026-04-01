@@ -63,6 +63,14 @@
                 <source>Public or passworded share URL from Fathom.</source>
                 <target>Öffentliche oder passwortgeschützte Share-URL aus Fathom (Einstellungen → Dashboard Sharing). Wird als IFrame im Backend-Modul angezeigt.</target>
             </trans-unit>
+            <trans-unit id="siteconfig.fathomSharePassword" resname="siteconfig.fathomSharePassword">
+                <source>Share Dashboard Password</source>
+                <target>Share-Dashboard Passwort</target>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomSharePassword.description" resname="siteconfig.fathomSharePassword.description">
+                <source>If the Fathom dashboard is password-protected, enter the password here.</source>
+                <target>Wenn das Fathom-Dashboard passwortgeschützt ist, hier das Passwort eintragen. Es wird automatisch SHA256-gehasht und an die Share-URL angehängt.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

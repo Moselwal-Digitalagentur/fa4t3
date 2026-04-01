@@ -48,6 +48,12 @@
             <trans-unit id="siteconfig.fathomShareUrl.description" resname="siteconfig.fathomShareUrl.description">
                 <source>Public or passworded share URL from Fathom (Settings → Dashboard Sharing). Displayed as iframe in the backend module.</source>
             </trans-unit>
+            <trans-unit id="siteconfig.fathomSharePassword" resname="siteconfig.fathomSharePassword">
+                <source>Share Dashboard Password</source>
+            </trans-unit>
+            <trans-unit id="siteconfig.fathomSharePassword.description" resname="siteconfig.fathomSharePassword.description">
+                <source>If the Fathom dashboard is password-protected, enter the password here. It will be SHA256-hashed and appended to the share URL automatically.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

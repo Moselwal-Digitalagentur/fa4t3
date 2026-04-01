@@ -87,11 +87,21 @@ $GLOBALS['SiteConfiguration']['site']['columns']['fathomShareUrl'] = [
     ],
 ];
 
+$GLOBALS['SiteConfiguration']['site']['columns']['fathomSharePassword'] = [
+    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSharePassword',
+    'description' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSharePassword.description',
+    'config' => [
+        'type' => 'input',
+        'size' => 50,
+    ],
+];
+
 $GLOBALS['SiteConfiguration']['site']['types']['0']['showitem'] = ($GLOBALS['SiteConfiguration']['site']['types']['0']['showitem'] ?? '') . ',
     --div--;LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathom.tab,
     fathomSiteId,
     fathomApiKeyOverride,
     fathomShareUrl,
+    fathomSharePassword,
     --palette--;;fathomTracking';
 
 $GLOBALS['SiteConfiguration']['site']['palettes']['fathomTracking'] = [

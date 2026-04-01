@@ -93,7 +93,19 @@ final readonly class ConfigurationService
             return '';
         }
         $config = $site->getConfiguration();
-        return (string)($config['fathomShareUrl'] ?? '');
+        $url = (string)($config['fathomShareUrl'] ?? '');
+
+        if ($url === '') {
+            return '';
+        }
+
+        $password = (string)($config['fathomSharePassword'] ?? '');
+        if ($password !== '') {
+            $separator = str_contains($url, '?') ? '&' : '?';
+            $url .= $separator . 'password=' . hash('sha256', $password);
+        }
+
+        return $url;
     }
 
     public function isConfigured(SiteInterface $site): bool
