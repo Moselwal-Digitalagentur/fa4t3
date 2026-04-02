@@ -27,6 +27,43 @@ composer require moselwal/fathom-analytics
 - TYPO3 11.5, 12.4, 13.4, or 14.0
 - Fathom Analytics account with API key
 
+### Secure Secret Management (Recommended)
+
+For secure handling of your Fathom API key and password, we recommend using [`moselwal/secret-resolver`](https://packagist.org/packages/moselwal/secret-resolver):
+
+```bash
+composer require moselwal/secret-resolver
+```
+
+**Why not just environment variables?**
+
+Environment variables are a common approach for secrets, but they have significant drawbacks:
+
+- **Visible in plain text** at runtime — any process on the server, a `phpinfo()` call, or a debug dump can expose them.
+- **No encryption at rest** — `.env` files and server configs store secrets unencrypted on disk.
+- **Leak-prone** — environment variables are inherited by child processes, logged by error handlers, and often end up in CI/CD logs or container inspection output.
+
+**What `secret-resolver` does differently:**
+
+- Secrets can **encrypted at rest** in your repository (via SOPS/age), in Vault, or in other backends — and are only resolved at runtime.
+- The decryption happens **outside your application** — the runtime environment (Docker Secrets, Vault Agent, etc.) provides the plaintext values. `secret-resolver` reads these resolved values and makes them available to TYPO3. The extension itself never handles encryption or decryption.
+- Unlike environment variables, secrets are **not globally visible** in the process environment — they are resolved on demand and scoped to the consuming configuration.
+- Supports multiple resolution strategies: **Docker Secrets** (`/run/secrets/`), **file-based env vars** (`KEY_FILE`), **HashiCorp Vault**, and others.
+
+**Usage in TYPO3 YAML files:**
+
+`secret-resolver` hooks into TYPO3's central `YamlFileLoader`, so the `%secret(KEY)%` placeholder works in **all** TYPO3 YAML configurations — not just Site Configuration:
+
+```yaml
+# config/sites/main/config.yaml
+fathomApiKey: '%secret(FATHOM_API_KEY)%'
+fathomPassword: '%secret(FATHOM_PASSWORD)%'
+```
+
+This includes Site Configuration, Form Framework definitions, Services.yaml, and any other YAML loaded through TYPO3's standard YAML loader.
+
+See the [secret-resolver documentation](https://packagist.org/packages/moselwal/secret-resolver) for setup details.
+
 ## Architecture
 
 ```
@@ -68,6 +105,7 @@ vendor/bin/php-cs-fixer fix      # Code style (PER-CS3x0)
 | Package | Type | Purpose |
 |---------|------|---------|
 | `typo3/cms-dashboard` | Optional | Dashboard widget support |
+| `moselwal/secret-resolver` | Optional | Secure API key and password resolution from encrypted sources |
 | `moselwal/dev` | Dev | Shared QA tooling |
 
 ## License
