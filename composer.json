@@ -33,7 +33,8 @@
     "config": {
         "gitlab-domains": [
             "gitlab.moselwal.io"
-        ]
+        ],
+        "allow-plugins": true
     },
     "autoload": {
         "psr-4": {

@@ -6,6 +6,9 @@ namespace Moselwal\FathomAnalytics\Domain\Model;
 
 final readonly class AggregationRequest
 {
+    /**
+     * @param array<int|string, mixed>|null $filters
+     */
     public function __construct(
         private \DateTimeImmutable $dateFrom,
         private \DateTimeImmutable $dateTo,
@@ -52,6 +55,9 @@ final readonly class AggregationRequest
         return $this->fieldGrouping;
     }
 
+    /**
+     * @return array<int|string, mixed>|null
+     */
     public function getFilters(): ?array
     {
         return $this->filters;
@@ -95,6 +101,9 @@ final readonly class AggregationRequest
         );
     }
 
+    /**
+     * @param array<int|string, mixed> $filters
+     */
     public function withFilters(array $filters): self
     {
         return new self(

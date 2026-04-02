@@ -78,7 +78,7 @@ final readonly class FathomApiClient
             );
         }
 
-        $row = is_array($data) && isset($data[0]) ? $data[0] : ($data ?: []);
+        $row = is_array($data) && isset($data[0]) ? $data[0] : ($data ?? []);
 
         return new AggregationResult(
             (int)($row['visits'] ?? 0),
@@ -112,7 +112,7 @@ final readonly class FathomApiClient
         ]);
 
         $data = $this->request('GET', '/v1/aggregations', $apiKey, $params);
-        $row = is_array($data) && isset($data[0]) ? $data[0] : ($data ?: []);
+        $row = is_array($data) && isset($data[0]) ? $data[0] : ($data ?? []);
 
         return new EventAggregationResult(
             $eventName,
@@ -159,6 +159,7 @@ final readonly class FathomApiClient
     }
 
     /**
+     * @param array<string, mixed> $queryParams
      * @throws FathomApiException
      * @throws FathomAuthenticationException
      * @throws FathomRateLimitException
@@ -205,6 +206,9 @@ final readonly class FathomApiClient
         return $decoded;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $rows
+     */
     private function sumField(array $rows, string $field): int
     {
         $sum = 0;
@@ -214,6 +218,9 @@ final readonly class FathomApiClient
         return $sum;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $rows
+     */
     private function avgField(array $rows, string $field): float
     {
         if ($rows === []) {

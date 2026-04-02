@@ -134,6 +134,8 @@ final readonly class TrackingScriptMiddleware implements MiddlewareInterface
      * Build a JavaScript snippet that dynamically creates the Fathom script tag
      * when consent for the given category is granted.
      * This avoids the double-wrapping issue with addInlineJavaScript.
+     *
+     * @param array<string, string> $attributes
      */
     private function buildConsentScript(string $scriptSrc, array $attributes, string $consentCategory): string
     {

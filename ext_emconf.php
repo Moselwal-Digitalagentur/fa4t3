@@ -7,7 +7,7 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Moselwal',
     'author_email' => '',
     'state' => 'beta',
-    'version' => '0.1.0',
+    'version' => '0.0.0',
     'constraints' => [
         'depends' => [
             'typo3' => '14.0.0-14.99.99',
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = [
         ],
         'conflicts' => [],
         'suggests' => [
-            'dashboard' => '',
+            'secret_resolver' => '',
         ],
     ],
 ];

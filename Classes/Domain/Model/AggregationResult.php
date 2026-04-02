@@ -6,6 +6,9 @@ namespace Moselwal\FathomAnalytics\Domain\Model;
 
 final readonly class AggregationResult
 {
+    /**
+     * @param array<int, array<string, mixed>>|null $groupedData
+     */
     public function __construct(
         private int $visits,
         private int $uniques,
@@ -72,6 +75,9 @@ final readonly class AggregationResult
         return $this->dateTo;
     }
 
+    /**
+     * @return array<int, array<string, mixed>>|null
+     */
     public function getGroupedData(): ?array
     {
         return $this->groupedData;

@@ -39,11 +39,17 @@ final readonly class DashboardData
         return $this->aggregation;
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getTopPages(): array
     {
         return $this->topPages;
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getTopReferrers(): array
     {
         return $this->topReferrers;

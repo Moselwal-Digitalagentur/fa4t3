@@ -6,6 +6,7 @@ namespace Moselwal\FathomAnalytics\Service;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 
 final readonly class ConfigurationService
@@ -31,7 +32,7 @@ final readonly class ConfigurationService
 
     public function getSiteId(SiteInterface $site): string
     {
-        if ($site instanceof NullSite) {
+        if (!$site instanceof Site) {
             return '';
         }
         $config = $site->getConfiguration();
@@ -40,7 +41,7 @@ final readonly class ConfigurationService
 
     public function getApiKeyForSite(SiteInterface $site): string
     {
-        if ($site instanceof NullSite) {
+        if (!$site instanceof Site) {
             return $this->getGlobalApiKey();
         }
         $config = $site->getConfiguration();
@@ -65,7 +66,7 @@ final readonly class ConfigurationService
      */
     public function getTrackingConfig(SiteInterface $site): array
     {
-        if ($site instanceof NullSite) {
+        if (!$site instanceof Site) {
             return [
                 'enabled' => false,
                 'customDomain' => '',
@@ -89,7 +90,7 @@ final readonly class ConfigurationService
 
     public function getShareUrl(SiteInterface $site): string
     {
-        if ($site instanceof NullSite) {
+        if (!$site instanceof Site) {
             return '';
         }
         $config = $site->getConfiguration();
