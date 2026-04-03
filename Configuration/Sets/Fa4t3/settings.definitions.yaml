@@ -1,0 +1,51 @@
+settings:
+  fathomSiteId:
+    type: string
+    default: ''
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.siteId.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.siteId.description'
+  fathomApiKeyOverride:
+    type: string
+    default: ''
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.apiKeyOverride.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.apiKeyOverride.description'
+  fathomShareUrl:
+    type: string
+    default: ''
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.shareUrl.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.shareUrl.description'
+  fathomSharePassword:
+    type: string
+    default: ''
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.sharePassword.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.sharePassword.description'
+  fathomTrackingEnabled:
+    type: bool
+    default: false
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.trackingEnabled.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.trackingEnabled.description'
+  fathomCustomDomain:
+    type: string
+    default: ''
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.customDomain.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.customDomain.description'
+  fathomExcludedPages:
+    type: string
+    default: ''
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.excludedPages.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.excludedPages.description'
+  fathomConsentCategory:
+    type: string
+    default: ''
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.consentCategory.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.consentCategory.description'
+  fathomSpaMode:
+    type: string
+    default: 'auto'
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.spaMode.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.spaMode.description'
+  fathomHonorDnt:
+    type: bool
+    default: false
+    label: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.honorDnt.label'
+    description: 'LLL:EXT:fa4t3/Resources/Private/Language/locallang.xlf:settings.honorDnt.description'
