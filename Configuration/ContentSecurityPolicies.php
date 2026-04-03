@@ -31,5 +31,10 @@ return Map::fromEntries(
             Directive::ConnectSrc,
             new UriValue('https://cdn.usefathom.com'),
         ),
+        new Mutation(
+            MutationMode::Extend,
+            Directive::ImgSrc,
+            new UriValue('https://cdn.usefathom.com'),
+        ),
     )],
 );
