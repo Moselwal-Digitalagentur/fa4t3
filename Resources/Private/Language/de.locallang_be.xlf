@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-03-15T00:00:00Z" product-name="fathom_analytics">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-03-15T00:00:00Z" product-name="fa4t3">
         <header/>
         <body>
-            <trans-unit id="siteconfig.fathom.tab" resname="siteconfig.fathom.tab">
+            <trans-unit id="siteconfig.fa4t3.tab" resname="siteconfig.fa4t3.tab">
                 <source>Fathom Analytics</source>
                 <target>Fathom Analytics</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomSiteId" resname="siteconfig.fathomSiteId">
+            <trans-unit id="siteconfig.fa4t3SiteId" resname="siteconfig.fa4t3SiteId">
                 <source>Fathom Site ID</source>
                 <target>Fathom Site-ID</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomApiKeyOverride" resname="siteconfig.fathomApiKeyOverride">
+            <trans-unit id="siteconfig.fa4t3ApiKeyOverride" resname="siteconfig.fa4t3ApiKeyOverride">
                 <source>API Key Override (optional)</source>
                 <target>API-Schlüssel (überschreibt global)</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomTrackingEnabled" resname="siteconfig.fathomTrackingEnabled">
+            <trans-unit id="siteconfig.fa4t3TrackingEnabled" resname="siteconfig.fa4t3TrackingEnabled">
                 <source>Enable Frontend Tracking</source>
                 <target>Frontend-Tracking aktivieren</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomCustomDomain" resname="siteconfig.fathomCustomDomain">
+            <trans-unit id="siteconfig.fa4t3CustomDomain" resname="siteconfig.fa4t3CustomDomain">
                 <source>Custom Tracking Domain</source>
                 <target>Eigene Tracking-Domain</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomExcludedPages" resname="siteconfig.fathomExcludedPages">
+            <trans-unit id="siteconfig.fa4t3ExcludedPages" resname="siteconfig.fa4t3ExcludedPages">
                 <source>Excluded Page UIDs (comma-separated)</source>
                 <target>Ausgeschlossene Seiten (UIDs, kommagetrennt)</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomConsentCategory" resname="siteconfig.fathomConsentCategory">
+            <trans-unit id="siteconfig.fa4t3ConsentCategory" resname="siteconfig.fa4t3ConsentCategory">
                 <source>Consent Category (empty = no consent required)</source>
                 <target>Consent-Kategorie (leer = kein Consent erforderlich)</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomSpaMode" resname="siteconfig.fathomSpaMode">
+            <trans-unit id="siteconfig.fa4t3SpaMode" resname="siteconfig.fa4t3SpaMode">
                 <source>SPA Tracking Mode</source>
                 <target>SPA-Modus</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomSpaMode.none" resname="siteconfig.fathomSpaMode.none">
+            <trans-unit id="siteconfig.fa4t3SpaMode.none" resname="siteconfig.fa4t3SpaMode.none">
                 <source>Disabled</source>
                 <target>Deaktiviert</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomSpaMode.auto" resname="siteconfig.fathomSpaMode.auto">
+            <trans-unit id="siteconfig.fa4t3SpaMode.auto" resname="siteconfig.fa4t3SpaMode.auto">
                 <source>Auto-detect</source>
                 <target>Automatisch</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomSpaMode.history" resname="siteconfig.fathomSpaMode.history">
+            <trans-unit id="siteconfig.fa4t3SpaMode.history" resname="siteconfig.fa4t3SpaMode.history">
                 <source>History API</source>
                 <target>History API</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomSpaMode.hash" resname="siteconfig.fathomSpaMode.hash">
+            <trans-unit id="siteconfig.fa4t3SpaMode.hash" resname="siteconfig.fa4t3SpaMode.hash">
                 <source>Hash-based</source>
                 <target>Hash-basiert</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomHonorDnt" resname="siteconfig.fathomHonorDnt">
+            <trans-unit id="siteconfig.fa4t3HonorDnt" resname="siteconfig.fa4t3HonorDnt">
                 <source>Honor Do Not Track</source>
                 <target>Do Not Track beachten</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomShareUrl" resname="siteconfig.fathomShareUrl">
+            <trans-unit id="siteconfig.fa4t3ShareUrl" resname="siteconfig.fa4t3ShareUrl">
                 <source>Fathom Share Dashboard URL</source>
                 <target>Fathom Share-Dashboard URL</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomShareUrl.description" resname="siteconfig.fathomShareUrl.description">
+            <trans-unit id="siteconfig.fa4t3ShareUrl.description" resname="siteconfig.fa4t3ShareUrl.description">
                 <source>Public or passworded share URL from Fathom.</source>
                 <target>Öffentliche oder passwortgeschützte Share-URL aus Fathom (Einstellungen → Dashboard Sharing). Wird als IFrame im Backend-Modul angezeigt.</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomSharePassword" resname="siteconfig.fathomSharePassword">
+            <trans-unit id="siteconfig.fa4t3SharePassword" resname="siteconfig.fa4t3SharePassword">
                 <source>Share Dashboard Password</source>
                 <target>Share-Dashboard Passwort</target>
             </trans-unit>
-            <trans-unit id="siteconfig.fathomSharePassword.description" resname="siteconfig.fathomSharePassword.description">
+            <trans-unit id="siteconfig.fa4t3SharePassword.description" resname="siteconfig.fa4t3SharePassword.description">
                 <source>If the Fathom dashboard is password-protected, enter the password here.</source>
                 <target>Wenn das Fathom-Dashboard passwortgeschützt ist, hier das Passwort eintragen. Es wird automatisch SHA256-gehasht und an die Share-URL angehängt.</target>
             </trans-unit>

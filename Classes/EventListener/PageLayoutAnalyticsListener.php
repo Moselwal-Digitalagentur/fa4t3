@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\EventListener;
+namespace Moselwal\FA4T3\EventListener;
 
-use Moselwal\FathomAnalytics\Service\ConfigurationService;
+use Moselwal\FA4T3\Service\ConfigurationService;
 use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
-#[AsEventListener('fathom-analytics/page-layout-analytics')]
+#[AsEventListener('fa4t3/page-layout-analytics')]
 final readonly class PageLayoutAnalyticsListener
 {
     public function __construct(
@@ -25,7 +25,7 @@ final readonly class PageLayoutAnalyticsListener
         }
 
         $this->pageRenderer->loadJavaScriptModule(
-            '@moselwal/fathom-analytics/PageAnalytics.js'
+            '@moselwal/fa4t3/PageAnalytics.js'
         );
     }
 }

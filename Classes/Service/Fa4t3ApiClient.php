@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Service;
+namespace Moselwal\FA4T3\Service;
 
-use Moselwal\FathomAnalytics\Domain\Model\AggregationRequest;
-use Moselwal\FathomAnalytics\Domain\Model\AggregationResult;
-use Moselwal\FathomAnalytics\Domain\Model\ConnectionResult;
-use Moselwal\FathomAnalytics\Domain\Model\CurrentVisitors;
-use Moselwal\FathomAnalytics\Domain\Model\EventAggregationResult;
-use Moselwal\FathomAnalytics\Domain\Model\FathomEvent;
-use Moselwal\FathomAnalytics\Exception\FathomApiException;
-use Moselwal\FathomAnalytics\Exception\FathomAuthenticationException;
-use Moselwal\FathomAnalytics\Exception\FathomRateLimitException;
+use Moselwal\FA4T3\Domain\Model\AggregationRequest;
+use Moselwal\FA4T3\Domain\Model\AggregationResult;
+use Moselwal\FA4T3\Domain\Model\ConnectionResult;
+use Moselwal\FA4T3\Domain\Model\CurrentVisitors;
+use Moselwal\FA4T3\Domain\Model\EventAggregationResult;
+use Moselwal\FA4T3\Domain\Model\Fa4t3Event;
+use Moselwal\FA4T3\Exception\Fa4t3ApiException;
+use Moselwal\FA4T3\Exception\Fa4t3AuthenticationException;
+use Moselwal\FA4T3\Exception\Fa4t3RateLimitException;
 use TYPO3\CMS\Core\Http\RequestFactory;
 
-final readonly class FathomApiClient
+final readonly class Fa4t3ApiClient
 {
     private const BASE_URL = 'https://api.usefathom.com';
     private const TIMEOUT = 10;
@@ -29,9 +29,9 @@ final readonly class FathomApiClient
         try {
             $this->request('GET', '/v1/account', $apiKey);
             return new ConnectionResult(true, 'Connection successful');
-        } catch (FathomAuthenticationException) {
+        } catch (Fa4t3AuthenticationException) {
             return new ConnectionResult(false, 'Invalid API key');
-        } catch (FathomApiException $e) {
+        } catch (Fa4t3ApiException $e) {
             return new ConnectionResult(false, $e->getMessage());
         }
     }
@@ -139,7 +139,7 @@ final readonly class FathomApiClient
     }
 
     /**
-     * @return FathomEvent[]
+     * @return Fa4t3Event[]
      */
     public function getEvents(string $siteId, string $apiKey): array
     {
@@ -147,7 +147,7 @@ final readonly class FathomApiClient
         $events = [];
 
         foreach (($data['data'] ?? []) as $item) {
-            $events[] = new FathomEvent(
+            $events[] = new Fa4t3Event(
                 (string)$item['id'],
                 (string)$item['name'],
                 $siteId,
@@ -160,9 +160,9 @@ final readonly class FathomApiClient
 
     /**
      * @param array<string, mixed> $queryParams
-     * @throws FathomApiException
-     * @throws FathomAuthenticationException
-     * @throws FathomRateLimitException
+     * @throws Fa4t3ApiException
+     * @throws Fa4t3AuthenticationException
+     * @throws Fa4t3RateLimitException
      */
     private function request(string $method, string $path, string $apiKey, array $queryParams = []): mixed
     {
@@ -180,27 +180,27 @@ final readonly class FathomApiClient
                 'timeout' => self::TIMEOUT,
             ]);
         } catch (\Exception $e) {
-            throw new FathomApiException('Fathom API request failed: ' . $e->getMessage(), 0, $e);
+            throw new Fa4t3ApiException('Fathom API request failed: ' . $e->getMessage(), 0, $e);
         }
 
         $statusCode = $response->getStatusCode();
         $body = (string)$response->getBody();
 
         if ($statusCode === 401) {
-            throw new FathomAuthenticationException('Invalid or expired API key');
+            throw new Fa4t3AuthenticationException('Invalid or expired API key');
         }
 
         if ($statusCode === 429) {
-            throw new FathomRateLimitException('Rate limit exceeded');
+            throw new Fa4t3RateLimitException('Rate limit exceeded');
         }
 
         if ($statusCode >= 400) {
-            throw new FathomApiException('Fathom API error (HTTP ' . $statusCode . ')', $statusCode);
+            throw new Fa4t3ApiException('Fathom API error (HTTP ' . $statusCode . ')', $statusCode);
         }
 
         $decoded = json_decode($body, true);
         if ($decoded === null && $body !== '' && $body !== 'null') {
-            throw new FathomApiException('Invalid JSON response from Fathom API');
+            throw new Fa4t3ApiException('Invalid JSON response from Fathom API');
         }
 
         return $decoded;

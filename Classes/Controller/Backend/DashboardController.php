@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Controller\Backend;
+namespace Moselwal\FA4T3\Controller\Backend;
 
-use Moselwal\FathomAnalytics\Service\ConfigurationService;
-use Moselwal\FathomAnalytics\Service\FathomApiClient;
+use Moselwal\FA4T3\Service\ConfigurationService;
+use Moselwal\FA4T3\Service\Fa4t3ApiClient;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -17,7 +17,7 @@ final class DashboardController extends ActionController
 {
     public function __construct(
         private readonly ConfigurationService $configurationService,
-        private readonly FathomApiClient $apiClient,
+        private readonly Fa4t3ApiClient $apiClient,
         private readonly SiteFinder $siteFinder,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {}

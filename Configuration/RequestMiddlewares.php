@@ -2,8 +2,8 @@
 
 return [
     'frontend' => [
-        'moselwal/fathom-analytics/tracking-script' => [
-            'target' => \Moselwal\FathomAnalytics\Middleware\TrackingScriptMiddleware::class,
+        'moselwal/fa4t3/tracking-script' => [
+            'target' => \Moselwal\FA4T3\Middleware\TrackingScriptMiddleware::class,
             'after' => [
                 'typo3/cms-frontend/site',
             ],

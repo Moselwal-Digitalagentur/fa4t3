@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-use Moselwal\FathomAnalytics\Controller\Backend\DashboardController;
+use Moselwal\FA4T3\Controller\Backend\DashboardController;
 
 return [
-    'fathomanalytics' => [
+    'fa4t3' => [
         'parent' => 'web',
         'position' => ['after' => 'web_info'],
         'access' => 'user',
-        'path' => '/module/web/fathomanalytics',
-        'labels' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_mod.xlf',
-        'iconIdentifier' => 'fathom-analytics-module',
-        'extensionName' => 'FathomAnalytics',
+        'path' => '/module/web/fa4t3',
+        'labels' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_mod.xlf',
+        'iconIdentifier' => 'fa4t3-module',
+        'extensionName' => 'FA4T3',
         'controllerActions' => [
             DashboardController::class => ['index', 'testConnection'],
         ],

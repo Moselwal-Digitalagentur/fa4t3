@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Service;
+namespace Moselwal\FA4T3\Service;
 
-use Moselwal\FathomAnalytics\Domain\Model\AggregationRequest;
-use Moselwal\FathomAnalytics\Domain\Model\AggregationResult;
-use Moselwal\FathomAnalytics\Domain\Model\CurrentVisitors;
-use Moselwal\FathomAnalytics\Domain\Model\DashboardData;
-use Moselwal\FathomAnalytics\Domain\Model\DateRange;
-use Moselwal\FathomAnalytics\Domain\Model\EventAggregationResult;
-use Moselwal\FathomAnalytics\Exception\FathomApiException;
+use Moselwal\FA4T3\Domain\Model\AggregationRequest;
+use Moselwal\FA4T3\Domain\Model\AggregationResult;
+use Moselwal\FA4T3\Domain\Model\CurrentVisitors;
+use Moselwal\FA4T3\Domain\Model\DashboardData;
+use Moselwal\FA4T3\Domain\Model\DateRange;
+use Moselwal\FA4T3\Domain\Model\EventAggregationResult;
+use Moselwal\FA4T3\Exception\Fa4t3ApiException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 final readonly class AnalyticsService
 {
     public function __construct(
-        private FathomApiClient $apiClient,
+        private Fa4t3ApiClient $apiClient,
         private FrontendInterface $cache,
         private ConfigurationService $configurationService,
     ) {}
@@ -57,13 +57,13 @@ final readonly class AnalyticsService
             $this->cache->set(
                 $cacheKey,
                 $dashboardData,
-                ['fathom_site_' . $siteId],
+                ['fa4t3_site_' . $siteId],
                 $this->configurationService->getCacheDuration()
             );
             $this->setStaleCache($cacheKey, $dashboardData, $siteId);
 
             return $dashboardData;
-        } catch (FathomApiException $e) {
+        } catch (Fa4t3ApiException $e) {
             // Try stale cache
             $stale = $this->getStaleCache($cacheKey);
             if ($stale !== null) {
@@ -103,13 +103,13 @@ final readonly class AnalyticsService
             $this->cache->set(
                 $cacheKey,
                 $results,
-                ['fathom_site_' . $siteId],
+                ['fa4t3_site_' . $siteId],
                 $this->configurationService->getCacheDuration()
             );
             $this->setStaleCache($cacheKey, $results, $siteId);
 
             return $results;
-        } catch (FathomApiException $e) {
+        } catch (Fa4t3ApiException $e) {
             $stale = $this->getStaleCache($cacheKey);
             return $stale ?? [];
         }
@@ -134,13 +134,13 @@ final readonly class AnalyticsService
             $this->cache->set(
                 $cacheKey,
                 $result,
-                ['fathom_site_' . $siteId],
+                ['fa4t3_site_' . $siteId],
                 $this->configurationService->getCacheDuration()
             );
             $this->setStaleCache($cacheKey, $result, $siteId);
 
             return $result;
-        } catch (FathomApiException $e) {
+        } catch (Fa4t3ApiException $e) {
             $stale = $this->getStaleCache($cacheKey);
             if ($stale !== null) {
                 return $stale;
@@ -152,7 +152,7 @@ final readonly class AnalyticsService
 
     public function getCurrentVisitorCount(string $siteId, string $apiKey): int
     {
-        $cacheKey = 'fathom_current_' . md5($siteId);
+        $cacheKey = 'fa4t3_current_' . md5($siteId);
         $cached = $this->cache->get($cacheKey);
 
         if ($cached !== false) {
@@ -163,17 +163,17 @@ final readonly class AnalyticsService
             $visitors = $this->apiClient->getCurrentVisitors($siteId, $apiKey);
             $count = $visitors->getTotal();
 
-            $this->cache->set($cacheKey, $count, ['fathom_site_' . $siteId], 60);
+            $this->cache->set($cacheKey, $count, ['fa4t3_site_' . $siteId], 60);
 
             return $count;
-        } catch (FathomApiException) {
+        } catch (Fa4t3ApiException) {
             return 0;
         }
     }
 
     public function flushCacheForSite(string $siteId): void
     {
-        $this->cache->flushByTag('fathom_site_' . $siteId);
+        $this->cache->flushByTag('fa4t3_site_' . $siteId);
     }
 
     private function buildCacheKey(string $prefix, string $siteId, DateRange $range, string $extra = ''): string
@@ -190,7 +190,7 @@ final readonly class AnalyticsService
             $parts[] = $extra;
         }
 
-        return 'fathom_' . md5(implode('_', $parts));
+        return 'fa4t3_' . md5(implode('_', $parts));
     }
 
     /**
@@ -201,7 +201,7 @@ final readonly class AnalyticsService
         $staleKey = $cacheKey . '_stale';
         // Stale cache lives 10x longer than normal cache
         $staleTtl = $this->configurationService->getCacheDuration() * 10;
-        $this->cache->set($staleKey, $data, ['fathom_site_' . $siteId], $staleTtl);
+        $this->cache->set($staleKey, $data, ['fa4t3_site_' . $siteId], $staleTtl);
     }
 
     private function getStaleCache(string $cacheKey): mixed

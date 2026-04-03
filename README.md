@@ -18,7 +18,7 @@ Privacy-focused analytics for TYPO3 powered by [Fathom Analytics](https://usefat
 ## Installation
 
 ```bash
-composer require moselwal/fathom-analytics
+composer require moselwal/fa4t3
 ```
 
 ### Requirements
@@ -56,8 +56,8 @@ Environment variables are a common approach for secrets, but they have significa
 
 ```yaml
 # config/sites/main/config.yaml
-fathomApiKey: '%secret(FATHOM_API_KEY)%'
-fathomPassword: '%secret(FATHOM_PASSWORD)%'
+fa4t3ApiKey: '%secret(FA4T3_API_KEY)%'
+fa4t3Password: '%secret(FA4T3_PASSWORD)%'
 ```
 
 This includes Site Configuration, Form Framework definitions, Services.yaml, and any other YAML loaded through TYPO3's standard YAML loader.

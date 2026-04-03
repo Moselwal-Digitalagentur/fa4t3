@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Tests\Unit\Service;
+namespace Moselwal\FA4T3\Tests\Unit\Service;
 
-use Moselwal\FathomAnalytics\Domain\Model\AggregationResult;
-use Moselwal\FathomAnalytics\Domain\Model\CurrentVisitors;
-use Moselwal\FathomAnalytics\Domain\Model\DashboardData;
-use Moselwal\FathomAnalytics\Domain\Model\DateRange;
-use Moselwal\FathomAnalytics\Exception\FathomApiException;
-use Moselwal\FathomAnalytics\Service\AnalyticsService;
-use Moselwal\FathomAnalytics\Service\ConfigurationService;
-use Moselwal\FathomAnalytics\Service\FathomApiClient;
+use Moselwal\FA4T3\Domain\Model\AggregationResult;
+use Moselwal\FA4T3\Domain\Model\CurrentVisitors;
+use Moselwal\FA4T3\Domain\Model\DashboardData;
+use Moselwal\FA4T3\Domain\Model\DateRange;
+use Moselwal\FA4T3\Exception\Fa4t3ApiException;
+use Moselwal\FA4T3\Service\AnalyticsService;
+use Moselwal\FA4T3\Service\ConfigurationService;
+use Moselwal\FA4T3\Service\Fa4t3ApiClient;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
@@ -32,7 +32,7 @@ class AnalyticsServiceTest extends TestCase
         $cache = $this->createMock(FrontendInterface::class);
         $cache->method('get')->willReturn($cachedData);
 
-        $apiClient = $this->createMock(FathomApiClient::class);
+        $apiClient = $this->createMock(Fa4t3ApiClient::class);
         $apiClient->expects(self::never())->method('getAggregation');
 
         $configService = $this->createMock(ConfigurationService::class);
@@ -53,8 +53,8 @@ class AnalyticsServiceTest extends TestCase
         $cache = $this->createMock(FrontendInterface::class);
         $cache->method('get')->willReturn(false);
 
-        $apiClient = $this->createMock(FathomApiClient::class);
-        $apiClient->method('getAggregation')->willThrowException(new FathomApiException('API down'));
+        $apiClient = $this->createMock(Fa4t3ApiClient::class);
+        $apiClient->method('getAggregation')->willThrowException(new Fa4t3ApiException('API down'));
 
         $configService = $this->createMock(ConfigurationService::class);
         $configService->method('getCacheDuration')->willReturn(300);
@@ -74,7 +74,7 @@ class AnalyticsServiceTest extends TestCase
         $cache = $this->createMock(FrontendInterface::class);
         $cache->method('get')->willReturn(42);
 
-        $apiClient = $this->createMock(FathomApiClient::class);
+        $apiClient = $this->createMock(Fa4t3ApiClient::class);
         $apiClient->expects(self::never())->method('getCurrentVisitors');
 
         $configService = $this->createMock(ConfigurationService::class);
@@ -92,8 +92,8 @@ class AnalyticsServiceTest extends TestCase
         $cache = $this->createMock(FrontendInterface::class);
         $cache->method('get')->willReturn(false);
 
-        $apiClient = $this->createMock(FathomApiClient::class);
-        $apiClient->method('getCurrentVisitors')->willThrowException(new FathomApiException('API down'));
+        $apiClient = $this->createMock(Fa4t3ApiClient::class);
+        $apiClient->method('getCurrentVisitors')->willThrowException(new Fa4t3ApiException('API down'));
 
         $configService = $this->createMock(ConfigurationService::class);
 
@@ -110,8 +110,8 @@ class AnalyticsServiceTest extends TestCase
         $cache = $this->createMock(FrontendInterface::class);
         $cache->method('get')->willReturn(false);
 
-        $apiClient = $this->createMock(FathomApiClient::class);
-        $apiClient->method('getAggregation')->willThrowException(new FathomApiException('Timeout'));
+        $apiClient = $this->createMock(Fa4t3ApiClient::class);
+        $apiClient->method('getAggregation')->willThrowException(new Fa4t3ApiException('Timeout'));
 
         $configService = $this->createMock(ConfigurationService::class);
 
@@ -131,7 +131,7 @@ class AnalyticsServiceTest extends TestCase
             ->method('flushByTag')
             ->with('fathom_site_SITE123');
 
-        $apiClient = $this->createMock(FathomApiClient::class);
+        $apiClient = $this->createMock(Fa4t3ApiClient::class);
         $configService = $this->createMock(ConfigurationService::class);
 
         $service = new AnalyticsService($apiClient, $cache, $configService);

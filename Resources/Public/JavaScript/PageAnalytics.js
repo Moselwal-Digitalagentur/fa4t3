@@ -22,7 +22,7 @@ class PageAnalyticsPanel {
     }
 
     async loadData() {
-        const ajaxUrl = TYPO3?.settings?.ajaxUrls?.fathom_analytics_page_data
+        const ajaxUrl = TYPO3?.settings?.ajaxUrls?.fa4t3_page_data
             ?? '/typo3/ajax/fathom-analytics/page-data';
         const separator = ajaxUrl.includes('?') ? '&' : '?';
         const url = `${ajaxUrl}${separator}pageUid=${this.pageUid}`;

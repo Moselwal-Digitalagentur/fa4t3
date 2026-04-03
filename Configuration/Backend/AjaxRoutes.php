@@ -1,10 +1,10 @@
 <?php
 
-use Moselwal\FathomAnalytics\Controller\Backend\PageDataAjaxController;
+use Moselwal\FA4T3\Controller\Backend\PageDataAjaxController;
 
 return [
-    'fathom_analytics_page_data' => [
-        'path' => '/fathom-analytics/page-data',
+    'fa4t3_page_data' => [
+        'path' => '/fa4t3/page-data',
         'target' => PageDataAjaxController::class . '::handleRequest',
     ],
 ];

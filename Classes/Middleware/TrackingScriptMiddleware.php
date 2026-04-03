@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Middleware;
+namespace Moselwal\FA4T3\Middleware;
 
-use Moselwal\FathomAnalytics\Service\ConfigurationService;
+use Moselwal\FA4T3\Service\ConfigurationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -67,7 +67,7 @@ final readonly class TrackingScriptMiddleware implements MiddlewareInterface
             // Consent-managed loading: render as text/plain with data-category
             // Compatible with cookieman, klaro, and similar TYPO3 consent extensions
             $this->assetCollector->addInlineJavaScript(
-                'fathom-tracking-consent',
+                'fa4t3-tracking-consent',
                 $this->buildConsentScript($scriptSrc, $attributes, $consentCategory),
                 [],
                 ['priority' => false]
@@ -75,7 +75,7 @@ final readonly class TrackingScriptMiddleware implements MiddlewareInterface
         } else {
             // Direct loading: no consent required (Fathom is cookiefree)
             $this->assetCollector->addJavaScript(
-                'fathom-tracking',
+                'fa4t3-tracking',
                 $scriptSrc,
                 $attributes,
                 ['external' => true, 'priority' => false]
@@ -156,7 +156,7 @@ final readonly class TrackingScriptMiddleware implements MiddlewareInterface
                 'for(var k in attrs){if(attrs.hasOwnProperty(k))s.setAttribute(k,attrs[k]);}' .
                 'document.head.appendChild(s);' .
             '}' .
-            'window.__fathomConsentCategory=' . json_encode($escapedCategory) . ';' .
+            'window.__fa4t3ConsentCategory=' . json_encode($escapedCategory) . ';' .
             'window.__fathomLoadTracking=loadFathom;' .
             'if(typeof window.CookieConsent!=="undefined"&&window.CookieConsent.hasConsent&&window.CookieConsent.hasConsent(' . json_encode($escapedCategory) . ')){loadFathom();}' .
         '})();';

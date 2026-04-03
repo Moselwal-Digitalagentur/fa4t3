@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Domain\Model;
+namespace Moselwal\FA4T3\Domain\Model;
 
-final readonly class FathomEvent
+final readonly class Fa4t3Event
 {
     public function __construct(
         private string $id,

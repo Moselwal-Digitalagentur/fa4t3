@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Service;
+namespace Moselwal\FA4T3\Service;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -36,7 +36,7 @@ final readonly class ConfigurationService
             return '';
         }
         $config = $site->getConfiguration();
-        return (string)($config['fathomSiteId'] ?? '');
+        return (string)($config['fa4t3SiteId'] ?? '');
     }
 
     public function getApiKeyForSite(SiteInterface $site): string
@@ -45,7 +45,7 @@ final readonly class ConfigurationService
             return $this->getGlobalApiKey();
         }
         $config = $site->getConfiguration();
-        $siteKey = (string)($config['fathomApiKeyOverride'] ?? '');
+        $siteKey = (string)($config['fa4t3ApiKeyOverride'] ?? '');
 
         if ($siteKey !== '') {
             return $siteKey;
@@ -79,12 +79,12 @@ final readonly class ConfigurationService
         $config = $site->getConfiguration();
 
         return [
-            'enabled' => (bool)($config['fathomTrackingEnabled'] ?? false),
-            'customDomain' => (string)($config['fathomCustomDomain'] ?? ''),
-            'excludedPages' => (string)($config['fathomExcludedPages'] ?? ''),
-            'consentCategory' => (string)($config['fathomConsentCategory'] ?? ''),
-            'spaMode' => (string)($config['fathomSpaMode'] ?? ''),
-            'honorDnt' => (bool)($config['fathomHonorDnt'] ?? false),
+            'enabled' => (bool)($config['fa4t3TrackingEnabled'] ?? false),
+            'customDomain' => (string)($config['fa4t3CustomDomain'] ?? ''),
+            'excludedPages' => (string)($config['fa4t3ExcludedPages'] ?? ''),
+            'consentCategory' => (string)($config['fa4t3ConsentCategory'] ?? ''),
+            'spaMode' => (string)($config['fa4t3SpaMode'] ?? ''),
+            'honorDnt' => (bool)($config['fa4t3HonorDnt'] ?? false),
         ];
     }
 
@@ -94,13 +94,13 @@ final readonly class ConfigurationService
             return '';
         }
         $config = $site->getConfiguration();
-        $url = (string)($config['fathomShareUrl'] ?? '');
+        $url = (string)($config['fa4t3ShareUrl'] ?? '');
 
         if ($url === '') {
             return '';
         }
 
-        $password = (string)($config['fathomSharePassword'] ?? '');
+        $password = (string)($config['fa4t3SharePassword'] ?? '');
         if ($password !== '') {
             $separator = str_contains($url, '?') ? '&' : '?';
             $url .= $separator . 'password=' . hash('sha256', $password);
@@ -122,7 +122,7 @@ final readonly class ConfigurationService
     private function getExtensionSetting(string $key): mixed
     {
         try {
-            return $this->extensionConfiguration->get('fathom_analytics', $key);
+            return $this->extensionConfiguration->get('fa4t3', $key);
         } catch (\Exception) {
             return null;
         }

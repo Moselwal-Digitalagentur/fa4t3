@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Controller\Backend;
+namespace Moselwal\FA4T3\Controller\Backend;
 
-use Moselwal\FathomAnalytics\Domain\Model\DateRange;
-use Moselwal\FathomAnalytics\Service\AnalyticsService;
-use Moselwal\FathomAnalytics\Service\ConfigurationService;
+use Moselwal\FA4T3\Domain\Model\DateRange;
+use Moselwal\FA4T3\Service\AnalyticsService;
+use Moselwal\FA4T3\Service\ConfigurationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;

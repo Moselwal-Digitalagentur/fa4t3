@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Tests\Unit\Service;
+namespace Moselwal\FA4T3\Tests\Unit\Service;
 
 use GuzzleHttp\Psr7\Response;
-use Moselwal\FathomAnalytics\Domain\Model\AggregationRequest;
-use Moselwal\FathomAnalytics\Exception\FathomApiException;
-use Moselwal\FathomAnalytics\Exception\FathomAuthenticationException;
-use Moselwal\FathomAnalytics\Exception\FathomRateLimitException;
-use Moselwal\FathomAnalytics\Service\FathomApiClient;
+use Moselwal\FA4T3\Domain\Model\AggregationRequest;
+use Moselwal\FA4T3\Exception\Fa4t3ApiException;
+use Moselwal\FA4T3\Exception\Fa4t3AuthenticationException;
+use Moselwal\FA4T3\Exception\Fa4t3RateLimitException;
+use Moselwal\FA4T3\Service\Fa4t3ApiClient;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Http\RequestFactory;
 
-class FathomApiClientTest extends TestCase
+class Fa4t3ApiClientTest extends TestCase
 {
     /**
      * @test
@@ -25,7 +25,7 @@ class FathomApiClientTest extends TestCase
             new Response(200, [], '{"status":"authenticated"}')
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $result = $client->testConnection('valid-key');
 
         self::assertTrue($result->isSuccess());
@@ -41,7 +41,7 @@ class FathomApiClientTest extends TestCase
             new Response(401, [], '{"error":"Invalid token"}')
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $result = $client->testConnection('invalid-key');
 
         self::assertFalse($result->isSuccess());
@@ -62,7 +62,7 @@ class FathomApiClientTest extends TestCase
             new Response(200, [], $responseBody)
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $request = new AggregationRequest(
             new \DateTimeImmutable('2026-03-01'),
             new \DateTimeImmutable('2026-03-15')
@@ -87,13 +87,13 @@ class FathomApiClientTest extends TestCase
             new Response(429, [], '{"error":"Rate limit exceeded"}')
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $request = new AggregationRequest(
             new \DateTimeImmutable('2026-03-01'),
             new \DateTimeImmutable('2026-03-15')
         );
 
-        $this->expectException(FathomRateLimitException::class);
+        $this->expectException(Fa4t3RateLimitException::class);
         $client->getAggregation('SITE123', $request, 'api-key');
     }
 
@@ -107,13 +107,13 @@ class FathomApiClientTest extends TestCase
             new Response(401, [], '{"error":"Invalid token"}')
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $request = new AggregationRequest(
             new \DateTimeImmutable('2026-03-01'),
             new \DateTimeImmutable('2026-03-15')
         );
 
-        $this->expectException(FathomAuthenticationException::class);
+        $this->expectException(Fa4t3AuthenticationException::class);
         $client->getAggregation('SITE123', $request, 'api-key');
     }
 
@@ -127,13 +127,13 @@ class FathomApiClientTest extends TestCase
             new Response(500, [], '{"error":"Internal server error"}')
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $request = new AggregationRequest(
             new \DateTimeImmutable('2026-03-01'),
             new \DateTimeImmutable('2026-03-15')
         );
 
-        $this->expectException(FathomApiException::class);
+        $this->expectException(Fa4t3ApiException::class);
         $client->getAggregation('SITE123', $request, 'api-key');
     }
 
@@ -147,7 +147,7 @@ class FathomApiClientTest extends TestCase
             new Response(200, [], '{"total":42}')
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $result = $client->getCurrentVisitors('SITE123', 'api-key');
 
         self::assertSame(42, $result->getTotal());
@@ -169,7 +169,7 @@ class FathomApiClientTest extends TestCase
             new Response(200, [], $responseBody)
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $result = $client->getCurrentVisitors('SITE123', 'api-key', true);
 
         self::assertSame(42, $result->getTotal());
@@ -195,7 +195,7 @@ class FathomApiClientTest extends TestCase
             new Response(200, [], $responseBody)
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $events = $client->getEvents('SITE123', 'api-key');
 
         self::assertCount(2, $events);
@@ -213,13 +213,13 @@ class FathomApiClientTest extends TestCase
             new \RuntimeException('Connection timed out')
         );
 
-        $client = new FathomApiClient($requestFactory);
+        $client = new Fa4t3ApiClient($requestFactory);
         $request = new AggregationRequest(
             new \DateTimeImmutable('2026-03-01'),
             new \DateTimeImmutable('2026-03-15')
         );
 
-        $this->expectException(FathomApiException::class);
+        $this->expectException(Fa4t3ApiException::class);
         $this->expectExceptionMessage('Fathom API request failed');
         $client->getAggregation('SITE123', $request, 'api-key');
     }

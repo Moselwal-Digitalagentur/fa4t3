@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 return [
-    'fathom-analytics-module' => [
+    'fa4t3-module' => [
         'provider' => \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        'source' => 'EXT:fathom_analytics/Resources/Public/Icons/Extension.svg',
+        'source' => 'EXT:fa4t3/Resources/Public/Icons/Extension.svg',
     ],
 ];

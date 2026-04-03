@@ -3,6 +3,6 @@
 return [
     'dependencies' => ['backend'],
     'imports' => [
-        '@moselwal/fathom-analytics/' => 'EXT:fathom_analytics/Resources/Public/JavaScript/',
+        '@moselwal/fa4t3/' => 'EXT:fa4t3/Resources/Public/JavaScript/',
     ],
 ];

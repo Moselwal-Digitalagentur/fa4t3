@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Tests\Unit\Service;
+namespace Moselwal\FA4T3\Tests\Unit\Service;
 
-use Moselwal\FathomAnalytics\Service\ConfigurationService;
+use Moselwal\FA4T3\Service\ConfigurationService;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
@@ -18,7 +18,7 @@ class ConfigurationServiceTest extends TestCase
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
         $extConfig->method('get')->willReturnMap([
-            ['fathom_analytics', 'apiKey', 'test-api-key'],
+            ['fa4t3', 'apiKey', 'test-api-key'],
         ]);
 
         $service = new ConfigurationService($extConfig);
@@ -46,7 +46,7 @@ class ConfigurationServiceTest extends TestCase
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
         $extConfig->method('get')->willReturnMap([
-            ['fathom_analytics', 'apiKey', 'global-key'],
+            ['fa4t3', 'apiKey', 'global-key'],
         ]);
 
         $site = $this->createMock(SiteInterface::class);
@@ -66,7 +66,7 @@ class ConfigurationServiceTest extends TestCase
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
         $extConfig->method('get')->willReturnMap([
-            ['fathom_analytics', 'apiKey', 'global-key'],
+            ['fa4t3', 'apiKey', 'global-key'],
         ]);
 
         $site = $this->createMock(SiteInterface::class);
@@ -86,7 +86,7 @@ class ConfigurationServiceTest extends TestCase
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
         $extConfig->method('get')->willReturnMap([
-            ['fathom_analytics', 'apiKey', 'test-key'],
+            ['fa4t3', 'apiKey', 'test-key'],
         ]);
 
         $site = $this->createMock(SiteInterface::class);
@@ -107,7 +107,7 @@ class ConfigurationServiceTest extends TestCase
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
         $extConfig->method('get')->willReturnMap([
-            ['fathom_analytics', 'apiKey', 'test-key'],
+            ['fa4t3', 'apiKey', 'test-key'],
         ]);
 
         $site = $this->createMock(SiteInterface::class);

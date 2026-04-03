@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Tests\Unit\Domain\Model;
+namespace Moselwal\FA4T3\Tests\Unit\Domain\Model;
 
-use Moselwal\FathomAnalytics\Domain\Model\DateRange;
+use Moselwal\FA4T3\Domain\Model\DateRange;
 use PHPUnit\Framework\TestCase;
 
 class DateRangeTest extends TestCase

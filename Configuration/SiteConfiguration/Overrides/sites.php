@@ -2,8 +2,8 @@
 
 defined('TYPO3') or die();
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomSiteId'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSiteId',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3SiteId'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3SiteId',
     'config' => [
         'type' => 'input',
         'size' => 30,
@@ -11,24 +11,24 @@ $GLOBALS['SiteConfiguration']['site']['columns']['fathomSiteId'] = [
     ],
 ];
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomApiKeyOverride'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomApiKeyOverride',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3ApiKeyOverride'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3ApiKeyOverride',
     'config' => [
         'type' => 'input',
         'size' => 50,
     ],
 ];
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomTrackingEnabled'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomTrackingEnabled',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3TrackingEnabled'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3TrackingEnabled',
     'config' => [
         'type' => 'check',
         'default' => 0,
     ],
 ];
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomCustomDomain'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomCustomDomain',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3CustomDomain'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3CustomDomain',
     'config' => [
         'type' => 'input',
         'size' => 50,
@@ -36,8 +36,8 @@ $GLOBALS['SiteConfiguration']['site']['columns']['fathomCustomDomain'] = [
     ],
 ];
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomExcludedPages'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomExcludedPages',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3ExcludedPages'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3ExcludedPages',
     'config' => [
         'type' => 'input',
         'size' => 50,
@@ -45,8 +45,8 @@ $GLOBALS['SiteConfiguration']['site']['columns']['fathomExcludedPages'] = [
     ],
 ];
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomConsentCategory'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomConsentCategory',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3ConsentCategory'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3ConsentCategory',
     'config' => [
         'type' => 'input',
         'size' => 30,
@@ -54,14 +54,14 @@ $GLOBALS['SiteConfiguration']['site']['columns']['fathomConsentCategory'] = [
 ];
 
 $spaModeItems = [
-    ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.none', 'value' => ''],
-    ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.auto', 'value' => 'auto'],
-    ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.history', 'value' => 'history'],
-    ['label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode.hash', 'value' => 'hash'],
+    ['label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3SpaMode.none', 'value' => ''],
+    ['label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3SpaMode.auto', 'value' => 'auto'],
+    ['label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3SpaMode.history', 'value' => 'history'],
+    ['label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3SpaMode.hash', 'value' => 'hash'],
 ];
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomSpaMode'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSpaMode',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3SpaMode'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3SpaMode',
     'config' => [
         'type' => 'select',
         'renderType' => 'selectSingle',
@@ -69,17 +69,17 @@ $GLOBALS['SiteConfiguration']['site']['columns']['fathomSpaMode'] = [
     ],
 ];
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomHonorDnt'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomHonorDnt',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3HonorDnt'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3HonorDnt',
     'config' => [
         'type' => 'check',
         'default' => 0,
     ],
 ];
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomShareUrl'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomShareUrl',
-    'description' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomShareUrl.description',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3ShareUrl'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3ShareUrl',
+    'description' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3ShareUrl.description',
     'config' => [
         'type' => 'input',
         'size' => 80,
@@ -87,9 +87,9 @@ $GLOBALS['SiteConfiguration']['site']['columns']['fathomShareUrl'] = [
     ],
 ];
 
-$GLOBALS['SiteConfiguration']['site']['columns']['fathomSharePassword'] = [
-    'label' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSharePassword',
-    'description' => 'LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathomSharePassword.description',
+$GLOBALS['SiteConfiguration']['site']['columns']['fa4t3SharePassword'] = [
+    'label' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3SharePassword',
+    'description' => 'LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3SharePassword.description',
     'config' => [
         'type' => 'input',
         'size' => 50,
@@ -97,14 +97,14 @@ $GLOBALS['SiteConfiguration']['site']['columns']['fathomSharePassword'] = [
 ];
 
 $GLOBALS['SiteConfiguration']['site']['types']['0']['showitem'] = ($GLOBALS['SiteConfiguration']['site']['types']['0']['showitem'] ?? '') . ',
-    --div--;LLL:EXT:fathom_analytics/Resources/Private/Language/locallang_be.xlf:siteconfig.fathom.tab,
-    fathomSiteId,
-    fathomApiKeyOverride,
-    fathomShareUrl,
-    fathomSharePassword,
-    --palette--;;fathomTracking';
+    --div--;LLL:EXT:fa4t3/Resources/Private/Language/locallang_be.xlf:siteconfig.fa4t3.tab,
+    fa4t3SiteId,
+    fa4t3ApiKeyOverride,
+    fa4t3ShareUrl,
+    fa4t3SharePassword,
+    --palette--;;fa4t3Tracking';
 
-$GLOBALS['SiteConfiguration']['site']['palettes']['fathomTracking'] = [
+$GLOBALS['SiteConfiguration']['site']['palettes']['fa4t3Tracking'] = [
     'label' => 'Frontend Tracking',
-    'showitem' => 'fathomTrackingEnabled, fathomCustomDomain, fathomExcludedPages, fathomConsentCategory, fathomSpaMode, fathomHonorDnt',
+    'showitem' => 'fa4t3TrackingEnabled, fa4t3CustomDomain, fa4t3ExcludedPages, fa4t3ConsentCategory, fa4t3SpaMode, fa4t3HonorDnt',
 ];

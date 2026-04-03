@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Moselwal\FathomAnalytics\Domain\Model;
+namespace Moselwal\FA4T3\Domain\Model;
 
 final readonly class AggregationRequest
 {

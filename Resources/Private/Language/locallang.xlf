@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="messages" date="2026-03-15T00:00:00Z" product-name="fathom_analytics">
+    <file source-language="en" datatype="plaintext" original="messages" date="2026-03-15T00:00:00Z" product-name="fa4t3">
         <header/>
         <body>
             <trans-unit id="extension.title" resname="extension.title">
@@ -129,7 +129,7 @@
             <trans-unit id="page.analytics.unavailable" resname="page.analytics.unavailable">
                 <source>Analytics data temporarily unavailable.</source>
             </trans-unit>
-            <trans-unit id="widget_group.fathom" resname="widget_group.fathom">
+            <trans-unit id="widget_group.fa4t3" resname="widget_group.fa4t3">
                 <source>Fathom Analytics</source>
             </trans-unit>
             <trans-unit id="error.noShareUrl" resname="error.noShareUrl">

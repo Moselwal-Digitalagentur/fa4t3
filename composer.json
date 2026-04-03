@@ -1,12 +1,12 @@
 {
-    "name": "moselwal/fathom-analytics",
+    "name": "moselwal/fa4t3",
     "type": "typo3-cms-extension",
     "description": "Fathom Analytics Integration for TYPO3 CMS - Backend Dashboard, Page Analytics, Frontend Tracking",
     "license": "GPL-2.0-or-later",
     "keywords": [
         "TYPO3",
         "analytics",
-        "fathom",
+        "fa4t3",
         "privacy",
         "dashboard"
     ],
@@ -38,12 +38,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Moselwal\\FathomAnalytics\\": "Classes/"
+            "Moselwal\\FA4T3\\": "Classes/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Moselwal\\FathomAnalytics\\Tests\\": "Tests/"
+            "Moselwal\\FA4T3\\Tests\\": "Tests/"
         }
     },
     "scripts": {
@@ -52,7 +52,7 @@
     },
     "extra": {
         "typo3/cms": {
-            "extension-key": "fathom_analytics"
+            "extension-key": "fa4t3"
         }
     }
 }

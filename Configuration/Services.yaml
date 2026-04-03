@@ -4,24 +4,24 @@ services:
     autoconfigure: true
     public: false
 
-  Moselwal\FathomAnalytics\:
+  Moselwal\FA4T3\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
 
-  Moselwal\FathomAnalytics\Controller\Backend\DashboardController:
+  Moselwal\FA4T3\Controller\Backend\DashboardController:
     public: true
 
-  Moselwal\FathomAnalytics\Controller\Backend\PageDataAjaxController:
+  Moselwal\FA4T3\Controller\Backend\PageDataAjaxController:
     public: true
 
-  cache.fathomanalytics_api:
+  cache.fa4t3_api:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory:
       - '@TYPO3\CMS\Core\Cache\CacheManager'
       - 'getCache'
     arguments:
-      - 'fathomanalytics_api'
+      - 'fa4t3_api'
 
-  Moselwal\FathomAnalytics\Service\AnalyticsService:
+  Moselwal\FA4T3\Service\AnalyticsService:
     arguments:
-      $cache: '@cache.fathomanalytics_api'
+      $cache: '@cache.fa4t3_api'
