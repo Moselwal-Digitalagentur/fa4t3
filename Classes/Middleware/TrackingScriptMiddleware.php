@@ -83,7 +83,9 @@ final readonly class TrackingScriptMiddleware implements MiddlewareInterface
         $stream = new Stream('php://temp', 'rw');
         $stream->write($injected);
 
-        return $response->withBody($stream);
+        return $response
+            ->withBody($stream)
+            ->withoutHeader('Content-Length');
     }
 
     private function isPageExcluded(ServerRequestInterface $request, string $excludedPages): bool
