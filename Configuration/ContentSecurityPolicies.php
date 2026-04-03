@@ -10,13 +10,26 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 use TYPO3\CMS\Core\Type\Map;
 
-return Map::fromEntries([
-    Scope::backend(),
-    new MutationCollection(
+return Map::fromEntries(
+    // Backend: Allow Fathom share dashboard iframe
+    [Scope::backend(), new MutationCollection(
         new Mutation(
             MutationMode::Extend,
             Directive::FrameSrc,
-            new UriValue('*.usefathom.com'),
+            new UriValue('https://app.usefathom.com'),
         ),
-    ),
-]);
+    )],
+    // Frontend: Allow Fathom tracking script and API connections
+    [Scope::frontend(), new MutationCollection(
+        new Mutation(
+            MutationMode::Extend,
+            Directive::ScriptSrc,
+            new UriValue('https://cdn.usefathom.com'),
+        ),
+        new Mutation(
+            MutationMode::Extend,
+            Directive::ConnectSrc,
+            new UriValue('https://cdn.usefathom.com'),
+        ),
+    )],
+);

@@ -9,14 +9,21 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 
+/**
+ * Injects the Fathom tracking script directly into the HTML response.
+ *
+ * Does NOT use AssetCollector/AssetRenderer because TYPO3 14's
+ * AssetRenderer crashes (truncates HTML) when processing scripts
+ * registered via addJavaScript/addInlineJavaScript in FrankenPHP
+ * worker configurations.
+ */
 final readonly class TrackingScriptMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private ConfigurationService $configurationService,
-        private AssetCollector $assetCollector,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -37,52 +44,46 @@ final readonly class TrackingScriptMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        // Check page exclusion
         if ($this->isPageExcluded($request, $trackingConfig['excludedPages'])) {
             return $handler->handle($request);
         }
 
-        // Build script attributes
+        // Let TYPO3 render the full response first
+        $response = $handler->handle($request);
+
+        // Only inject into HTML responses
+        $contentType = $response->getHeaderLine('Content-Type');
+        if (!str_contains($contentType, 'text/html')) {
+            return $response;
+        }
+
+        // Build the Fathom script tag
         $scriptDomain = $trackingConfig['customDomain'] !== ''
             ? rtrim($trackingConfig['customDomain'], '/')
             : 'https://cdn.usefathom.com';
-        $scriptSrc = $scriptDomain . '/script.js';
 
-        $attributes = [
-            'data-site' => $siteId,
-            'defer' => 'defer',
-        ];
+        $attrs = 'src="' . htmlspecialchars($scriptDomain . '/script.js') . '"'
+            . ' data-site="' . htmlspecialchars($siteId) . '"'
+            . ' defer';
 
         if ($trackingConfig['spaMode'] !== '') {
-            $attributes['data-spa'] = $trackingConfig['spaMode'];
+            $attrs .= ' data-spa="' . htmlspecialchars($trackingConfig['spaMode']) . '"';
         }
 
         if ($trackingConfig['honorDnt']) {
-            $attributes['data-honor-dnt'] = 'true';
+            $attrs .= ' data-honor-dnt="true"';
         }
 
-        $consentCategory = $trackingConfig['consentCategory'];
+        $scriptTag = '<script ' . $attrs . '></script>';
 
-        if ($consentCategory !== '') {
-            // Consent-managed loading: render as text/plain with data-category
-            // Compatible with cookieman, klaro, and similar TYPO3 consent extensions
-            $this->assetCollector->addInlineJavaScript(
-                'fa4t3-tracking-consent',
-                $this->buildConsentScript($scriptSrc, $attributes, $consentCategory),
-                [],
-                ['priority' => false]
-            );
-        } else {
-            // Direct loading: no consent required (Fathom is cookiefree)
-            $this->assetCollector->addJavaScript(
-                'fa4t3-tracking',
-                $scriptSrc,
-                $attributes,
-                ['external' => true, 'priority' => false]
-            );
-        }
+        // Inject before </body>
+        $body = (string)$response->getBody();
+        $injected = str_ireplace('</body>', $scriptTag . '</body>', $body);
 
-        return $handler->handle($request);
+        $stream = new Stream('php://temp', 'rw');
+        $stream->write($injected);
+
+        return $response->withBody($stream);
     }
 
     private function isPageExcluded(ServerRequestInterface $request, string $excludedPages): bool
@@ -104,17 +105,14 @@ final readonly class TrackingScriptMiddleware implements MiddlewareInterface
 
         $excludedUids = array_map('intval', array_filter(explode(',', $excludedPages)));
 
-        // Check direct UID match
         if (in_array($pageId, $excludedUids, true)) {
             return true;
         }
 
-        // Check if page is in an excluded page tree (rootline check)
         try {
-            /** @var \TYPO3\CMS\Core\Utility\RootlineUtility $rootlineUtility */
             $rootlineUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 \TYPO3\CMS\Core\Utility\RootlineUtility::class,
-                $pageId
+                $pageId,
             );
             $rootline = $rootlineUtility->get();
 
@@ -124,41 +122,8 @@ final readonly class TrackingScriptMiddleware implements MiddlewareInterface
                 }
             }
         } catch (\Exception) {
-            // If rootline cannot be resolved, do not exclude
         }
 
         return false;
-    }
-
-    /**
-     * Build a JavaScript snippet that dynamically creates the Fathom script tag
-     * when consent for the given category is granted.
-     * This avoids the double-wrapping issue with addInlineJavaScript.
-     *
-     * @param array<string, string> $attributes
-     */
-    private function buildConsentScript(string $scriptSrc, array $attributes, string $consentCategory): string
-    {
-        $jsonAttrs = json_encode($attributes, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT);
-        $escapedSrc = htmlspecialchars($scriptSrc, ENT_QUOTES, 'UTF-8');
-        $escapedCategory = htmlspecialchars($consentCategory, ENT_QUOTES, 'UTF-8');
-
-        // Create script element dynamically; consent tools can call
-        // window.__fathomLoadTracking() when consent is granted.
-        // Also check for a global consent API (cookieman, klaro patterns).
-        return '(function(){' .
-            'function loadFathom(){' .
-                'if(document.getElementById("fathom-tracking-script"))return;' .
-                'var s=document.createElement("script");' .
-                's.id="fathom-tracking-script";' .
-                's.src=' . json_encode($escapedSrc) . ';' .
-                'var attrs=' . $jsonAttrs . ';' .
-                'for(var k in attrs){if(attrs.hasOwnProperty(k))s.setAttribute(k,attrs[k]);}' .
-                'document.head.appendChild(s);' .
-            '}' .
-            'window.__fa4t3ConsentCategory=' . json_encode($escapedCategory) . ';' .
-            'window.__fathomLoadTracking=loadFathom;' .
-            'if(typeof window.CookieConsent!=="undefined"&&window.CookieConsent.hasConsent&&window.CookieConsent.hasConsent(' . json_encode($escapedCategory) . ')){loadFathom();}' .
-        '})();';
     }
 }

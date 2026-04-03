@@ -37,6 +37,13 @@ final class DashboardController extends ActionController
         $shareUrl = $this->configurationService->getShareUrl($site);
 
         if ($shareUrl !== '') {
+            // Append password as SHA-256 hash so the iframe loads without manual login
+            $sharePassword = $this->configurationService->getSharePassword($site);
+            if ($sharePassword !== '') {
+                $separator = str_contains($shareUrl, '?') ? '&' : '?';
+                $shareUrl .= $separator . 'password=' . hash('sha256', $sharePassword);
+            }
+
             $moduleTemplate->assignMultiple([
                 'showSetup' => false,
                 'shareUrl' => $shareUrl,
