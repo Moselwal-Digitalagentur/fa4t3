@@ -34,16 +34,10 @@ final class DashboardController extends ActionController
             return $moduleTemplate->renderResponse('Backend/Dashboard/Index');
         }
 
+        // getShareUrl() already appends the SHA-256 hashed password if configured
         $shareUrl = $this->configurationService->getShareUrl($site);
 
         if ($shareUrl !== '') {
-            // Append password as SHA-256 hash so the iframe loads without manual login
-            $sharePassword = $this->configurationService->getSharePassword($site);
-            if ($sharePassword !== '') {
-                $separator = str_contains($shareUrl, '?') ? '&' : '?';
-                $shareUrl .= $separator . 'password=' . hash('sha256', $sharePassword);
-            }
-
             $moduleTemplate->assignMultiple([
                 'showSetup' => false,
                 'shareUrl' => $shareUrl,
@@ -102,13 +96,14 @@ final class DashboardController extends ActionController
     private function resolveCurrentSite(): ?Site
     {
         $site = $this->request->getAttribute('site');
-        if ($site !== null) {
+        if ($site instanceof Site) {
             return $site;
         }
 
-        $sites = $this->siteFinder->getAllSites();
-        if ($sites !== []) {
-            return reset($sites);
+        foreach ($this->siteFinder->getAllSites() as $s) {
+            if ($s instanceof Site) {
+                return $s;
+            }
         }
 
         return null;
