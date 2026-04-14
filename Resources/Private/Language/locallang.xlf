@@ -132,6 +132,66 @@
             <trans-unit id="widget_group.fa4t3" resname="widget_group.fa4t3">
                 <source>Fathom Analytics</source>
             </trans-unit>
+            <trans-unit id="settings.siteId.label" resname="settings.siteId.label">
+                <source>Fathom Site ID</source>
+            </trans-unit>
+            <trans-unit id="settings.siteId.description" resname="settings.siteId.description">
+                <source>The Site ID from your Fathom Analytics dashboard</source>
+            </trans-unit>
+            <trans-unit id="settings.apiKeyOverride.label" resname="settings.apiKeyOverride.label">
+                <source>API Key Override</source>
+            </trans-unit>
+            <trans-unit id="settings.apiKeyOverride.description" resname="settings.apiKeyOverride.description">
+                <source>Optional per-site API key (overrides the global key)</source>
+            </trans-unit>
+            <trans-unit id="settings.shareUrl.label" resname="settings.shareUrl.label">
+                <source>Share URL</source>
+            </trans-unit>
+            <trans-unit id="settings.shareUrl.description" resname="settings.shareUrl.description">
+                <source>Fathom Dashboard Share URL (enable in Fathom: Settings → Site Settings → Dashboard Sharing)</source>
+            </trans-unit>
+            <trans-unit id="settings.sharePassword.label" resname="settings.sharePassword.label">
+                <source>Share Password</source>
+            </trans-unit>
+            <trans-unit id="settings.sharePassword.description" resname="settings.sharePassword.description">
+                <source>Password for the shared dashboard (if password-protected)</source>
+            </trans-unit>
+            <trans-unit id="settings.trackingEnabled.label" resname="settings.trackingEnabled.label">
+                <source>Enable Tracking Script</source>
+            </trans-unit>
+            <trans-unit id="settings.trackingEnabled.description" resname="settings.trackingEnabled.description">
+                <source>Inject the Fathom tracking script into frontend pages</source>
+            </trans-unit>
+            <trans-unit id="settings.customDomain.label" resname="settings.customDomain.label">
+                <source>Custom Domain</source>
+            </trans-unit>
+            <trans-unit id="settings.customDomain.description" resname="settings.customDomain.description">
+                <source>Custom domain for the tracking script (e.g. your-cdn.example.com)</source>
+            </trans-unit>
+            <trans-unit id="settings.excludedPages.label" resname="settings.excludedPages.label">
+                <source>Excluded Pages</source>
+            </trans-unit>
+            <trans-unit id="settings.excludedPages.description" resname="settings.excludedPages.description">
+                <source>Comma-separated list of page UIDs to exclude from tracking</source>
+            </trans-unit>
+            <trans-unit id="settings.consentCategory.label" resname="settings.consentCategory.label">
+                <source>Consent Category</source>
+            </trans-unit>
+            <trans-unit id="settings.consentCategory.description" resname="settings.consentCategory.description">
+                <source>Consent category for the tracking script (leave empty if no consent required)</source>
+            </trans-unit>
+            <trans-unit id="settings.spaMode.label" resname="settings.spaMode.label">
+                <source>SPA Mode</source>
+            </trans-unit>
+            <trans-unit id="settings.spaMode.description" resname="settings.spaMode.description">
+                <source>Single Page Application tracking mode (auto, history, hash)</source>
+            </trans-unit>
+            <trans-unit id="settings.honorDnt.label" resname="settings.honorDnt.label">
+                <source>Honor Do Not Track</source>
+            </trans-unit>
+            <trans-unit id="settings.honorDnt.description" resname="settings.honorDnt.description">
+                <source>Respect the browser Do Not Track setting</source>
+            </trans-unit>
             <trans-unit id="error.noShareUrl" resname="error.noShareUrl">
                 <source>Please configure the Fathom Share URL in Site Configuration. Enable Dashboard Sharing in your Fathom account (Settings → Site Settings → Dashboard Sharing) and paste the share URL here.</source>
             </trans-unit>
