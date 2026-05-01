@@ -15,9 +15,12 @@ class PageAnalyticsPanel {
     createPanel() {
         const panel = document.createElement('div');
         panel.id = 'fathom-page-analytics';
-        panel.className = 'callout callout-info mt-2 mb-3';
-        panel.style.cssText = 'padding: 10px 15px; font-size: 0.9em;';
-        panel.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Loading analytics...';
+        panel.className = 'callout callout-info mt-2 mb-3 p-3 small';
+        const spinner = document.createElement('span');
+        spinner.className = 'spinner-border spinner-border-sm me-2';
+        spinner.setAttribute('role', 'status');
+        panel.appendChild(spinner);
+        panel.appendChild(document.createTextNode('Loading analytics...'));
         return panel;
     }
 
@@ -47,33 +50,76 @@ class PageAnalyticsPanel {
             return;
         }
 
-        const d = data.data;
-        const label = document.createElement('strong');
-        label.textContent = 'Fathom Analytics (30d): ';
-        this.panel.appendChild(label);
+        const translations = data.data?.translations ?? [];
+        if (translations.length === 0) {
+            this.renderError('Keine Sprachen fuer diese Seite gefunden.');
+            return;
+        }
 
+        const heading = document.createElement('div');
+        heading.className = 'fw-semibold mb-2';
+        heading.textContent = 'Fathom Analytics (30d)';
+        this.panel.appendChild(heading);
+
+        const list = document.createElement('div');
+        list.className = 'd-flex flex-column gap-2';
+        for (const entry of translations) {
+            list.appendChild(this.renderRow(entry));
+        }
+        this.panel.appendChild(list);
+    }
+
+    renderRow(entry) {
+        const row = document.createElement('div');
+        row.className = 'd-flex flex-wrap align-items-center gap-2';
+
+        const langTag = document.createElement('span');
+        langTag.className = 'badge bg-secondary text-uppercase';
+        langTag.textContent = entry.twoLetterIsoCode || `L${entry.languageId}`;
+        langTag.title = entry.title || '';
+        row.appendChild(langTag);
+
+        const slug = document.createElement('code');
+        slug.className = 'text-body';
+        slug.textContent = entry.slug ?? '—';
+        row.appendChild(slug);
+
+        if (entry.error) {
+            const errorSpan = document.createElement('span');
+            errorSpan.className = 'text-body-secondary fst-italic';
+            errorSpan.textContent = entry.error;
+            row.appendChild(errorSpan);
+            return row;
+        }
+
+        const metrics = entry.metrics ?? {};
         const badges = [
-            { cls: 'bg-primary', value: d.pageviews, label: 'Pageviews' },
-            { cls: 'bg-secondary', value: d.uniques, label: 'Visitors' },
-            { cls: 'bg-info', value: `${d.avgDuration}s`, label: 'Avg. Duration' },
-            { cls: 'bg-warning text-dark', value: `${d.bounceRate}%`, label: 'Bounce Rate' },
+            { cls: 'bg-primary', value: metrics.pageviews ?? 0, label: 'Pageviews' },
+            { cls: 'bg-secondary', value: metrics.uniques ?? 0, label: 'Visitors' },
+            { cls: 'bg-info', value: `${metrics.avgDuration ?? 0}s`, label: 'Avg. Duration' },
+            { cls: 'bg-warning text-dark', value: `${metrics.bounceRate ?? 0}%`, label: 'Bounce Rate' },
         ];
 
         for (const badge of badges) {
             const span = document.createElement('span');
-            span.className = `badge ${badge.cls} me-2`;
+            span.className = `badge ${badge.cls}`;
             span.textContent = `${badge.value} ${badge.label}`;
-            this.panel.appendChild(span);
+            row.appendChild(span);
         }
+
+        return row;
     }
 
     renderError(detail = '') {
         const msg = detail || 'Analytics data temporarily unavailable.';
-        this.panel.innerHTML = `<span class="text-body-secondary">${msg}</span>`;
+        this.panel.textContent = '';
+        const span = document.createElement('span');
+        span.className = 'text-body-secondary';
+        span.textContent = msg;
+        this.panel.appendChild(span);
     }
 }
 
-// Auto-initialize when imported
 const urlParams = new URLSearchParams(window.location.search);
 const pageUid = parseInt(urlParams.get('id') ?? '0', 10);
 

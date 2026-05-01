@@ -9,8 +9,13 @@ use Moselwal\FA4T3\Service\AnalyticsService;
 use Moselwal\FA4T3\Service\ConfigurationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Doctrine\DBAL\ParameterType;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 final readonly class PageDataAjaxController
@@ -19,6 +24,7 @@ final readonly class PageDataAjaxController
         private ConfigurationService $configurationService,
         private AnalyticsService $analyticsService,
         private SiteFinder $siteFinder,
+        private ConnectionPool $connectionPool,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -38,33 +44,121 @@ final readonly class PageDataAjaxController
             }
         }
 
-        if (!$this->configurationService->isConfigured($site)) {
+        if (!$site instanceof Site || !$this->configurationService->isConfigured($site)) {
             return new JsonResponse(['success' => false, 'error' => 'Extension not configured']);
         }
 
         $siteId = $this->configurationService->getSiteId($site);
         $apiKey = $this->configurationService->getApiKeyForSite($site);
+        $range = DateRange::fromPreset('30d');
 
-        $pathname = '/';
-        try {
-            $uri = $site->getRouter()->generateUri((string)$pageUid);
-            $pathname = $uri->getPath();
-        } catch (\Exception) {
-            // fallback to root
+        $translations = [];
+        foreach ($site->getLanguages() as $siteLanguage) {
+            $entry = $this->buildTranslationEntry($pageUid, $site, $siteLanguage, $siteId, $apiKey, $range);
+            if ($entry !== null) {
+                $translations[] = $entry;
+            }
         }
 
-        $range = DateRange::fromPreset('30d');
-        $result = $this->analyticsService->getPageAnalytics($siteId, $pathname, $range, $apiKey);
-
         return new JsonResponse([
-            'success' => !$result->hasError(),
+            'success' => true,
             'data' => [
-                'pageviews' => $result->getPageviews(),
-                'uniques' => $result->getUniques(),
-                'avgDuration' => round($result->getAvgDuration(), 1),
-                'bounceRate' => round($result->getBounceRate(), 1),
+                'translations' => $translations,
             ],
-            'error' => $result->hasError() ? ($result->getErrorMessage() ?? 'API unavailable') : null,
         ]);
+    }
+
+    /**
+     * @return array<string, mixed>|null Returns null when the page does not exist in the given language.
+     */
+    private function buildTranslationEntry(
+        int $pageUid,
+        Site $site,
+        SiteLanguage $siteLanguage,
+        string $siteId,
+        string $apiKey,
+        DateRange $range,
+    ): ?array {
+        $languageId = $siteLanguage->getLanguageId();
+        if (!$this->pageExistsInLanguage($pageUid, $languageId)) {
+            return null;
+        }
+
+        $slug = null;
+        $error = null;
+        try {
+            $uri = $site->getRouter()->generateUri((string)$pageUid, ['_language' => $siteLanguage]);
+            $slug = $uri->getPath();
+        } catch (\Throwable $e) {
+            $error = 'Slug konnte nicht aufgeloest werden: ' . $e->getMessage();
+        }
+
+        $metrics = [
+            'pageviews' => 0,
+            'uniques' => 0,
+            'avgDuration' => 0.0,
+            'bounceRate' => 0.0,
+        ];
+
+        if ($slug !== null) {
+            $result = $this->analyticsService->getPageAnalytics($siteId, $slug, $range, $apiKey);
+            if ($result->hasError()) {
+                $error = $result->getErrorMessage() ?? 'API unavailable';
+            } else {
+                $metrics = [
+                    'pageviews' => $result->getPageviews(),
+                    'uniques' => $result->getUniques(),
+                    'avgDuration' => round($result->getAvgDuration(), 1),
+                    'bounceRate' => round($result->getBounceRate(), 1),
+                ];
+            }
+        }
+
+        return [
+            'languageId' => $languageId,
+            'title' => $siteLanguage->getTitle(),
+            'twoLetterIsoCode' => $siteLanguage->getLocale()->getLanguageCode(),
+            'flagIdentifier' => $siteLanguage->getFlagIdentifier(),
+            'slug' => $slug,
+            'metrics' => $metrics,
+            'error' => $error,
+        ];
+    }
+
+    private function pageExistsInLanguage(int $pageUid, int $languageId): bool
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(new DeletedRestriction());
+
+        $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->setMaxResults(1)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($languageId, ParameterType::INTEGER),
+                ),
+            );
+
+        if ($languageId === 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($pageUid, ParameterType::INTEGER),
+                ),
+            );
+        } else {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    'l10n_parent',
+                    $queryBuilder->createNamedParameter($pageUid, ParameterType::INTEGER),
+                ),
+            );
+        }
+
+        return (bool)$queryBuilder->executeQuery()->fetchOne();
     }
 }
