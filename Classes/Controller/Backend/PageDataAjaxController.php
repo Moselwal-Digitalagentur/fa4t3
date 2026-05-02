@@ -85,10 +85,16 @@ final readonly class PageDataAjaxController
         }
 
         $slug = null;
+        $hostname = null;
         $error = null;
         try {
             $uri = $site->getRouter()->generateUri((string)$pageUid, ['_language' => $siteLanguage]);
             $slug = $uri->getPath();
+            // Hostname is relevant for Fathom sites that span multiple domains
+            // (e.g. moselwal.de + moselwal.com under one Fathom site). Without
+            // hostname filter, identical pathnames on different domains collapse.
+            $host = $uri->getHost();
+            $hostname = $host !== '' ? $host : null;
         } catch (\Throwable $e) {
             $error = 'Slug konnte nicht aufgeloest werden: ' . $e->getMessage();
         }
@@ -101,7 +107,7 @@ final readonly class PageDataAjaxController
         ];
 
         if ($slug !== null) {
-            $result = $this->analyticsService->getPageAnalytics($siteId, $slug, $range, $apiKey);
+            $result = $this->analyticsService->getPageAnalytics($siteId, $slug, $range, $apiKey, $hostname);
             if ($result->hasError()) {
                 $error = $result->getErrorMessage() ?? 'API unavailable';
             } else {
@@ -120,6 +126,7 @@ final readonly class PageDataAjaxController
             'twoLetterIsoCode' => $siteLanguage->getLocale()->getLanguageCode(),
             'flagIdentifier' => $siteLanguage->getFlagIdentifier(),
             'slug' => $slug,
+            'hostname' => $hostname,
             'metrics' => $metrics,
             'error' => $error,
         ];

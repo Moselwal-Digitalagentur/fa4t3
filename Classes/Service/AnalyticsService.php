@@ -115,9 +115,14 @@ final readonly class AnalyticsService
         }
     }
 
-    public function getPageAnalytics(string $siteId, string $pathname, DateRange $range, string $apiKey): AggregationResult
-    {
-        $cacheKey = $this->buildCacheKey('page', $siteId, $range, $pathname);
+    public function getPageAnalytics(
+        string $siteId,
+        string $pathname,
+        DateRange $range,
+        string $apiKey,
+        ?string $hostname = null,
+    ): AggregationResult {
+        $cacheKey = $this->buildCacheKey('page', $siteId, $range, $pathname . '|' . ($hostname ?? ''));
         $cached = $this->cache->get($cacheKey);
 
         if ($cached !== false) {
@@ -125,9 +130,16 @@ final readonly class AnalyticsService
         }
 
         try {
+            $filters = [
+                ['property' => 'pathname', 'operator' => 'is', 'value' => $pathname],
+            ];
+            if ($hostname !== null && $hostname !== '') {
+                $filters[] = ['property' => 'hostname', 'operator' => 'is', 'value' => $hostname];
+            }
+
             $request = AggregationRequest::fromDateRange($range)
                 ->withoutDateGrouping()
-                ->withFilters([['property' => 'pathname', 'operator' => 'is', 'value' => $pathname]]);
+                ->withFilters($filters);
 
             $result = $this->apiClient->getAggregation($siteId, $request, $apiKey);
 

@@ -81,7 +81,10 @@ class PageAnalyticsPanel {
 
         const slug = document.createElement('code');
         slug.className = 'text-body';
-        slug.textContent = entry.slug ?? '—';
+        // Multi-Domain-Sites zeigen hostname mit, sodass / auf moselwal.de von / auf moselwal.com unterscheidbar ist.
+        slug.textContent = entry.hostname
+            ? `${entry.hostname}${entry.slug ?? ''}`
+            : (entry.slug ?? '—');
         row.appendChild(slug);
 
         if (entry.error) {
