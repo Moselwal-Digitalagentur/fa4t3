@@ -91,10 +91,12 @@ final readonly class PageDataAjaxController
             $uri = $site->getRouter()->generateUri((string)$pageUid, ['_language' => $siteLanguage]);
             $slug = $uri->getPath();
             // Hostname is relevant for Fathom sites that span multiple domains
-            // (e.g. moselwal.de + moselwal.com under one Fathom site). Without
-            // hostname filter, identical pathnames on different domains collapse.
+            // (e.g. moselwal.de + moselwal.com under one Fathom site). Fathom
+            // stores the hostname WITH the scheme prefix (e.g. "https://moselwal.de"),
+            // so we send the full origin — otherwise the filter matches nothing.
+            $scheme = $uri->getScheme();
             $host = $uri->getHost();
-            $hostname = $host !== '' ? $host : null;
+            $hostname = ($scheme !== '' && $host !== '') ? $scheme . '://' . $host : null;
         } catch (\Throwable $e) {
             $error = 'Slug konnte nicht aufgeloest werden: ' . $e->getMessage();
         }
