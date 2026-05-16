@@ -1,7 +1,7 @@
 # Fathom Analytics — TYPO3 Extension
 
-[![TYPO3 11.5–14.0](https://img.shields.io/badge/TYPO3-11.5–14.0-orange.svg)](https://get.typo3.org/)
-[![PHP 7.4+](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)](https://php.net/)
+[![TYPO3 14](https://img.shields.io/badge/TYPO3-14.x-orange.svg)](https://get.typo3.org/)
+[![PHP 8.5+](https://img.shields.io/badge/PHP-8.5%2B-blue.svg)](https://php.net/)
 [![License: GPL-2.0-or-later](https://img.shields.io/badge/License-GPL--2.0--or--later-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 
 Privacy-focused analytics for TYPO3 powered by [Fathom Analytics](https://usefathom.com/). Provides a backend dashboard module, page-specific analytics in the page module, and optional frontend tracking script injection.
@@ -12,7 +12,7 @@ Privacy-focused analytics for TYPO3 powered by [Fathom Analytics](https://usefat
 - **Page-Specific Analytics** — See per-page metrics in the TYPO3 page module
 - **Frontend Tracking** — Optional automatic injection of the Fathom tracking script
 - **Dashboard Widgets** — Integration with TYPO3's Dashboard extension for custom widgets
-- **Multi-Version Support** — Compatible with TYPO3 11.5, 12.4, 13.4, and 14.0
+- **TYPO3 14.x** — Tested on the current LTS line
 - **Caching** — Uses TYPO3's Caching Framework for API response caching
 
 ## Installation
@@ -23,8 +23,8 @@ composer require moselwal/fa4t3
 
 ### Requirements
 
-- PHP 7.4+
-- TYPO3 11.5, 12.4, 13.4, or 14.0
+- PHP 8.5+
+- TYPO3 14.x
 - Fathom Analytics account with API key
 
 ### Secure Secret Management (Recommended)
