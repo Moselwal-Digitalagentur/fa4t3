@@ -27,8 +27,7 @@
         "moselwal/secret-resolver": "Secure resolution of API key and password from encrypted secrets (SOPS, Vault, etc.)"
     },
     "require-dev": {
-        "moselwal/dev": "^5.0",
-        "typo3/testing-framework": "^9.0"
+        "moselwal/dev": "^5.2"
     },
     "config": {
         "gitlab-domains": [
