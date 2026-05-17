@@ -17,7 +17,7 @@
         }
     },
     "require": {
-        "php": "^8.5",
+        "php": "^8.3",
         "typo3/cms-core": "^14.0",
         "typo3/cms-backend": "^14.0",
         "typo3/cms-fluid": "^14.0",
@@ -27,14 +27,19 @@
         "moselwal/secret-resolver": "Secure resolution of API key and password from encrypted secrets (SOPS, Vault, etc.)"
     },
     "require-dev": {
-        "moselwal/dev": "*",
+        "moselwal/dev": "^4.0",
         "typo3/testing-framework": "^9.0"
     },
     "config": {
         "gitlab-domains": [
             "gitlab.moselwal.io"
         ],
-        "allow-plugins": true
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true,
+            "phpstan/extension-installer": true,
+            "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": true
+        }
     },
     "autoload": {
         "psr-4": {
