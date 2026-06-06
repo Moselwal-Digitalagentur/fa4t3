@@ -15,6 +15,20 @@ Privacy-focused analytics for TYPO3 powered by [Fathom Analytics](https://usefat
 - **TYPO3 14.x** — Tested on the current LTS line
 - **Caching** — Uses TYPO3's Caching Framework for API response caching
 
+## Screenshots
+
+### Backend Dashboard
+
+![Fathom Analytics Dashboard in the TYPO3 backend — realtime visitors, pageviews, average time on site, bounce rate and event completions](docs/screenshot-dashboard.png)
+
+The dashboard module appears under **Content → Fathom Analytics** in the TYPO3 backend sidebar. It shows realtime visitors, daily pageviews, average time on site, bounce rate, and event completions — without leaving TYPO3.
+
+### Per-Page Analytics Widget
+
+![Fathom Analytics per-page widget — 30-day overview per URL showing pageviews, visitors, average duration and bounce rate](docs/screenshot-page-widget.png)
+
+The page analytics widget appears directly on every TYPO3 page record and shows the last 30 days of Fathom data (pageviews, visitors, avg. duration, bounce rate) for the DE and EN URL of that page.
+
 ## Installation
 
 ```bash
