@@ -1,9 +1,16 @@
 {
     "name": "moselwal/fa4t3",
-    "type": "typo3-cms-extension",
     "description": "Fathom Analytics integration for TYPO3 CMS — Backend Dashboard, Page Analytics, Frontend Tracking.",
     "license": "MIT",
-    "keywords": ["typo3", "analytics", "fathom", "fa4t3", "privacy", "dashboard"],
+    "type": "typo3-cms-extension",
+    "keywords": [
+        "analytics",
+        "dashboard",
+        "fa4t3",
+        "fathom",
+        "privacy",
+        "typo3"
+    ],
     "authors": [
         {
             "name": "Moselwal Digitalagentur GmbH",
@@ -21,18 +28,15 @@
         "issues": "https://github.com/Moselwal-Digitalagentur/fa4t3/issues",
         "source": "https://github.com/Moselwal-Digitalagentur/fa4t3"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://gitlab.moselwal.io/api/v4/group/175/-/packages/composer/packages.json"
-        }
-    ],
     "require": {
         "php": "^8.5",
-        "typo3/cms-core": "^14.0",
+        "psr/http-message": "^1.0 || ^2.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0",
         "typo3/cms-backend": "^14.0",
-        "typo3/cms-fluid": "^14.0",
-        "typo3/cms-extbase": "^14.0"
+        "typo3/cms-core": "^14.0",
+        "typo3/cms-extbase": "^14.0",
+        "typo3/cms-fluid": "^14.0"
     },
     "require-dev": {
         "moselwal/dev": "^5.2"
@@ -50,21 +54,30 @@
             "Moselwal\\FA4T3\\Tests\\": "Tests/"
         }
     },
-    "scripts": {
-        "test": "phpunit -c Tests/phpunit.xml",
-        "phpstan": "phpstan analyse"
-    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://gitlab.moselwal.io/api/v4/group/175/-/packages/composer/packages.json"
+        }
+    ],
     "config": {
         "allow-plugins": {
-            "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true,
             "phpstan/extension-installer": true,
-            "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": true
+            "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": true,
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
         }
     },
     "extra": {
         "typo3/cms": {
             "extension-key": "fa4t3"
-        }
+        },
+        "unused": [
+            "typo3/cms-fluid"
+        ]
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse",
+        "test": "phpunit -c Tests/phpunit.xml"
     }
 }
