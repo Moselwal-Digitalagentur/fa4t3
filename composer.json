@@ -40,11 +40,18 @@
         "typo3/cms-fluid": "^14.0"
     },
     "require-dev": {
+        "ergebnis/composer-normalize": "^2.52",
         "moselwal/dev": "^5.2"
     },
     "suggest": {
         "moselwal/secret-resolver": "Secure resolution of API key and password from encrypted secrets (SOPS, Vault, etc.)"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://gitlab.moselwal.io/api/v4/group/175/-/packages/composer/packages.json"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Moselwal\\FA4T3\\": "Classes/"
@@ -55,14 +62,9 @@
             "Moselwal\\FA4T3\\Tests\\": "Tests/"
         }
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://gitlab.moselwal.io/api/v4/group/175/-/packages/composer/packages.json"
-        }
-    ],
     "config": {
         "allow-plugins": {
+            "ergebnis/composer-normalize": true,
             "phpstan/extension-installer": true,
             "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": true,
             "typo3/class-alias-loader": true,
