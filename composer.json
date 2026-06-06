@@ -1,21 +1,32 @@
 {
     "name": "moselwal/fa4t3",
     "type": "typo3-cms-extension",
-    "description": "Fathom Analytics Integration for TYPO3 CMS - Backend Dashboard, Page Analytics, Frontend Tracking",
-    "license": "GPL-2.0-or-later",
-    "keywords": [
-        "TYPO3",
-        "analytics",
-        "fa4t3",
-        "privacy",
-        "dashboard"
+    "description": "Fathom Analytics integration for TYPO3 CMS — Backend Dashboard, Page Analytics, Frontend Tracking.",
+    "license": "MIT",
+    "keywords": ["typo3", "analytics", "fathom", "fa4t3", "privacy", "dashboard"],
+    "authors": [
+        {
+            "name": "Moselwal Digitalagentur GmbH",
+            "email": "support@moselwal.de",
+            "homepage": "https://moselwal.de",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Kai Ole Hartwig",
+            "email": "o.hartwig@moselwal.de",
+            "role": "Developer"
+        }
     ],
-    "repositories": {
-        "175": {
+    "support": {
+        "issues": "https://github.com/Moselwal-Digitalagentur/typo3-fathom-analytics/issues",
+        "source": "https://github.com/Moselwal-Digitalagentur/typo3-fathom-analytics"
+    },
+    "repositories": [
+        {
             "type": "composer",
             "url": "https://gitlab.moselwal.io/api/v4/group/175/-/packages/composer/packages.json"
         }
-    },
+    ],
     "require": {
         "php": "^8.5",
         "typo3/cms-core": "^14.0",
@@ -23,22 +34,11 @@
         "typo3/cms-fluid": "^14.0",
         "typo3/cms-extbase": "^14.0"
     },
-    "suggest": {
-        "moselwal/secret-resolver": "Secure resolution of API key and password from encrypted secrets (SOPS, Vault, etc.)"
-    },
     "require-dev": {
         "moselwal/dev": "^5.2"
     },
-    "config": {
-        "gitlab-domains": [
-            "gitlab.moselwal.io"
-        ],
-        "allow-plugins": {
-            "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true,
-            "phpstan/extension-installer": true,
-            "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": true
-        }
+    "suggest": {
+        "moselwal/secret-resolver": "Secure resolution of API key and password from encrypted secrets (SOPS, Vault, etc.)"
     },
     "autoload": {
         "psr-4": {
@@ -53,6 +53,14 @@
     "scripts": {
         "test": "phpunit -c Tests/phpunit.xml",
         "phpstan": "phpstan analyse"
+    },
+    "config": {
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true,
+            "phpstan/extension-installer": true,
+            "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": true
+        }
     },
     "extra": {
         "typo3/cms": {
