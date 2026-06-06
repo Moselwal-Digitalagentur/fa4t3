@@ -33,7 +33,7 @@ The page analytics widget appears directly on every TYPO3 page record and shows 
 
 ```bash
 composer require moselwal/fa4t3
-```
+```text
 
 ### Requirements
 
@@ -72,7 +72,7 @@ Environment variables are a common approach for secrets, but they have significa
 # config/sites/main/config.yaml
 fa4t3ApiKey: '%secret(FA4T3_API_KEY)%'
 fa4t3Password: '%secret(FA4T3_PASSWORD)%'
-```
+```text
 
 This includes Site Configuration, Form Framework definitions, Services.yaml, and any other YAML loaded through TYPO3's standard YAML loader.
 
@@ -88,7 +88,7 @@ Classes/
 ├── Middleware/       # Frontend tracking script injection
 ├── Service/         # Fathom API client and data services
 └── Widgets/         # TYPO3 Dashboard widgets
-```
+```text
 
 ## Configuration
 
