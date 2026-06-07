@@ -12,14 +12,13 @@ use Moselwal\FA4T3\Exception\Fa4t3ApiException;
 use Moselwal\FA4T3\Service\AnalyticsService;
 use Moselwal\FA4T3\Service\ConfigurationService;
 use Moselwal\FA4T3\Service\Fa4t3ApiClient;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 class AnalyticsServiceTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getDashboardDataReturnsCachedDataOnCacheHit(): void
     {
         $cachedData = new DashboardData(
@@ -45,9 +44,7 @@ class AnalyticsServiceTest extends TestCase
         self::assertFalse($result->hasError());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDashboardDataReturnsErrorOnApiFailureWithoutCache(): void
     {
         $cache = $this->createMock(FrontendInterface::class);
@@ -66,9 +63,7 @@ class AnalyticsServiceTest extends TestCase
         self::assertSame('API down', $result->getErrorMessage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentVisitorCountReturnsCachedValue(): void
     {
         $cache = $this->createMock(FrontendInterface::class);
@@ -84,9 +79,7 @@ class AnalyticsServiceTest extends TestCase
         self::assertSame(42, $service->getCurrentVisitorCount('SITE123', 'api-key'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentVisitorCountReturnsZeroOnApiFailure(): void
     {
         $cache = $this->createMock(FrontendInterface::class);
@@ -102,9 +95,7 @@ class AnalyticsServiceTest extends TestCase
         self::assertSame(0, $service->getCurrentVisitorCount('SITE123', 'api-key'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPageAnalyticsReturnsErrorResultOnFailure(): void
     {
         $cache = $this->createMock(FrontendInterface::class);
@@ -121,9 +112,7 @@ class AnalyticsServiceTest extends TestCase
         self::assertTrue($result->hasError());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCacheForSiteFlushesCorrectTag(): void
     {
         $cache = $this->createMock(FrontendInterface::class);

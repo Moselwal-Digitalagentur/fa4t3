@@ -10,14 +10,13 @@ use Moselwal\FA4T3\Exception\Fa4t3ApiException;
 use Moselwal\FA4T3\Exception\Fa4t3AuthenticationException;
 use Moselwal\FA4T3\Exception\Fa4t3RateLimitException;
 use Moselwal\FA4T3\Service\Fa4t3ApiClient;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Http\RequestFactory;
 
 class Fa4t3ApiClientTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function testConnectionReturnsSuccessOnValidKey(): void
     {
         $requestFactory = $this->createMock(RequestFactory::class);
@@ -31,9 +30,7 @@ class Fa4t3ApiClientTest extends TestCase
         self::assertTrue($result->isSuccess());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testConnectionReturnsFailureOnInvalidKey(): void
     {
         $requestFactory = $this->createMock(RequestFactory::class);
@@ -48,9 +45,7 @@ class Fa4t3ApiClientTest extends TestCase
         self::assertSame('Invalid API key', $result->getMessage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAggregationParsesResponseCorrectly(): void
     {
         $responseBody = json_encode([
@@ -77,9 +72,7 @@ class Fa4t3ApiClientTest extends TestCase
         self::assertEqualsWithDelta(0.35, $result->getBounceRate(), 0.01);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAggregationThrowsOnRateLimit(): void
     {
         $requestFactory = $this->createMock(RequestFactory::class);
@@ -97,9 +90,7 @@ class Fa4t3ApiClientTest extends TestCase
         $client->getAggregation('SITE123', $request, 'api-key');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAggregationThrowsOnAuthenticationError(): void
     {
         $requestFactory = $this->createMock(RequestFactory::class);
@@ -117,9 +108,7 @@ class Fa4t3ApiClientTest extends TestCase
         $client->getAggregation('SITE123', $request, 'api-key');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAggregationThrowsOnServerError(): void
     {
         $requestFactory = $this->createMock(RequestFactory::class);
@@ -137,9 +126,7 @@ class Fa4t3ApiClientTest extends TestCase
         $client->getAggregation('SITE123', $request, 'api-key');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentVisitorsParsesSimpleResponse(): void
     {
         $requestFactory = $this->createMock(RequestFactory::class);
@@ -153,9 +140,7 @@ class Fa4t3ApiClientTest extends TestCase
         self::assertSame(42, $result->getTotal());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentVisitorsParsesDetailedResponse(): void
     {
         $responseBody = json_encode([
@@ -177,9 +162,7 @@ class Fa4t3ApiClientTest extends TestCase
         self::assertCount(1, $result->getTopReferrers());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getEventsReturnsEventList(): void
     {
         $responseBody = json_encode([
@@ -203,9 +186,7 @@ class Fa4t3ApiClientTest extends TestCase
         self::assertSame('Purchase', $events[1]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAggregationThrowsOnTimeout(): void
     {
         $requestFactory = $this->createMock(RequestFactory::class);
