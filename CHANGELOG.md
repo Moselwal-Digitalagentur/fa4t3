@@ -1,3 +1,10 @@
+## [4.0.5](https://gitlab.moselwal.io/development/moselwal/typo3-fathom-analytics/compare/v4.0.4...v4.0.5) (2026-06-07)
+
+
+### Bug Fixes
+
+* **release:** drop [skip ci] from semantic-release commit ([0755e26](https://gitlab.moselwal.io/development/moselwal/typo3-fathom-analytics/commit/0755e26e2cd4f96a45cee4352aaf9ee78452c6e1))
+
 ## [4.0.4](https://gitlab.moselwal.io/development/moselwal/typo3-fathom-analytics/compare/v4.0.3...v4.0.4) (2026-06-07)
 
 
