@@ -27,7 +27,8 @@
     "homepage": "https://moselwal.de",
     "support": {
         "issues": "https://github.com/Moselwal-Digitalagentur/fa4t3/issues",
-        "source": "https://github.com/Moselwal-Digitalagentur/fa4t3"
+        "source": "https://github.com/Moselwal-Digitalagentur/fa4t3",
+        "docs": "https://moselwal.de/open-source/fa4t3"
     },
     "require": {
         "php": "^8.5",
