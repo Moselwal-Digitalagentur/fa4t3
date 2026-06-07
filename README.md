@@ -2,7 +2,7 @@
 
 [![TYPO3 14](https://img.shields.io/badge/TYPO3-14.x-orange.svg)](https://get.typo3.org/)
 [![PHP 8.5+](https://img.shields.io/badge/PHP-8.5%2B-blue.svg)](https://php.net/)
-[![License: GPL-2.0-or-later](https://img.shields.io/badge/License-GPL--2.0--or--later-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 Privacy-focused analytics for TYPO3 powered by [Fathom Analytics](https://usefathom.com/). Provides a backend dashboard module, page-specific analytics in the page module, and optional frontend tracking script injection.
 
@@ -124,4 +124,4 @@ vendor/bin/php-cs-fixer fix      # Code style (PER-CS3x0)
 
 ## License
 
-GPL-2.0-or-later — see [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](LICENSE) and [LICENSES/MIT.txt](LICENSES/MIT.txt) for details.
