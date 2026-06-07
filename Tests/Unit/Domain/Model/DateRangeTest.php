@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Moselwal\FA4T3\Tests\Unit\Domain\Model;
 
 use Moselwal\FA4T3\Domain\Model\DateRange;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DateRangeTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function fromPresetTodayUsesHourGrouping(): void
     {
         $range = DateRange::fromPreset('today');
@@ -21,9 +20,7 @@ class DateRangeTest extends TestCase
         self::assertSame(date('Y-m-d'), $range->getFrom()->format('Y-m-d'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromPreset7dUsesDayGrouping(): void
     {
         $range = DateRange::fromPreset('7d');
@@ -32,9 +29,7 @@ class DateRangeTest extends TestCase
         self::assertSame('day', $range->getDateGrouping());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromPreset30dUsesDayGrouping(): void
     {
         $range = DateRange::fromPreset('30d');
@@ -43,9 +38,7 @@ class DateRangeTest extends TestCase
         self::assertSame('day', $range->getDateGrouping());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromPreset90dUsesMonthGrouping(): void
     {
         $range = DateRange::fromPreset('90d');
@@ -54,9 +47,7 @@ class DateRangeTest extends TestCase
         self::assertSame('month', $range->getDateGrouping());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromPresetYearUsesMonthGrouping(): void
     {
         $range = DateRange::fromPreset('year');
@@ -65,9 +56,7 @@ class DateRangeTest extends TestCase
         self::assertSame('month', $range->getDateGrouping());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromPresetMonthReturnsLastCalendarMonth(): void
     {
         $range = DateRange::fromPreset('month');
@@ -77,9 +66,7 @@ class DateRangeTest extends TestCase
         self::assertSame('01', $range->getFrom()->format('d'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromCustomShortRangeUsesHourGrouping(): void
     {
         $from = new \DateTimeImmutable('2026-03-15 00:00:00');
@@ -91,9 +78,7 @@ class DateRangeTest extends TestCase
         self::assertSame('hour', $range->getDateGrouping());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromCustomMediumRangeUsesDayGrouping(): void
     {
         $from = new \DateTimeImmutable('2026-02-01');
@@ -104,9 +89,7 @@ class DateRangeTest extends TestCase
         self::assertSame('day', $range->getDateGrouping());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromCustomLongRangeUsesMonthGrouping(): void
     {
         $from = new \DateTimeImmutable('2025-01-01');
@@ -117,9 +100,7 @@ class DateRangeTest extends TestCase
         self::assertSame('month', $range->getDateGrouping());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidPresetDefaultsTo30d(): void
     {
         $range = DateRange::fromPreset('invalid');

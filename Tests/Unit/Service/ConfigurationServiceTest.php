@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Moselwal\FA4T3\Tests\Unit\Service;
 
 use Moselwal\FA4T3\Service\ConfigurationService;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 
 class ConfigurationServiceTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getGlobalApiKeyReturnsConfiguredKey(): void
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
@@ -26,9 +25,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame('test-api-key', $service->getGlobalApiKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheDurationReturnsDefaultWhenNotConfigured(): void
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
@@ -39,9 +36,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame(300, $service->getCacheDuration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getApiKeyForSiteReturnsSiteOverrideWhenSet(): void
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
@@ -59,9 +54,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame('site-specific-key', $service->getApiKeyForSite($site));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getApiKeyForSiteFallsBackToGlobalWhenNoOverride(): void
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
@@ -79,9 +72,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame('global-key', $service->getApiKeyForSite($site));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isConfiguredReturnsTrueWhenBothKeyAndSiteIdSet(): void
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
@@ -100,9 +91,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertTrue($service->isConfigured($site));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isConfiguredReturnsFalseWhenSiteIdMissing(): void
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
@@ -121,9 +110,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertFalse($service->isConfigured($site));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTrackingConfigReturnsCorrectDefaults(): void
     {
         $extConfig = $this->createMock(ExtensionConfiguration::class);
