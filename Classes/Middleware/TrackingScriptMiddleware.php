@@ -62,9 +62,33 @@ final readonly class TrackingScriptMiddleware implements MiddlewareInterface
             ? rtrim($trackingConfig['customDomain'], '/')
             : 'https://cdn.usefathom.com';
 
-        $attrs = 'src="' . htmlspecialchars($scriptDomain . '/script.js') . '"'
-            . ' data-site="' . htmlspecialchars($siteId) . '"'
-            . ' defer';
+        $scriptUrl = htmlspecialchars($scriptDomain . '/script.js');
+        $siteAttr = ' data-site="' . htmlspecialchars($siteId) . '"';
+        $consentCategory = $trackingConfig['consentCategory'];
+
+        // The Fathom extension declares its OWN consent category and drives the
+        // script markup off it, so @koh/consent-core's runtime auto-blocker never
+        // has to neutralise the tag cosmetically:
+        //   - Non-empty category => author-gated. Emit a parked
+        //     <script type="text/plain" data-category="X" data-src="URL"> that the
+        //     consent manager activates (swaps data-src->src) once the category is
+        //     granted. There is NO executable src, so Fathom stays off until consent.
+        //   - Empty category => ungated but declared. Emit an executable script
+        //     carrying data-consent="ignore" (one of consent-core's MANAGED_ATTRS),
+        //     so the auto-blocker skips the node instead of neutralising it and
+        //     Fathom loads normally.
+        if ($consentCategory !== '') {
+            $attrs = 'type="text/plain"'
+                . ' data-category="' . htmlspecialchars($consentCategory) . '"'
+                . ' data-src="' . $scriptUrl . '"'
+                . $siteAttr
+                . ' defer';
+        } else {
+            $attrs = 'src="' . $scriptUrl . '"'
+                . $siteAttr
+                . ' defer'
+                . ' data-consent="ignore"';
+        }
 
         if ($trackingConfig['spaMode'] !== '') {
             $attrs .= ' data-spa="' . htmlspecialchars($trackingConfig['spaMode']) . '"';
