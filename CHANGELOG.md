@@ -1,3 +1,11 @@
+## [4.1.1](https://git.ole-hartwig.eu/development/moselwal/typo3-fathom-analytics/compare/v4.1.0...v4.1.1) (2026-07-24)
+
+
+### Bug Fixes
+
+* **ci:** adopt github-mirror 1.2.10 (skip mirror when no token) ([0833a2e](https://git.ole-hartwig.eu/development/moselwal/typo3-fathom-analytics/commit/0833a2efa7f1eaf9042183e8bc4535b63bc61120))
+* **ci:** github-mirror 1.2.11 (contains skip-if-no-token) ([028ebba](https://git.ole-hartwig.eu/development/moselwal/typo3-fathom-analytics/commit/028ebbaf4874bc2ee29f7c3f919e899258b4f30c))
+
 # [4.1.0](https://git.ole-hartwig.eu/development/moselwal/typo3-fathom-analytics/compare/v4.0.5...v4.1.0) (2026-07-23)
 
 
